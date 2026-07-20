@@ -138,7 +138,6 @@
 </style>
 </head>
 <body>
-
 <div id="boot">
   <div class="line mono">$ ignition...</div>
   <div class="line mono">$ mounting /portfolio</div>
@@ -146,9 +145,7 @@
   <div class="line mono">READY_</div>
   <div class="hint mono">SCROLL TO DRIVE</div>
 </div>
-
 <div id="progressBar"></div>
-
 <nav>
   <div class="logo">RONALD H. <span>/ SYSTEMS</span></div>
   <div class="navlinks">
@@ -159,7 +156,6 @@
     <button data-p="0.90" class="navbtn cta">Get a quote</button>
   </div>
 </nav>
-
 <div id="dotNav">
   <button data-p="0.06" title="Home"></button>
   <button data-p="0.22" title="Services"></button>
@@ -167,12 +163,10 @@
   <button data-p="0.71" title="Approach"></button>
   <button data-p="0.90" title="Contact"></button>
 </div>
-
 <div id="stage">
   <div id="webgl"></div>
   <div id="labelLayer"></div>
   <div id="workInteract"></div>
-
   <div class="panel left" id="p-hero">
     <div class="eyebrow">Web, embedded &amp; automation — any scale</div>
     <h1>I build the <span class="amber">systems</span><br>behind the interface.</h1>
@@ -182,70 +176,25 @@
       <button class="btn btn-ghost navbtn" data-p="0.90">Get a free quote</button>
     </div>
   </div>
-
-  <div class="panel left" id="p-svc-0">
-    <div class="card-num mono">SYS.01</div>
-    <h3>Web Platforms</h3>
-    <p class="desc">Full-stack builds — APIs, databases, auth, admin tooling. Built to be maintained, not just shipped.</p>
-  </div>
-  <div class="panel right" id="p-svc-1">
-    <div class="card-num mono">SYS.02</div>
-    <h3>Embedded &amp; IoT</h3>
-    <p class="desc">Microcontroller firmware, sensor networks, and custom touchscreen dashboards on ESP32 and Pi hardware.</p>
-  </div>
-  <div class="panel left" id="p-svc-2">
-    <div class="card-num mono">SYS.03</div>
-    <h3>Home Automation</h3>
-    <p class="desc">Security, access control, and monitoring systems that talk to each other instead of living in separate apps.</p>
-  </div>
-  <div class="panel right" id="p-svc-3">
-    <div class="card-num mono">SYS.04</div>
-    <h3>Architecture &amp; Deploy</h3>
-    <p class="desc">Server setup, uptime, and the unglamorous plumbing that keeps a system alive after launch day.</p>
-  </div>
-
-  <div class="panel left" id="workPanel">
-    <div class="hint mono">DRAG TO ORBIT · CLICK A NODE</div>
-    <div id="liveNow"></div>
-    <div id="detailCard"></div>
-  </div>
-
-  <div class="panel center" id="p-app-0">
-    <div class="card-num mono">STEP 1</div>
-    <h3>Scope the system</h3>
-    <p class="desc">A short call to define what the system needs to do, what it needs to survive, and what "done" looks like.</p>
-  </div>
-  <div class="panel center" id="p-app-1">
-    <div class="card-num mono">STEP 2</div>
-    <h3>Build in the open</h3>
-    <p class="desc">You see working pieces early — a dashboard screen, a working sensor, a deployed page — not one reveal at the end.</p>
-  </div>
-  <div class="panel center" id="p-app-2">
-    <div class="card-num mono">STEP 3</div>
-    <h3>Ship &amp; support</h3>
-    <p class="desc">Deployment, a walkthrough of how it works, and continued support after launch — not a handoff into silence.</p>
-  </div>
-
+  <div class="panel left" id="p-svc-0"><div class="card-num mono">SYS.01</div><h3>Web Platforms</h3><p class="desc">Full-stack builds — APIs, databases, auth, admin tooling. Built to be maintained, not just shipped.</p></div>
+  <div class="panel right" id="p-svc-1"><div class="card-num mono">SYS.02</div><h3>Embedded &amp; IoT</h3><p class="desc">Microcontroller firmware, sensor networks, and custom touchscreen dashboards on ESP32 and Pi hardware.</p></div>
+  <div class="panel left" id="p-svc-2"><div class="card-num mono">SYS.03</div><h3>Home Automation</h3><p class="desc">Security, access control, and monitoring systems that talk to each other instead of living in separate apps.</p></div>
+  <div class="panel right" id="p-svc-3"><div class="card-num mono">SYS.04</div><h3>Architecture &amp; Deploy</h3><p class="desc">Server setup, uptime, and the unglamorous plumbing that keeps a system alive after launch day.</p></div>
+  <div class="panel left" id="workPanel"><div class="hint mono">DRAG TO ORBIT · CLICK A NODE</div><div id="liveNow"></div><div id="detailCard"></div></div>
+  <div class="panel center" id="p-app-0"><div class="card-num mono">STEP 1</div><h3>Scope the system</h3><p class="desc">A short call to define what the system needs to do, what it needs to survive, and what "done" looks like.</p></div>
+  <div class="panel center" id="p-app-1"><div class="card-num mono">STEP 2</div><h3>Build in the open</h3><p class="desc">You see working pieces early — a dashboard screen, a working sensor, a deployed page — not one reveal at the end.</p></div>
+  <div class="panel center" id="p-app-2"><div class="card-num mono">STEP 3</div><h3>Ship &amp; support</h3><p class="desc">Deployment, a walkthrough of how it works, and continued support after launch — not a handoff into silence.</p></div>
   <div class="panel center" id="contactPanel">
     <div class="eyebrow">Get in touch</div>
     <h3 style="font-size:30px;">Tell me what you're trying to build.</h3>
     <p class="desc" style="margin:12px auto 0;">One-page site, small business app, or a full multi-system build — every project starts with the same form.</p>
     <div class="contact-grid" style="margin-top:26px;">
-      <div class="contact-info">
-        <p>Fill out the form and it'll open a pre-filled email straight to my inbox — no account, no middleman.</p>
-        <div class="row"><span class="k">EMAIL</span><span id="emailDisplay">your@email.com</span></div>
-        <div class="row"><span class="k">BASED</span><span>Park Forest, IL</span></div>
-        <div class="row"><span class="k">STATUS</span><span style="color:var(--teal)">Taking new projects</span></div>
-      </div>
+      <div class="contact-info"><p>Fill out the form and it'll open a pre-filled email straight to my inbox — no account, no middleman.</p><div class="row"><span class="k">EMAIL</span><span id="emailDisplay">your@email.com</span></div><div class="row"><span class="k">BASED</span><span>Park Forest, IL</span></div><div class="row"><span class="k">STATUS</span><span style="color:var(--teal)">Taking new projects</span></div></div>
       <form id="bookingForm">
         <div class="field"><label for="name">Name</label><input id="name" required></div>
         <div class="field"><label for="email">Email</label><input id="email" type="email" required></div>
-        <div class="field"><label for="type">Project type</label>
-          <select id="type"><option>Web platform</option><option>Embedded / IoT hardware</option><option>Home automation</option><option>Something else</option></select>
-        </div>
-        <div class="field"><label for="size">Project size</label>
-          <select id="size"><option>Small (single page / simple app)</option><option>Medium (multi-page site / web app)</option><option>Large (full platform / multi-system build)</option><option>Not sure yet</option></select>
-        </div>
+        <div class="field"><label for="type">Project type</label><select id="type"><option>Web platform</option><option>Embedded / IoT hardware</option><option>Home automation</option><option>Something else</option></select></div>
+        <div class="field"><label for="size">Project size</label><select id="size"><option>Small (single page / simple app)</option><option>Medium (multi-page site / web app)</option><option>Large (full platform / multi-system build)</option><option>Not sure yet</option></select></div>
         <div class="field"><label for="message">What are you building?</label><textarea id="message" required placeholder="Outline, timeline, budget range if you have one."></textarea></div>
         <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Send &amp; open email →</button>
         <div class="form-status" id="formStatus"></div>
@@ -253,301 +202,75 @@
     </div>
   </div>
 </div>
-
 <div id="scrollHint"><div class="bar"></div>SCROLL</div>
 <div id="scrollSpacer"></div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-window.addEventListener('load', () => {
-  setTimeout(() => document.getElementById('boot').classList.add('hide'), 1600);
-});
-
-const mount = document.getElementById('webgl');
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x08090C);
-scene.fog = new THREE.FogExp2(0x08090C, 0.028);
-const camera = new THREE.PerspectiveCamera(52, window.innerWidth/window.innerHeight, 0.1, 300);
-const renderer = new THREE.WebGLRenderer({antialias:true});
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-mount.appendChild(renderer.domElement);
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth/window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
-scene.add(new THREE.AmbientLight(0x33415a, 0.9));
-const moon = new THREE.DirectionalLight(0x8fb4ff, 0.5);
-moon.position.set(-20,40,10);
-scene.add(moon);
-
-const starCount = 1000;
-const starPos = new Float32Array(starCount*3);
-for(let i=0;i<starCount;i++){
-  starPos[i*3]=(Math.random()-0.5)*90;
-  starPos[i*3+1]=Math.random()*45;
-  starPos[i*3+2]=Math.random()*-130+20;
-}
-const starGeo = new THREE.BufferGeometry();
-starGeo.setAttribute('position', new THREE.BufferAttribute(starPos,3));
-scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color:0x8B93A1, size:0.05, transparent:true, opacity:0.55})));
-
-const controlPoints = [
-  [0,0,24],[0,0,10],[0,0,-4],[3,0,-14],[6,0,-22],[5,0,-30],
-  [1,0,-38],[1,0,-46],[-2,0,-56],[-6,0,-66],[-5,0,-76],[-1,0,-86],[0,0,-96],[0,0,-110]
-].map(p => new THREE.Vector3(...p));
-const curve = new THREE.CatmullRomCurve3(controlPoints, false, 'catmullrom', 0.5);
-curve.arcLengthDivisions = 400;
-function sideOffset(t, dist, height){
-  const p = curve.getPointAt(Math.max(0,Math.min(1,t)));
-  const tan = curve.getTangentAt(Math.max(0,Math.min(1,t))).normalize();
-  const right = new THREE.Vector3().crossVectors(tan, new THREE.Vector3(0,1,0)).normalize();
-  return p.clone().addScaledVector(right, dist).add(new THREE.Vector3(0,height,0));
-}
-function buildRibbon(width, yOffset, samples){
-  const positions=[], uvs=[], indices=[];
-  const up = new THREE.Vector3(0,1,0);
-  for(let i=0;i<=samples;i++){
-    const t=i/samples;
-    const p=curve.getPointAt(t);
-    const tan=curve.getTangentAt(t).normalize();
-    const right=new THREE.Vector3().crossVectors(tan,up).normalize();
-    const l=p.clone().addScaledVector(right,-width/2); l.y+=yOffset;
-    const r=p.clone().addScaledVector(right, width/2); r.y+=yOffset;
-    positions.push(l.x,l.y,l.z, r.x,r.y,r.z);
-    uvs.push(0,t*40, 1,t*40);
-  }
-  for(let i=0;i<samples;i++){ const a=i*2,b=i*2+1,c=i*2+2,d=i*2+3; indices.push(a,b,c, b,d,c); }
-  const geo=new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.Float32BufferAttribute(positions,3));
-  geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs,2));
-  geo.setIndex(indices);
-  geo.computeVertexNormals();
-  return geo;
-}
-const road = new THREE.Mesh(buildRibbon(7,0,300), new THREE.MeshStandardMaterial({color:0x1a1c20, roughness:0.95, metalness:0.05}));
-scene.add(road);
-const stripe = new THREE.Mesh(buildRibbon(0.25,0.02,300), new THREE.MeshBasicMaterial({color:0xFFC24D}));
-scene.add(stripe);
-const edgeL = new THREE.Mesh(buildRibbon(0.15,0.015,300), new THREE.MeshBasicMaterial({color:0xffffff}));
-scene.add(edgeL);
-for(let i=0;i<22;i++){
-  const t=i/21;
-  const side = i%2===0?1:-1;
-  const pos = sideOffset(t, side*5.2, 0);
-  const post = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,1.8,6), new THREE.MeshStandardMaterial({color:0x222831}));
-  post.position.copy(pos); post.position.y+=0.9; scene.add(post);
-  const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.12,8,8), new THREE.MeshBasicMaterial({color:i%4===0?0xFF5A1F:0x29C4FF}));
-  bulb.position.copy(pos); bulb.position.y+=1.85; scene.add(bulb);
-}
-
-const car = new THREE.Group();
-scene.add(car);
-const bodyMat = new THREE.MeshStandardMaterial({color:0x121316, metalness:0.7, roughness:0.3});
-const stripeMat = new THREE.MeshStandardMaterial({color:0xFF5A1F, metalness:0.3, roughness:0.5});
-const glassMat = new THREE.MeshStandardMaterial({color:0x0a0d12, metalness:0.3, roughness:0.15, transparent:true, opacity:0.85});
-const wheelMat = new THREE.MeshStandardMaterial({color:0x0a0a0a, roughness:0.95});
-const rimMat = new THREE.MeshStandardMaterial({color:0x9aa0a6, metalness:0.8, roughness:0.3});
-const body = new THREE.Mesh(new THREE.BoxGeometry(1.9,0.55,4.2), bodyMat); body.position.y=0.55; car.add(body);
-const nose = new THREE.Mesh(new THREE.BoxGeometry(1.75,0.4,0.8), bodyMat); nose.position.set(0,0.42,2.3); car.add(nose);
-const hoodStripe = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.03,3.6), stripeMat); hoodStripe.position.set(0,0.84,0.3); car.add(hoodStripe);
-const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.5,0.5,1.8), glassMat); cabin.position.set(0,1.05,-0.2); car.add(cabin);
-const spoiler = new THREE.Mesh(new THREE.BoxGeometry(1.7,0.08,0.35), bodyMat); spoiler.position.set(0,1.0,-2.15); car.add(spoiler);
-function makeWheel(x,z){
-  const pivot = new THREE.Group(); pivot.position.set(x,0.42,z); car.add(pivot);
-  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.42,0.42,0.34,16), wheelMat);
-  mesh.rotation.z = Math.PI/2; pivot.add(mesh);
-  const rim = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,0.36,10), rimMat);
-  rim.rotation.z = Math.PI/2; pivot.add(rim);
-  return {pivot, mesh};
-}
-const wheelFL = makeWheel(-1.0,1.35), wheelFR = makeWheel(1.0,1.35), wheelRL = makeWheel(-1.0,-1.35), wheelRR = makeWheel(1.0,-1.35);
-const headMat = new THREE.MeshBasicMaterial({color:0xFFF3C4});
-const headL = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.15,0.06), headMat); headL.position.set(-0.65,0.55,4.1); car.add(headL);
-const headR = headL.clone(); headR.position.x = 0.65; car.add(headR);
-const tailMat = new THREE.MeshBasicMaterial({color:0xFF2A2A});
-const tailL = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.14,0.06), tailMat); tailL.position.set(-0.65,0.6,-2.1); car.add(tailL);
-const tailR = tailL.clone(); tailR.position.x = 0.65; car.add(tailR);
-const spotL = new THREE.SpotLight(0xFFEFC4, 1.1, 30, Math.PI/7, 0.5, 1.2);
-const spotR = spotL.clone();
-spotL.position.copy(headL.position); spotR.position.copy(headR.position);
-const targetL = new THREE.Object3D(); targetL.position.set(-0.65,0,14); car.add(targetL); spotL.target = targetL;
-const targetR = new THREE.Object3D(); targetR.position.set(0.65,0,14); car.add(targetR); spotR.target = targetR;
-car.add(spotL, spotR, targetL, targetR);
-
-function carT(progress){
-  const ws=0.34, we=0.62;
-  if(progress<=ws) return progress;
-  if(progress<=we) return ws;
-  return ws + ((progress-we)/(1-we))*(1-ws);
-}
-const svcDefs = [
-  {geo:new THREE.TetrahedronGeometry(0.7), t:0.16, side:-1, color:0xFF5A1F},
-  {geo:new THREE.OctahedronGeometry(0.7), t:0.22, side:1, color:0x29C4FF},
-  {geo:new THREE.TorusGeometry(0.55,0.18,10,24), t:0.28, side:-1, color:0xFF5A1F},
-  {geo:new THREE.BoxGeometry(1,1,1), t:0.32, side:1, color:0x29C4FF}
+window.addEventListener('load', () => { setTimeout(() => document.getElementById('boot').classList.add('hide'), 1600); });
+const mount=document.getElementById('webgl');
+const scene=new THREE.Scene(); scene.background=new THREE.Color(0x08090C); scene.fog=new THREE.FogExp2(0x08090C,0.028);
+const camera=new THREE.PerspectiveCamera(52,window.innerWidth/window.innerHeight,0.1,300);
+const renderer=new THREE.WebGLRenderer({antialias:true}); renderer.setSize(window.innerWidth,window.innerHeight); renderer.setPixelRatio(Math.min(devicePixelRatio,2)); mount.appendChild(renderer.domElement);
+window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
+scene.add(new THREE.AmbientLight(0x33415a,0.9)); const moon=new THREE.DirectionalLight(0x8fb4ff,0.5); moon.position.set(-20,40,10); scene.add(moon);
+const starCount=1000, starPos=new Float32Array(starCount*3);
+for(let i=0;i<starCount;i++){starPos[i*3]=(Math.random()-0.5)*90;starPos[i*3+1]=Math.random()*45;starPos[i*3+2]=Math.random()*-130+20;}
+const starGeo=new THREE.BufferGeometry(); starGeo.setAttribute('position',new THREE.BufferAttribute(starPos,3)); scene.add(new THREE.Points(starGeo,new THREE.PointsMaterial({color:0x8B93A1,size:0.05,transparent:true,opacity:0.55})));
+const controlPoints=[[0,0,24],[0,0,10],[0,0,-4],[3,0,-14],[6,0,-22],[5,0,-30],[1,0,-38],[1,0,-46],[-2,0,-56],[-6,0,-66],[-5,0,-76],[-1,0,-86],[0,0,-96],[0,0,-110]].map(p=>new THREE.Vector3(...p));
+const curve=new THREE.CatmullRomCurve3(controlPoints,false,'catmullrom',0.5); curve.arcLengthDivisions=400;
+function sideOffset(t,dist,height){const p=curve.getPointAt(Math.max(0,Math.min(1,t)));const tan=curve.getTangentAt(Math.max(0,Math.min(1,t))).normalize();const right=new THREE.Vector3().crossVectors(tan,new THREE.Vector3(0,1,0)).normalize();return p.clone().addScaledVector(right,dist).add(new THREE.Vector3(0,height,0));}
+function buildRibbon(width,yOffset,samples){const positions=[],uvs=[],indices=[],up=new THREE.Vector3(0,1,0);for(let i=0;i<=samples;i++){const t=i/samples,p=curve.getPointAt(t),tan=curve.getTangentAt(t).normalize(),right=new THREE.Vector3().crossVectors(tan,up).normalize(),l=p.clone().addScaledVector(right,-width/2),r=p.clone().addScaledVector(right,width/2);l.y+=yOffset;r.y+=yOffset;positions.push(l.x,l.y,l.z,r.x,r.y,r.z);uvs.push(0,t*40,1,t*40);}for(let i=0;i<samples;i++){const a=i*2,b=i*2+1,c=i*2+2,d=i*2+3;indices.push(a,b,c,b,d,c);}const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geo.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));geo.setIndex(indices);geo.computeVertexNormals();return geo;}
+scene.add(new THREE.Mesh(buildRibbon(7,0,300),new THREE.MeshStandardMaterial({color:0x1a1c20,roughness:0.95,metalness:0.05})));
+scene.add(new THREE.Mesh(buildRibbon(0.25,0.02,300),new THREE.MeshBasicMaterial({color:0xFFC24D})));
+scene.add(new THREE.Mesh(buildRibbon(0.15,0.015,300),new THREE.MeshBasicMaterial({color:0xffffff})));
+for(let i=0;i<22;i++){const t=i/21,side=i%2===0?1:-1,pos=sideOffset(t,side*5.2,0);const post=new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,1.8,6),new THREE.MeshStandardMaterial({color:0x222831}));post.position.copy(pos);post.position.y+=0.9;scene.add(post);const bulb=new THREE.Mesh(new THREE.SphereGeometry(0.12,8,8),new THREE.MeshBasicMaterial({color:i%4===0?0xFF5A1F:0x29C4FF}));bulb.position.copy(pos);bulb.position.y+=1.85;scene.add(bulb);}
+const car=new THREE.Group();scene.add(car);
+const bodyMat=new THREE.MeshStandardMaterial({color:0x121316,metalness:0.7,roughness:0.3}),stripeMat=new THREE.MeshStandardMaterial({color:0xFF5A1F,metalness:0.3,roughness:0.5}),glassMat=new THREE.MeshStandardMaterial({color:0x0a0d12,metalness:0.3,roughness:0.15,transparent:true,opacity:0.85}),wheelMat=new THREE.MeshStandardMaterial({color:0x0a0a0a,roughness:0.95}),rimMat=new THREE.MeshStandardMaterial({color:0x9aa0a6,metalness:0.8,roughness:0.3});
+const body=new THREE.Mesh(new THREE.BoxGeometry(1.9,0.55,4.2),bodyMat);body.position.y=0.55;car.add(body);const nose=new THREE.Mesh(new THREE.BoxGeometry(1.75,0.4,0.8),bodyMat);nose.position.set(0,0.42,2.3);car.add(nose);const hoodStripe=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.03,3.6),stripeMat);hoodStripe.position.set(0,0.84,0.3);car.add(hoodStripe);const cabin=new THREE.Mesh(new THREE.BoxGeometry(1.5,0.5,1.8),glassMat);cabin.position.set(0,1.05,-0.2);car.add(cabin);const spoiler=new THREE.Mesh(new THREE.BoxGeometry(1.7,0.08,0.35),bodyMat);spoiler.position.set(0,1.0,-2.15);car.add(spoiler);
+function makeWheel(x,z){const pivot=new THREE.Group();pivot.position.set(x,0.42,z);car.add(pivot);const mesh=new THREE.Mesh(new THREE.CylinderGeometry(0.42,0.42,0.34,16),wheelMat);mesh.rotation.z=Math.PI/2;pivot.add(mesh);const rim=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,0.36,10),rimMat);rim.rotation.z=Math.PI/2;pivot.add(rim);return{pivot,mesh};}
+const wheelFL=makeWheel(-1.0,1.35),wheelFR=makeWheel(1.0,1.35),wheelRL=makeWheel(-1.0,-1.35),wheelRR=makeWheel(1.0,-1.35);
+const headMat=new THREE.MeshBasicMaterial({color:0xFFF3C4}),headL=new THREE.Mesh(new THREE.BoxGeometry(0.3,0.15,0.06),headMat);headL.position.set(-0.65,0.55,4.1);car.add(headL);const headR=headL.clone();headR.position.x=0.65;car.add(headR);const tailMat=new THREE.MeshBasicMaterial({color:0xFF2A2A}),tailL=new THREE.Mesh(new THREE.BoxGeometry(0.35,0.14,0.06),tailMat);tailL.position.set(-0.65,0.6,-2.1);car.add(tailL);const tailR=tailL.clone();tailR.position.x=0.65;car.add(tailR);
+const spotL=new THREE.SpotLight(0xFFEFC4,1.1,30,Math.PI/7,0.5,1.2),spotR=spotL.clone();spotL.position.copy(headL.position);spotR.position.copy(headR.position);const targetL=new THREE.Object3D();targetL.position.set(-0.65,0,14);car.add(targetL);spotL.target=targetL;const targetR=new THREE.Object3D();targetR.position.set(0.65,0,14);car.add(targetR);spotR.target=targetR;car.add(spotL,spotR,targetL,targetR);
+function carT(progress){const ws=0.34,we=0.62;if(progress<=ws)return progress;if(progress<=we)return ws;return ws+((progress-we)/(1-we))*(1-ws);}
+const svcDefs=[{geo:new THREE.TetrahedronGeometry(0.7),t:0.16,side:-1,color:0xFF5A1F},{geo:new THREE.OctahedronGeometry(0.7),t:0.22,side:1,color:0x29C4FF},{geo:new THREE.TorusGeometry(0.55,0.18,10,24),t:0.28,side:-1,color:0xFF5A1F},{geo:new THREE.BoxGeometry(1,1,1),t:0.32,side:1,color:0x29C4FF}];
+const svcMeshes=svcDefs.map(d=>{const m=new THREE.Mesh(d.geo,new THREE.MeshBasicMaterial({color:d.color,wireframe:true,transparent:true,opacity:0.75}));m.position.copy(sideOffset(carT(d.t),d.side*4.2,1.4));scene.add(m);return m;});
+[0.66,0.71,0.76].forEach((p,i)=>{const t=carT(p),pos=curve.getPointAt(t),tan=curve.getTangentAt(t).normalize(),gate=new THREE.Mesh(new THREE.TorusGeometry(4.2,0.12,10,32),new THREE.MeshBasicMaterial({color:i===1?0xFF5A1F:0x29C4FF,transparent:true,opacity:0.7}));gate.position.copy(pos).add(new THREE.Vector3(0,4,0));gate.lookAt(pos.clone().add(tan));scene.add(gate);});
+{const t=carT(0.92),pos=curve.getPointAt(t),tan=curve.getTangentAt(t).normalize(),finish=new THREE.Mesh(new THREE.TorusGeometry(4.6,0.16,10,32),new THREE.MeshBasicMaterial({color:0xFF5A1F,transparent:true,opacity:0.8}));finish.position.copy(pos).add(new THREE.Vector3(0,4.2,0));finish.lookAt(pos.clone().add(tan));scene.add(finish);}
+const projects=[
+  {key:'veyra',name:'VEYRA OS',status:'Active development',desc:'A DIY smart-home security system spanning multiple microcontrollers — touchscreen dashboards, RFID and fingerprint access control, camera motion capture, and a Linux bridge service keeping it all online 24/7.',stack:['ESP32','Raspberry Pi Pico','ESP32-CAM','Arduino','Python','systemd']},
+  {key:'furlove',name:'Fur the Love Pet Care',status:'Live',desc:'A pet services platform with IoT touchpoints — dog boarding, daycare, walks, drop-ins, and cat sitting, live for real clients in Chicagoland\'s south suburbs.',stack:['Express 5','Drizzle ORM','React','Wouter'],url:'https://furthelovepetsitting.com'},
+  {key:'church',name:'Bel-Air Park Missionary Baptist Church',status:'Live & maintained',desc:'A production website for a growing congregation, handling service schedules, content, and day-to-day admin — deployed and actively supported.',stack:['Node.js','Express','PostgreSQL','Railway'],url:'https://bel-air-park-church-site-production.up.railway.app'},
+  {key:'gps',name:'Fleet GPS Tracker',status:'Cross-platform',desc:'A route-tracking mobile app with a parallel web build, so the same tracking experience runs on iOS and in any browser without a native install.',stack:['React Native','Expo','react-leaflet']},
+  {key:'forex',name:'Forex Paper-Trading Bot',status:'Live',desc:'An automated paper-trading bot for EUR/USD, GBP/USD, and USD/JPY across 5-minute and 15-minute timeframes — built to test strategies with zero real-money risk.',stack:['Python','FastAPI','SQLite','Railway'],url:'https://web-production-3a65a.up.railway.app'},
+  {key:'keuka',name:'Guardians of Keuka Lake',status:'Design & spec complete',desc:'A themed experiential design project for a Finger Lakes vacation rental — a 23-slide investor deck plus a full technical spec for a choreographed NFC finale with projection and networked hardware.',stack:['ESP32-C3','Raspberry Pi 5','NFC','Projection mapping']},
+  {key:'clara',name:'Clara Realty Solutions',status:'Live',desc:'A property management OS for landlords — rent, tenants, payments, maintenance, and property records handled in one secure dashboard.',stack:['React','Vite','Node.js','Express','PostgreSQL','Drizzle','Railway','Vercel'],url:'https://family-real-estate-os.vercel.app'},
+  {key:'tai',name:'Move With Tai',status:'Live',desc:'A premium real estate website built for a broker associate serving the Chicagoland market — listings, branding, and lead capture in one site.',stack:['Next.js','Vercel'],url:'https://move-with-tai-v2.vercel.app'},
+  {key:'somonauk',name:'Guardians of Somonauk Park',status:'Live',desc:'An enchanted AR quest through a real public park — players awaken shrines and face a final boss encounter, blending location-based AR with game design.',stack:['React 18','Vite','PWA','WebXR','Vercel'],url:'https://guardians-somonauk-quest.vercel.app'}
 ];
-const svcMeshes = svcDefs.map(d => {
-  const m = new THREE.Mesh(d.geo, new THREE.MeshBasicMaterial({color:d.color, wireframe:true, transparent:true, opacity:0.75}));
-  m.position.copy(sideOffset(carT(d.t), d.side*4.2, 1.4)); scene.add(m); return m;
-});
-[0.66,0.71,0.76].forEach((p,i) => {
-  const t = carT(p), pos = curve.getPointAt(t), tan = curve.getTangentAt(t).normalize();
-  const gate = new THREE.Mesh(new THREE.TorusGeometry(4.2,0.12,10,32), new THREE.MeshBasicMaterial({color:i===1?0xFF5A1F:0x29C4FF, transparent:true, opacity:0.7}));
-  gate.position.copy(pos).add(new THREE.Vector3(0,4,0)); gate.lookAt(pos.clone().add(tan)); scene.add(gate);
-});
-{
-  const t = carT(0.92), pos = curve.getPointAt(t), tan = curve.getTangentAt(t).normalize();
-  const finish = new THREE.Mesh(new THREE.TorusGeometry(4.6,0.16,10,32), new THREE.MeshBasicMaterial({color:0xFF5A1F, transparent:true, opacity:0.8}));
-  finish.position.copy(pos).add(new THREE.Vector3(0,4.2,0)); finish.lookAt(pos.clone().add(tan)); scene.add(finish);
-}
-
-const projects = [
-  {key:'veyra', name:'VEYRA OS', status:'Active development', desc:'A DIY smart-home security system spanning multiple microcontrollers — touchscreen dashboards, RFID and fingerprint access control, camera motion capture, and a Linux bridge service keeping it all online 24/7.', stack:['ESP32','Raspberry Pi Pico','ESP32-CAM','Arduino','Python','systemd']},
-  {key:'furlove', name:'Fur the Love Pet Care', status:'Live', desc:'A pet services platform with IoT touchpoints — dog boarding, daycare, walks, drop-ins, and cat sitting, live for real clients in Chicagoland\'s south suburbs.', stack:['Express 5','Drizzle ORM','React','Wouter'], url:'https://furthelovepetsitting.com'},
-  {key:'church', name:'Bel-Air Park Missionary Baptist Church', status:'Live & maintained', desc:'A production website for a growing congregation, handling service schedules, content, and day-to-day admin — deployed and actively supported.', stack:['Node.js','Express','PostgreSQL','Railway'], url:'https://bel-air-park-church-site-production.up.railway.app'},
-  {key:'gps', name:'Fleet GPS Tracker', status:'Cross-platform', desc:'A route-tracking mobile app with a parallel web build, so the same tracking experience runs on iOS and in any browser without a native install.', stack:['React Native','Expo','react-leaflet']},
-  {key:'forex', name:'Forex Paper-Trading Bot', status:'MVP complete', desc:'An automated paper-trading bot for EUR/USD, GBP/USD, and USD/JPY across 5-minute and 15-minute timeframes — built to test strategies with zero real-money risk.', stack:['Python','FastAPI','SQLite']},
-  {key:'keuka', name:'Guardians of Keuka Lake', status:'Design & spec complete', desc:'A themed experiential design project for a Finger Lakes vacation rental — a 23-slide investor deck plus a full technical spec for a choreographed NFC finale with projection and networked hardware.', stack:['ESP32-C3','Raspberry Pi 5','NFC','Projection mapping']},
-  {key:'clara', name:'Clara Realty Solutions', status:'Live', desc:'A property management OS for landlords — rent, tenants, payments, maintenance, and property records handled in one secure dashboard.', stack:['React','Vite','Node.js','Express','PostgreSQL','Drizzle','Railway','Vercel'], url:'https://family-real-estate-os.vercel.app'},
-  {key:'tai', name:'Move With Tai', status:'Live', desc:'A premium real estate website built for a broker associate serving the Chicagoland market — listings, branding, and lead capture in one site.', stack:['Next.js','Vercel'], url:'https://move-with-tai-v2.vercel.app'},
-  {key:'somonauk', name:'Guardians of Somonauk Park', status:'Live', desc:'An enchanted AR quest through a real public park — players awaken shrines and face a final boss encounter, blending location-based AR with game design.', stack:['React 18','Vite','PWA','WebXR','Vercel'], url:'https://guardians-somonauk-quest.vercel.app'}
-];
-const hubGroup = new THREE.Group();
-hubGroup.position.copy(sideOffset(carT(0.48), 8, 0)); scene.add(hubGroup);
-const hub = new THREE.Mesh(new THREE.SphereGeometry(0.42,24,24), new THREE.MeshBasicMaterial({color:0xFF5A1F}));
-hubGroup.add(hub);
-hubGroup.add(new THREE.Mesh(new THREE.SphereGeometry(0.6,16,16), new THREE.MeshBasicMaterial({color:0xFF5A1F, transparent:true, opacity:0.15})));
-const labelLayer = document.getElementById('labelLayer');
-const nodeMeshes = [];
-const netRadius = 4.3;
-projects.forEach((p,i) => {
-  const angle = (i/projects.length)*Math.PI*2;
-  const pos = new THREE.Vector3(Math.cos(angle)*netRadius, i%2===0?0.6:-0.6, Math.sin(angle)*netRadius);
-  const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.24,20,20), new THREE.MeshBasicMaterial({color:0x29C4FF}));
-  mesh.position.copy(pos); mesh.userData = p; hubGroup.add(mesh); nodeMeshes.push(mesh);
-  hubGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0),pos]), new THREE.LineBasicMaterial({color:0x232A33})));
-  const label = document.createElement('div'); label.className='node-label'; label.textContent=p.name; labelLayer.appendChild(label); mesh.userData.label=label;
-});
-const hubLabel = document.createElement('div'); hubLabel.className='node-label hub'; hubLabel.textContent='hamptonserver'; labelLayer.appendChild(hubLabel);
-
-function makeSmokeTexture(){
-  const c=document.createElement('canvas'); c.width=64; c.height=64; const ctx=c.getContext('2d');
-  const g=ctx.createRadialGradient(32,32,0,32,32,32); g.addColorStop(0,'rgba(255,255,255,0.9)'); g.addColorStop(1,'rgba(255,255,255,0)');
-  ctx.fillStyle=g; ctx.fillRect(0,0,64,64); return new THREE.CanvasTexture(c);
-}
-const smokeCount=260, smokePositions=new Float32Array(smokeCount*3), smokeVel=[];
-for(let i=0;i<smokeCount;i++){smokePositions[i*3+1]=-500; smokeVel.push(new THREE.Vector3());}
-const smokeGeo=new THREE.BufferGeometry(); smokeGeo.setAttribute('position',new THREE.BufferAttribute(smokePositions,3));
-const smokePoints=new THREE.Points(smokeGeo,new THREE.PointsMaterial({size:1.1,map:makeSmokeTexture(),transparent:true,opacity:0.4,color:0xb5b8bd,depthWrite:false})); scene.add(smokePoints);
-let smokeCursor=0;
-function emitSmoke(pos,backward){
-  const i=smokeCursor%smokeCount; smokeCursor++; const idx=i*3;
-  smokePositions[idx]=pos.x+(Math.random()-0.5)*0.4; smokePositions[idx+1]=pos.y+0.1; smokePositions[idx+2]=pos.z+(Math.random()-0.5)*0.4;
-  smokeVel[i].set((Math.random()-0.5)*0.02,0.008+Math.random()*0.01,backward.z*0.03+(Math.random()-0.5)*0.02);
-}
-
+const hubGroup=new THREE.Group();hubGroup.position.copy(sideOffset(carT(0.48),8,0));scene.add(hubGroup);const hub=new THREE.Mesh(new THREE.SphereGeometry(0.42,24,24),new THREE.MeshBasicMaterial({color:0xFF5A1F}));hubGroup.add(hub);hubGroup.add(new THREE.Mesh(new THREE.SphereGeometry(0.6,16,16),new THREE.MeshBasicMaterial({color:0xFF5A1F,transparent:true,opacity:0.15})));
+const labelLayer=document.getElementById('labelLayer'),nodeMeshes=[],netRadius=4.3;
+projects.forEach((p,i)=>{const angle=(i/projects.length)*Math.PI*2,pos=new THREE.Vector3(Math.cos(angle)*netRadius,i%2===0?0.6:-0.6,Math.sin(angle)*netRadius),mesh=new THREE.Mesh(new THREE.SphereGeometry(0.24,20,20),new THREE.MeshBasicMaterial({color:0x29C4FF}));mesh.position.copy(pos);mesh.userData=p;hubGroup.add(mesh);nodeMeshes.push(mesh);hubGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0),pos]),new THREE.LineBasicMaterial({color:0x232A33})));const label=document.createElement('div');label.className='node-label';label.textContent=p.name;labelLayer.appendChild(label);mesh.userData.label=label;});
+const hubLabel=document.createElement('div');hubLabel.className='node-label hub';hubLabel.textContent='hamptonserver';labelLayer.appendChild(hubLabel);
+function makeSmokeTexture(){const c=document.createElement('canvas');c.width=64;c.height=64;const ctx=c.getContext('2d'),g=ctx.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,'rgba(255,255,255,0.9)');g.addColorStop(1,'rgba(255,255,255,0)');ctx.fillStyle=g;ctx.fillRect(0,0,64,64);return new THREE.CanvasTexture(c);}
+const smokeCount=260,smokePositions=new Float32Array(smokeCount*3),smokeVel=[];for(let i=0;i<smokeCount;i++){smokePositions[i*3+1]=-500;smokeVel.push(new THREE.Vector3());}const smokeGeo=new THREE.BufferGeometry();smokeGeo.setAttribute('position',new THREE.BufferAttribute(smokePositions,3));scene.add(new THREE.Points(smokeGeo,new THREE.PointsMaterial({size:1.1,map:makeSmokeTexture(),transparent:true,opacity:0.4,color:0xb5b8bd,depthWrite:false})));let smokeCursor=0;
+function emitSmoke(pos,backward){const i=smokeCursor%smokeCount;smokeCursor++;const idx=i*3;smokePositions[idx]=pos.x+(Math.random()-0.5)*0.4;smokePositions[idx+1]=pos.y+0.1;smokePositions[idx+2]=pos.z+(Math.random()-0.5)*0.4;smokeVel[i].set((Math.random()-0.5)*0.02,0.008+Math.random()*0.01,backward.z*0.03+(Math.random()-0.5)*0.02);}
 const ACTS={hero:[0,0.12],services:[0.12,0.34],work:[0.34,0.62],approach:[0.62,0.80],contact:[0.80,1.0]};
-function smoothstep(t){t=Math.max(0,Math.min(1,t));return t*t*(3-2*t);}
-function rangeOpacity(progress,start,end,margin){
-  const inFade=smoothstep((progress-start)/margin), outFade=1-smoothstep((progress-(end-margin))/margin);
-  return Math.max(0,Math.min(inFade,outFade));
-}
-function subOpacity(progress,actStart,itemWidth,index,margin){const s=actStart+index*itemWidth*0.72;return rangeOpacity(progress,s,s+itemWidth,margin);}
-const svcPanels=[0,1,2,3].map(i=>document.getElementById('p-svc-'+i));
-const appPanels=[0,1,2].map(i=>document.getElementById('p-app-'+i));
-const heroPanel=document.getElementById('p-hero'), workPanel=document.getElementById('workPanel'), contactPanel=document.getElementById('contactPanel');
-const workInteract=document.getElementById('workInteract'), scrollHint=document.getElementById('scrollHint'), progressBar=document.getElementById('progressBar');
-function setPanel(el,opacity){
-  el.style.opacity=opacity;
-  const active=opacity>0.4;
-  el.style.pointerEvents=active?'auto':'none';
-  el.style.zIndex=active?3:1;
-}
-let currentAct='hero';
-function updateActUI(progress){
-  let act='hero'; for(const k in ACTS){if(progress>=ACTS[k][0]&&progress<ACTS[k][1]+0.001)act=k;}
-  currentAct=act; workInteract.classList.toggle('active',act==='work');
-}
-let dragging=false,prevX=0,prevY=0,hubRotY=0.4,hubRotX=0.1,autorotate=true;
-workInteract.addEventListener('pointerdown',e=>{dragging=true;autorotate=false;prevX=e.clientX;prevY=e.clientY;});
-window.addEventListener('pointerup',()=>dragging=false);
-window.addEventListener('pointermove',e=>{
-  if(!dragging)return; hubRotY+=(e.clientX-prevX)*0.005; hubRotX+=(e.clientY-prevY)*0.005; hubRotX=Math.max(-0.9,Math.min(0.9,hubRotX)); prevX=e.clientX;prevY=e.clientY;
-});
-const raycaster=new THREE.Raycaster(), mouseVec=new THREE.Vector2();
-workInteract.addEventListener('click',e=>{
-  mouseVec.x=(e.clientX/window.innerWidth)*2-1; mouseVec.y=-(e.clientY/window.innerHeight)*2+1; raycaster.setFromCamera(mouseVec,camera);
-  const hits=raycaster.intersectObjects(nodeMeshes); if(hits.length)showProject(hits[0].object.userData.key);
-});
-const detailCard=document.getElementById('detailCard');
-function renderCard(p){
-  detailCard.innerHTML=`<span class="status mono">${p.status}</span><h3>${p.name}</h3><p>${p.desc}</p><div class="stack-tags">${p.stack.map(s=>`<span>${s}</span>`).join('')}</div>${p.url?`<a href="${p.url}" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:14px; display:inline-flex;">Visit site →</a>`:''}<div class="proj-list">${projects.map(pr=>`<button data-key="${pr.key}" class="${pr.key===p.key?'active':''}">${pr.name}</button>`).join('')}</div>`;
-  detailCard.querySelectorAll('.proj-list button').forEach(b=>b.addEventListener('click',()=>showProject(b.dataset.key)));
-}
-function showProject(key){const p=projects.find(pr=>pr.key===key);if(p)renderCard(p);}
-showProject('veyra');
-const liveProjects=projects.filter(p=>p.url);
-document.getElementById('liveNow').innerHTML=`<div class="live-label">Live now — ${liveProjects.length} deployed</div>${liveProjects.map(p=>`<div class="live-row"><span>${p.name}</span><a href="${p.url}" target="_blank" rel="noopener">Visit →</a></div>`).join('')}`;
+function smoothstep(t){t=Math.max(0,Math.min(1,t));return t*t*(3-2*t);}function rangeOpacity(progress,start,end,margin){const inFade=smoothstep((progress-start)/margin),outFade=1-smoothstep((progress-(end-margin))/margin);return Math.max(0,Math.min(inFade,outFade));}function subOpacity(progress,actStart,itemWidth,index,margin){const s=actStart+index*itemWidth*0.72;return rangeOpacity(progress,s,s+itemWidth,margin);}
+const svcPanels=[0,1,2,3].map(i=>document.getElementById('p-svc-'+i)),appPanels=[0,1,2].map(i=>document.getElementById('p-app-'+i)),heroPanel=document.getElementById('p-hero'),workPanel=document.getElementById('workPanel'),contactPanel=document.getElementById('contactPanel'),workInteract=document.getElementById('workInteract'),scrollHint=document.getElementById('scrollHint'),progressBar=document.getElementById('progressBar');
+function setPanel(el,opacity){el.style.opacity=opacity;const active=opacity>0.4;el.style.pointerEvents=active?'auto':'none';el.style.zIndex=active?3:1;}
+let currentAct='hero';function updateActUI(progress){let act='hero';for(const k in ACTS){if(progress>=ACTS[k][0]&&progress<ACTS[k][1]+0.001)act=k;}currentAct=act;workInteract.classList.toggle('active',act==='work');}
+let dragging=false,prevX=0,prevY=0,hubRotY=0.4,hubRotX=0.1,autorotate=true;workInteract.addEventListener('pointerdown',e=>{dragging=true;autorotate=false;prevX=e.clientX;prevY=e.clientY;});window.addEventListener('pointerup',()=>dragging=false);window.addEventListener('pointermove',e=>{if(!dragging)return;hubRotY+=(e.clientX-prevX)*0.005;hubRotX+=(e.clientY-prevY)*0.005;hubRotX=Math.max(-0.9,Math.min(0.9,hubRotX));prevX=e.clientX;prevY=e.clientY;});
+const raycaster=new THREE.Raycaster(),mouseVec=new THREE.Vector2();workInteract.addEventListener('click',e=>{mouseVec.x=(e.clientX/window.innerWidth)*2-1;mouseVec.y=-(e.clientY/window.innerHeight)*2+1;raycaster.setFromCamera(mouseVec,camera);const hits=raycaster.intersectObjects(nodeMeshes);if(hits.length)showProject(hits[0].object.userData.key);});
+const detailCard=document.getElementById('detailCard');function renderCard(p){detailCard.innerHTML=`<span class="status mono">${p.status}</span><h3>${p.name}</h3><p>${p.desc}</p><div class="stack-tags">${p.stack.map(s=>`<span>${s}</span>`).join('')}</div>${p.url?`<a href="${p.url}" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:14px; display:inline-flex;">Visit site →</a>`:''}<div class="proj-list">${projects.map(pr=>`<button data-key="${pr.key}" class="${pr.key===p.key?'active':''}">${pr.name}</button>`).join('')}</div>`;detailCard.querySelectorAll('.proj-list button').forEach(b=>b.addEventListener('click',()=>showProject(b.dataset.key)));}
+function showProject(key){const p=projects.find(pr=>pr.key===key);if(p)renderCard(p);}showProject('veyra');
+const liveProjects=projects.filter(p=>p.url);document.getElementById('liveNow').innerHTML=`<div class="live-label">Live now — ${liveProjects.length} deployed</div>${liveProjects.map(p=>`<div class="live-row"><span>${p.name}</span><a href="${p.url}" target="_blank" rel="noopener">Visit →</a></div>`).join('')}`;
 function projectToScreen(vec3,group){const v=vec3.clone().applyMatrix4(group.matrixWorld).project(camera);return{x:(v.x*0.5+0.5)*window.innerWidth,y:(-v.y*0.5+0.5)*window.innerHeight,visible:v.z<1};}
-const driftZones=[{center:0.27,width:0.16,dir:1},{center:0.68,width:0.16,dir:-1}];
-function driftIntensityAt(t){let best=0,dir=1;driftZones.forEach(z=>{const local=(t-(z.center-z.width/2))/z.width;if(local>=0&&local<=1){const val=Math.sin(local*Math.PI);if(val>best){best=val;dir=z.dir;}}});return{intensity:best,dir};}
-
-let stableViewportHeight=window.visualViewport?window.visualViewport.height:window.innerHeight;
-function refreshViewportHeight(){const h=window.visualViewport?window.visualViewport.height:window.innerHeight;if(Math.abs(h-stableViewportHeight)>150)stableViewportHeight=h;}
-window.addEventListener('resize',refreshViewportHeight);
-if(window.visualViewport)window.visualViewport.addEventListener('resize',refreshViewportHeight);
-let prevCarPos=curve.getPointAt(0);
-function getProgress(){const max=document.body.scrollHeight-stableViewportHeight;return max>0?Math.max(0,Math.min(1,window.scrollY/max)):0;}
-function animate(){
-  requestAnimationFrame(animate);
-  const progress=getProgress(); progressBar.style.width=(progress*100)+'%';
-  const t=carT(progress), carPos=curve.getPointAt(t), tangent=curve.getTangentAt(t).normalize(), drift=driftIntensityAt(t);
-  const wobble=0.5+0.5*Math.sin(performance.now()*0.004), driftAngle=drift.intensity*drift.dir*0.32*wobble;
-  car.position.copy(carPos); car.lookAt(carPos.clone().add(tangent)); car.rotateY(driftAngle); car.rotation.z=drift.intensity*drift.dir*0.08;
-  const dist=carPos.distanceTo(prevCarPos), spin=dist/0.42; [wheelFL,wheelFR,wheelRL,wheelRR].forEach(w=>w.mesh.rotateX(spin));
-  const steer=Math.max(-0.4,Math.min(0.4,driftAngle*1.4)); wheelFL.pivot.rotation.y=steer; wheelFR.pivot.rotation.y=steer; prevCarPos=carPos.clone();
-  if(drift.intensity>0.12){
-    const rearL=new THREE.Vector3(),rearR=new THREE.Vector3();wheelRL.pivot.getWorldPosition(rearL);wheelRR.pivot.getWorldPosition(rearR);const backward=tangent.clone().multiplyScalar(-1);
-    emitSmoke(rearL,backward);emitSmoke(rearR,backward);if(drift.intensity>0.5){emitSmoke(rearL,backward);emitSmoke(rearR,backward);}
-  }
-  for(let i=0;i<smokeCount;i++){const idx=i*3;smokePositions[idx]+=smokeVel[i].x;smokePositions[idx+1]+=smokeVel[i].y;smokePositions[idx+2]+=smokeVel[i].z;}
-  smokeGeo.attributes.position.needsUpdate=true;
-  const workBlend=rangeOpacity(progress,ACTS.work[0],ACTS.work[1],0.05);
-  const chasePos=carPos.clone().addScaledVector(tangent,-7.5).add(new THREE.Vector3(0,3.2,0));
-  const chaseLook=carPos.clone().addScaledVector(tangent,6).add(new THREE.Vector3(0,0.8,0));
-  const right=new THREE.Vector3().crossVectors(tangent,new THREE.Vector3(0,1,0)).normalize();
-  const showPos=carPos.clone().addScaledVector(right,7).add(new THREE.Vector3(0,4,1));
-  const showLook=carPos.clone().addScaledVector(right,2).add(new THREE.Vector3(0,0.5,0));
-  camera.position.copy(chasePos.clone().lerp(showPos,workBlend)); camera.up.set(0,1,0); camera.lookAt(chaseLook.clone().lerp(showLook,workBlend)); camera.rotation.z+=drift.intensity*drift.dir*0.05*(1-workBlend);
-  svcMeshes.forEach(m=>{m.rotation.y+=0.006;m.rotation.x+=0.003;}); if(autorotate)hubRotY+=0.0012; hubGroup.rotation.y=hubRotY;hubGroup.rotation.x=hubRotX;hubGroup.updateMatrixWorld();
-  nodeMeshes.forEach(m=>{const s=projectToScreen(m.position,hubGroup);m.userData.label.style.left=s.x+'px';m.userData.label.style.top=s.y+'px';m.userData.label.classList.toggle('show',workBlend>0.3&&s.visible);});
-  const hs=projectToScreen(new THREE.Vector3(0,0,0),hubGroup);hubLabel.style.left=hs.x+'px';hubLabel.style.top=hs.y+'px';hubLabel.classList.toggle('show',workBlend>0.3);
-  setPanel(heroPanel,rangeOpacity(progress,ACTS.hero[0],ACTS.hero[1],0.05));
-  svcPanels.forEach((el,i)=>setPanel(el,subOpacity(progress,ACTS.services[0],0.076,i,0.02)));
-  setPanel(workPanel,workBlend);
-  appPanels.forEach((el,i)=>setPanel(el,subOpacity(progress,ACTS.approach[0],0.09,i,0.02)));
-  setPanel(contactPanel,rangeOpacity(progress,ACTS.contact[0],ACTS.contact[1]+0.001,0.05));
-  scrollHint.style.opacity=progress<0.03?1:0; updateActUI(progress); renderer.render(scene,camera);
-}
-animate();
-function scrollToProgress(p){
-  const max=document.body.scrollHeight-stableViewportHeight;
-  window.scrollTo({top:Math.max(0,max*p),behavior:'smooth'});
-}
-document.querySelectorAll('.navbtn, #dotNav button').forEach(btn=>btn.addEventListener('click',()=>scrollToProgress(parseFloat(btn.dataset.p))));
-
-const EMAIL='hampton.ronald1996@gmail.com';
-document.getElementById('emailDisplay').textContent=EMAIL;
-document.getElementById('bookingForm').addEventListener('submit',e=>{
-  e.preventDefault();
-  const name=document.getElementById('name').value,email=document.getElementById('email').value,type=document.getElementById('type').value,size=document.getElementById('size').value,message=document.getElementById('message').value;
-  const subject=encodeURIComponent(`New project inquiry: ${type} — ${name}`);
-  const body=encodeURIComponent(`Name: ${name}\nEmail: ${email}\nProject type: ${type}\nProject size: ${size}\n\n${message}`);
-  window.location.href=`mailto:${EMAIL}?subject=${subject}&body=${body}`;
-  document.getElementById('formStatus').textContent='Opening your email client…';
-});
+const driftZones=[{center:0.27,width:0.16,dir:1},{center:0.68,width:0.16,dir:-1}];function driftIntensityAt(t){let best=0,dir=1;driftZones.forEach(z=>{const local=(t-(z.center-z.width/2))/z.width;if(local>=0&&local<=1){const val=Math.sin(local*Math.PI);if(val>best){best=val;dir=z.dir;}}});return{intensity:best,dir};}
+let stableViewportHeight=window.visualViewport?window.visualViewport.height:window.innerHeight;function refreshViewportHeight(){const h=window.visualViewport?window.visualViewport.height:window.innerHeight;if(Math.abs(h-stableViewportHeight)>150)stableViewportHeight=h;}window.addEventListener('resize',refreshViewportHeight);if(window.visualViewport)window.visualViewport.addEventListener('resize',refreshViewportHeight);
+let prevCarPos=curve.getPointAt(0);function getProgress(){const max=document.body.scrollHeight-stableViewportHeight;return max>0?Math.max(0,Math.min(1,window.scrollY/max)):0;}
+function animate(){requestAnimationFrame(animate);const progress=getProgress();progressBar.style.width=(progress*100)+'%';const t=carT(progress),carPos=curve.getPointAt(t),tangent=curve.getTangentAt(t).normalize(),drift=driftIntensityAt(t),wobble=0.5+0.5*Math.sin(performance.now()*0.004),driftAngle=drift.intensity*drift.dir*0.32*wobble;car.position.copy(carPos);car.lookAt(carPos.clone().add(tangent));car.rotateY(driftAngle);car.rotation.z=drift.intensity*drift.dir*0.08;const dist=carPos.distanceTo(prevCarPos),spin=dist/0.42;[wheelFL,wheelFR,wheelRL,wheelRR].forEach(w=>w.mesh.rotateX(spin));const steer=Math.max(-0.4,Math.min(0.4,driftAngle*1.4));wheelFL.pivot.rotation.y=steer;wheelFR.pivot.rotation.y=steer;prevCarPos=carPos.clone();if(drift.intensity>0.12){const rearL=new THREE.Vector3(),rearR=new THREE.Vector3();wheelRL.pivot.getWorldPosition(rearL);wheelRR.pivot.getWorldPosition(rearR);const backward=tangent.clone().multiplyScalar(-1);emitSmoke(rearL,backward);emitSmoke(rearR,backward);if(drift.intensity>0.5){emitSmoke(rearL,backward);emitSmoke(rearR,backward);}}for(let i=0;i<smokeCount;i++){const idx=i*3;smokePositions[idx]+=smokeVel[i].x;smokePositions[idx+1]+=smokeVel[i].y;smokePositions[idx+2]+=smokeVel[i].z;}smokeGeo.attributes.position.needsUpdate=true;const workBlend=rangeOpacity(progress,ACTS.work[0],ACTS.work[1],0.05),chasePos=carPos.clone().addScaledVector(tangent,-7.5).add(new THREE.Vector3(0,3.2,0)),chaseLook=carPos.clone().addScaledVector(tangent,6).add(new THREE.Vector3(0,0.8,0)),right=new THREE.Vector3().crossVectors(tangent,new THREE.Vector3(0,1,0)).normalize(),showPos=carPos.clone().addScaledVector(right,7).add(new THREE.Vector3(0,4,1)),showLook=carPos.clone().addScaledVector(right,2).add(new THREE.Vector3(0,0.5,0));camera.position.copy(chasePos.clone().lerp(showPos,workBlend));camera.up.set(0,1,0);camera.lookAt(chaseLook.clone().lerp(showLook,workBlend));camera.rotation.z+=drift.intensity*drift.dir*0.05*(1-workBlend);svcMeshes.forEach(m=>{m.rotation.y+=0.006;m.rotation.x+=0.003;});if(autorotate)hubRotY+=0.0012;hubGroup.rotation.y=hubRotY;hubGroup.rotation.x=hubRotX;hubGroup.updateMatrixWorld();nodeMeshes.forEach(m=>{const s=projectToScreen(m.position,hubGroup);m.userData.label.style.left=s.x+'px';m.userData.label.style.top=s.y+'px';m.userData.label.classList.toggle('show',workBlend>0.3&&s.visible);});const hs=projectToScreen(new THREE.Vector3(0,0,0),hubGroup);hubLabel.style.left=hs.x+'px';hubLabel.style.top=hs.y+'px';hubLabel.classList.toggle('show',workBlend>0.3);setPanel(heroPanel,rangeOpacity(progress,ACTS.hero[0],ACTS.hero[1],0.05));svcPanels.forEach((el,i)=>setPanel(el,subOpacity(progress,ACTS.services[0],0.076,i,0.02)));setPanel(workPanel,workBlend);appPanels.forEach((el,i)=>setPanel(el,subOpacity(progress,ACTS.approach[0],0.09,i,0.02)));setPanel(contactPanel,rangeOpacity(progress,ACTS.contact[0],ACTS.contact[1]+0.001,0.05));scrollHint.style.opacity=progress<0.03?1:0;updateActUI(progress);renderer.render(scene,camera);}animate();
+function scrollToProgress(p){const max=document.body.scrollHeight-stableViewportHeight;window.scrollTo({top:Math.max(0,max*p),behavior:'smooth'});}document.querySelectorAll('.navbtn, #dotNav button').forEach(btn=>btn.addEventListener('click',()=>scrollToProgress(parseFloat(btn.dataset.p))));
+const EMAIL='hampton.ronald1996@gmail.com';document.getElementById('emailDisplay').textContent=EMAIL;document.getElementById('bookingForm').addEventListener('submit',e=>{e.preventDefault();const name=document.getElementById('name').value,email=document.getElementById('email').value,type=document.getElementById('type').value,size=document.getElementById('size').value,message=document.getElementById('message').value,subject=encodeURIComponent(`New project inquiry: ${type} — ${name}`),body=encodeURIComponent(`Name: ${name}\nEmail: ${email}\nProject type: ${type}\nProject size: ${size}\n\n${message}`);window.location.href=`mailto:${EMAIL}?subject=${subject}&body=${body}`;document.getElementById('formStatus').textContent='Opening your email client…';});
 </script>
 </body>
 </html>
