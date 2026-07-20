@@ -1,0 +1,56 @@
+name: Apply car road-clearance fix
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/raise-car-clearance.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Raise car and keep camera tracking elevated position
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text()
+
+          old_car = "car.position.copy(carPos);car.lookAt(carPos.clone().add(tangent));"
+          new_car = "const carRideHeight=0.48,carVisualPos=carPos.clone().add(new THREE.Vector3(0,carRideHeight,0));car.position.copy(carVisualPos);car.lookAt(carVisualPos.clone().add(tangent));"
+          if text.count(old_car) != 1:
+              raise SystemExit(f'Expected one car placement block, found {text.count(old_car)}')
+          text = text.replace(old_car, new_car, 1)
+
+          old_camera_pos = "desiredCameraPosition=carPos.clone()"
+          new_camera_pos = "desiredCameraPosition=carVisualPos.clone()"
+          if text.count(old_camera_pos) != 1:
+              raise SystemExit(f'Expected one camera position anchor, found {text.count(old_camera_pos)}')
+          text = text.replace(old_camera_pos, new_camera_pos, 1)
+
+          old_camera_target = "desiredCameraTarget=carPos.clone()"
+          new_camera_target = "desiredCameraTarget=carVisualPos.clone()"
+          if text.count(old_camera_target) != 1:
+              raise SystemExit(f'Expected one camera target anchor, found {text.count(old_camera_target)}')
+          text = text.replace(old_camera_target, new_camera_target, 1)
+
+          path.write_text(text)
+          PY
+      - name: Remove temporary workflow
+        run: rm .github/workflows/raise-car-clearance.yml
+      - name: Commit and push fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html .github/workflows/raise-car-clearance.yml
+          git commit -m "Keep car above road throughout scroll"
+          git push origin main
