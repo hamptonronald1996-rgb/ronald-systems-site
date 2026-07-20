@@ -1,0 +1,44 @@
+name: Fix car depth rendering
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-car-depth.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Keep car above road in WebGL render order
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text()
+          anchor = "car.add(spotL,spotR,targetL,targetR);"
+          patch = """car.add(spotL,spotR,targetL,targetR);car.traverse(obj=>{if(obj.isMesh){obj.renderOrder=100;if(obj.material){obj.material.depthTest=false;obj.material.depthWrite=false;}}});"""
+
+          if patch in text:
+              print('Car depth fix already present')
+          elif anchor not in text:
+              raise SystemExit('Expected car setup anchor was not found')
+          else:
+              path.write_text(text.replace(anchor, patch, 1))
+              print('Applied car depth rendering fix')
+          PY
+      - name: Commit patched index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index change required'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Keep car visible above road while scrolling'
+          git push
