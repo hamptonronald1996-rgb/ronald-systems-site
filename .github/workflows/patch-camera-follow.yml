@@ -1,0 +1,49 @@
+name: Patch persistent car follow camera
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/patch-camera-follow.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch camera follow behavior
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text()
+
+          start_marker = "const workBlend=rangeOpacity(progress,ACTS.work[0],ACTS.work[1],0.05)"
+          end_marker = "svcMeshes.forEach"
+
+          start = text.find(start_marker)
+          end = text.find(end_marker, start)
+
+          if start == -1 or end == -1:
+              raise SystemExit('Camera block markers were not found; no changes made.')
+
+          replacement = """const workBlend=rangeOpacity(progress,ACTS.work[0],ACTS.work[1],0.05);const up=new THREE.Vector3(0,1,0),right=new THREE.Vector3().crossVectors(tangent,up).normalize(),isMobile=window.innerWidth<=820,followDistance=isMobile?9.5:8,followHeight=isMobile?3.8:3.4,showcaseSideOffset=isMobile?1.6:4.2,desiredCameraPosition=carPos.clone().addScaledVector(tangent,-followDistance).addScaledVector(right,workBlend*showcaseSideOffset).add(new THREE.Vector3(0,followHeight,0)),desiredCameraTarget=carPos.clone().add(new THREE.Vector3(0,0.75,0)).addScaledVector(tangent,1.4);if(!camera.userData.followInitialized){camera.position.copy(desiredCameraPosition);camera.userData.followTarget=desiredCameraTarget.clone();camera.userData.followInitialized=true;}else{camera.position.lerp(desiredCameraPosition,0.12);camera.userData.followTarget.lerp(desiredCameraTarget,0.14);}camera.up.set(0,1,0);camera.lookAt(camera.userData.followTarget);camera.rotation.z+=drift.intensity*drift.dir*0.035*(1-workBlend);"""
+
+          path.write_text(text[:start] + replacement + text[end:])
+          PY
+
+          rm -f .github/workflows/patch-camera-follow.yml
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html .github/workflows/patch-camera-follow.yml
+          git commit -m "Keep car visible throughout scroll"
+          git push
