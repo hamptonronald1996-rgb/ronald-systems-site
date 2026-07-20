@@ -1,0 +1,47 @@
+name: Force upright car and camera
+
+on:
+  push:
+    paths:
+      - '.github/workflows/force-upright-scene.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replace scene orientation with flat-road chase logic
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text()
+
+          old_car = "const roadUp=new THREE.Vector3(0,1,0),carRight=new THREE.Vector3().crossVectors(roadUp,tangent).normalize(),carBasis=new THREE.Matrix4().makeBasis(carRight,roadUp,tangent.clone().normalize());car.position.copy(carVisualPos);car.quaternion.setFromRotationMatrix(carBasis);car.rotateY(driftAngle);car.rotateZ(drift.intensity*drift.dir*0.08);"
+          new_car = "const carYaw=Math.atan2(tangent.x,tangent.z);car.position.copy(carVisualPos);car.rotation.set(0,carYaw+driftAngle,drift.intensity*drift.dir*0.05,'YXZ');"
+
+          if old_car not in text:
+              raise SystemExit('Current car orientation block not found')
+          text = text.replace(old_car, new_car, 1)
+
+          old_camera = "if(!camera.userData.followInitialized){camera.position.copy(desiredCameraPosition);camera.userData.followTarget=desiredCameraTarget.clone();camera.userData.followInitialized=true;}else{camera.position.lerp(desiredCameraPosition,0.12);camera.userData.followTarget.lerp(desiredCameraTarget,0.14);}camera.up.set(0,1,0);camera.lookAt(camera.userData.followTarget);camera.rotation.z+=drift.intensity*drift.dir*0.035*(1-workBlend);"
+          new_camera = "camera.position.copy(desiredCameraPosition);camera.up.set(0,1,0);camera.lookAt(desiredCameraTarget);camera.rotateZ(drift.intensity*drift.dir*0.02*(1-workBlend));"
+
+          if old_camera not in text:
+              raise SystemExit('Current camera follow block not found')
+          text = text.replace(old_camera, new_camera, 1)
+
+          path.write_text(text)
+          print('Applied yaw-only upright car and fixed above-road chase camera')
+          PY
+      - name: Commit corrected scene
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Force upright car and above-road chase camera'
+          git push
