@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#08090c"/>
+      <stop offset="1" stop-color="#101722"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff8a00"/>
+      <stop offset="1" stop-color="#ff5a1f"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#29c4ff"/>
+      <stop offset="1" stop-color="#0798e4"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="100" cy="550" r="170" fill="#ff5a1f" opacity=".12" filter="url(#glow)"/>
+  <circle cx="1120" cy="90" r="180" fill="#29c4ff" opacity=".12" filter="url(#glow)"/>
+
+  <g opacity=".18" stroke="#8b93a1" stroke-width="1">
+    <path d="M0 80H1200M0 160H1200M0 240H1200M0 320H1200M0 400H1200M0 480H1200M0 560H1200"/>
+    <path d="M80 0V630M160 0V630M240 0V630M320 0V630M400 0V630M480 0V630M560 0V630M640 0V630M720 0V630M800 0V630M880 0V630M960 0V630M1040 0V630M1120 0V630"/>
+  </g>
+
+  <g transform="translate(98 98)">
+    <path d="M22 18H142C177 18 199 37 199 66C199 87 188 101 168 111C192 120 207 139 207 163C207 198 181 218 142 218H22V18ZM65 58V92H132C147 92 156 86 156 75C156 64 147 58 132 58H65ZM65 132V178H137C154 178 164 170 164 155C164 140 154 132 137 132H65Z" fill="url(#orange)" fill-rule="evenodd"/>
+    <path d="M130 18H222C263 18 291 45 291 82C291 109 278 129 253 142L300 218H249L208 151H180V218H136V108H216C235 108 247 98 247 82C247 66 235 58 216 58H168L130 18Z" fill="url(#blue)"/>
+  </g>
+
+  <g font-family="Arial, Helvetica, sans-serif" font-weight="800" letter-spacing="5">
+    <text x="430" y="205" font-size="72" fill="#ff5a1f">BUILD</text>
+    <text x="690" y="205" font-size="72" fill="#f3f5f7">WITH</text>
+    <text x="895" y="205" font-size="72" fill="#29c4ff">RONALD</text>
+  </g>
+
+  <line x1="100" y1="360" x2="1100" y2="360" stroke="url(#blue)" stroke-width="2" opacity=".7"/>
+  <text x="600" y="440" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="700" fill="#e7e5de">Systems • Software • Business</text>
+  <text x="600" y="500" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="27" fill="#8b93a1">Web platforms, automation tools &amp; digital experiences</text>
+  <text x="600" y="565" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#29c4ff">buildwithronald.com</text>
+</svg>
