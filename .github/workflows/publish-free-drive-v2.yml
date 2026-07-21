@@ -1,0 +1,43 @@
+name: Publish Free Drive v2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-free-drive-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish corrected game at a new URL
+        run: |
+          rm -rf free-drive-v2
+          cp -R free-drive free-drive-v2
+          python3 - <<'PY'
+          from pathlib import Path
+
+          game = Path('free-drive-v2/index.html')
+          text = game.read_text()
+          text = text.replace(
+              '<meta name="theme-color" content="#08090c">',
+              '<meta name="theme-color" content="#08090c">\n<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n<meta http-equiv="Pragma" content="no-cache">\n<meta http-equiv="Expires" content="0">'
+          )
+          game.write_text(text)
+
+          home = Path('index.html')
+          home_text = home.read_text().replace('href="/free-drive/"', 'href="/free-drive-v2/"')
+          home.write_text(home_text)
+          PY
+      - name: Commit cache-busted build
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add free-drive-v2 index.html
+          git commit -m "Publish corrected Free Drive v2 orientation" || exit 0
+          git push
