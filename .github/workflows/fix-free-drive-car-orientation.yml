@@ -1,0 +1,50 @@
+name: Fix Free Drive car orientation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-free-drive-car-orientation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Correct car model front and runtime rotation
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('free-drive/index.html')
+          text = path.read_text()
+
+          replacements = {
+            "hood.position.set(0,.5,2.25)": "hood.position.set(0,.5,-2.25)",
+            "cab.position.set(0,1.18,-.25)": "cab.position.set(0,1.18,.25)",
+            "h.position.set(x,.62,2.86)": "h.position.set(x,.62,-2.86)",
+            "t.position.set(x,.62,-2.18)": "t.position.set(x,.62,2.18)",
+            "car.rotation.set(0,Math.PI,0)": "car.rotation.set(0,0,0)",
+            "car.rotation.y=Math.PI-heading": "car.rotation.y=-heading",
+          }
+
+          missing = [old for old in replacements if old not in text]
+          if missing:
+            raise SystemExit(f'Missing expected patterns: {missing}')
+
+          for old, new in replacements.items():
+            text = text.replace(old, new)
+
+          path.write_text(text)
+          PY
+      - name: Commit corrected orientation
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add free-drive/index.html
+          git commit -m "Correct Free Drive car front orientation" || exit 0
+          git push
