@@ -1,0 +1,42 @@
+name: Add Free Drive CTA
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/add-free-drive-cta.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add Free Drive CTA to end panel
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('index.html')
+          html = path.read_text()
+
+          css_anchor = "  #scrollHint{position:fixed; bottom:28px; left:50%; transform:translateX(-50%); z-index:2;"
+          css = '''  .free-drive-cta{margin:24px auto 0; padding:20px; max-width:560px; border:1px solid rgba(41,196,255,.35); border-radius:6px; background:linear-gradient(135deg,rgba(41,196,255,.10),rgba(255,90,31,.10)); text-align:center; pointer-events:auto; backdrop-filter:blur(8px);}\n  .free-drive-cta .label{font-family:'JetBrains Mono',monospace; color:var(--teal); font-size:10px; letter-spacing:.12em; text-transform:uppercase; margin-bottom:8px;}\n  .free-drive-cta h4{font-family:'Space Grotesk',sans-serif; font-size:22px; margin-bottom:8px;}\n  .free-drive-cta p{color:var(--muted); font-size:13px; line-height:1.55; margin-bottom:15px;}\n  .free-drive-cta .btn{justify-content:center;}\n\n'''
+          if '.free-drive-cta{' not in html:
+              html = html.replace(css_anchor, css + css_anchor)
+
+          panel_anchor = '''    <p class="desc" style="margin:12px auto 0;">One-page site, small business app, or a full multi-system build — every project starts with the same form.</p>'''
+          panel = '''    <p class="desc" style="margin:12px auto 0;">One-page site, small business app, or a full multi-system build — every project starts with the same form.</p>\n    <div class="free-drive-cta">\n      <div class="label">Portfolio route complete</div>\n      <h4>Want to keep driving?</h4>\n      <p>Leave the guided portfolio route and take the car into Free Drive mode.</p>\n      <a class="btn btn-primary" href="/free-drive/">Continue driving →</a>\n    </div>'''
+          if 'Want to keep driving?' not in html:
+              html = html.replace(panel_anchor, panel)
+
+          path.write_text(html)
+      - name: Commit update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Add Free Drive option at portfolio end" || exit 0
+          git push
