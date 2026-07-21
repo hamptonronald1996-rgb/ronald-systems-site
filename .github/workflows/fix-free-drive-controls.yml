@@ -1,0 +1,55 @@
+name: Fix Free Drive controls
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-free-drive-controls.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Correct steering and car orientation
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('free-drive/index.html')
+          text = path.read_text()
+
+          old_reset = "function reset(){speed=0;heading=0;distance=0;driftScore=0;car.position.set(0,.1,5);car.rotation.set(0,0,0);segments.forEach((s,i)=>{s.position.set(0,0,-i*SEG);s.rotation.y=0})}"
+          new_reset = "function reset(){speed=0;heading=0;distance=0;driftScore=0;car.position.set(0,.1,5);car.rotation.set(0,Math.PI,0);segments.forEach((s,i)=>{s.position.set(0,0,-i*SEG);s.rotation.y=0})}"
+
+          old_steer = "const steer=(input.left?1:0)-(input.right?1:0)"
+          new_steer = "const steer=(input.right?1:0)-(input.left?1:0)"
+
+          old_rotation = "car.rotation.y=heading;car.rotation.z=-steer*.08*(Math.abs(speed)/52)"
+          new_rotation = "car.rotation.y=Math.PI-heading;car.rotation.z=steer*.08*(Math.abs(speed)/52)"
+
+          replacements = [
+              (old_reset, new_reset, 'reset orientation'),
+              (old_steer, new_steer, 'steering direction'),
+              (old_rotation, new_rotation, 'visual car orientation'),
+          ]
+
+          for old, new, label in replacements:
+              if old not in text:
+                  raise SystemExit(f'Missing expected code for {label}')
+              text = text.replace(old, new, 1)
+
+          path.write_text(text)
+          PY
+      - name: Commit fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add free-drive/index.html
+          git commit -m "Fix Free Drive steering and car orientation" || exit 0
+          git push
