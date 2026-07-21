@@ -120,6 +120,12 @@
   .field textarea{resize:vertical; min-height:80px;}
   .form-status{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--teal); min-height:14px;}
 
+  .free-drive-cta{margin:24px auto 0; padding:20px; max-width:560px; border:1px solid rgba(41,196,255,.35); border-radius:6px; background:linear-gradient(135deg,rgba(41,196,255,.10),rgba(255,90,31,.10)); text-align:center; pointer-events:auto; backdrop-filter:blur(8px);}
+  .free-drive-cta .label{font-family:'JetBrains Mono',monospace; color:var(--teal); font-size:10px; letter-spacing:.12em; text-transform:uppercase; margin-bottom:8px;}
+  .free-drive-cta h4{font-family:'Space Grotesk',sans-serif; font-size:22px; margin-bottom:8px;}
+  .free-drive-cta p{color:var(--muted); font-size:13px; line-height:1.55; margin-bottom:15px;}
+  .free-drive-cta .btn{justify-content:center;}
+
   #scrollHint{position:fixed; bottom:28px; left:50%; transform:translateX(-50%); z-index:2; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); display:flex; flex-direction:column; align-items:center; gap:8px; letter-spacing:.08em; transition:opacity .4s;}
   #scrollHint .bar{width:1px; height:30px; background:linear-gradient(var(--amber),transparent); animation:pulse 2s infinite;}
   @keyframes pulse{0%,100%{opacity:.3;}50%{opacity:1;}}
@@ -190,6 +196,12 @@
     <div class="eyebrow">Get in touch</div>
     <h3 style="font-size:30px;">Tell me what you're trying to build.</h3>
     <p class="desc" style="margin:12px auto 0;">One-page site, small business app, or a full multi-system build — every project starts with the same form.</p>
+    <div class="free-drive-cta">
+      <div class="label">Portfolio route complete</div>
+      <h4>Want to keep driving?</h4>
+      <p>Leave the guided portfolio route and take the car into Free Drive mode.</p>
+      <a class="btn btn-primary" href="/free-drive/">Continue driving →</a>
+    </div>
     <div class="contact-grid" style="margin-top:26px;">
       <div class="contact-info"><p>Fill out the form and it'll open a pre-filled email straight to my inbox — no account, no middleman.</p><div class="row"><span class="k">EMAIL</span><span id="emailDisplay">your@email.com</span></div><div class="row"><span class="k">BASED</span><span>Park Forest, IL</span></div><div class="row"><span class="k">STATUS</span><span style="color:var(--teal)">Taking new projects</span></div></div>
       <form id="bookingForm">
