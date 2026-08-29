@@ -66,14 +66,23 @@
   #dotNav button{width:9px; height:9px; border-radius:50%; border:1px solid var(--muted); background:none; cursor:pointer; padding:0;}
   #dotNav button.active{background:var(--amber); border-color:var(--amber);}
 
-  #stage{position:fixed; inset:0; z-index:1; overflow:hidden;}
-  #webgl{position:absolute; inset:0; background-image:linear-gradient(90deg,rgba(3,7,13,.72) 0%,rgba(3,7,13,.24) 48%,rgba(3,7,13,.10) 100%),linear-gradient(0deg,rgba(2,5,10,.42),transparent 58%),url('assets/cinematic-road-v1.png'); background-size:cover; background-position:center;}
+  #stage{position:fixed; inset:0; z-index:1; overflow:hidden; background:#05080d;}
+  .cinematic-layer,.cinematic-shot{position:absolute; inset:0;}
+  .cinematic-shot{opacity:0; transform:scale(1.035); transition:opacity .72s ease,transform 2.4s cubic-bezier(.2,.75,.25,1); background-position:center; background-size:cover; will-change:opacity,transform;}
+  .cinematic-shot.active{opacity:1; transform:scale(1);}
+  .cinematic-shot::after{content:''; position:absolute; inset:0; background:linear-gradient(90deg,rgba(2,6,12,.84) 0%,rgba(2,6,12,.52) 38%,rgba(2,6,12,.10) 70%,rgba(2,6,12,.15) 100%),linear-gradient(0deg,rgba(2,6,12,.38),transparent 58%);}
+  .cinematic-shot.drive{background-image:url('assets/cinematic-drive-home-v2.png');}
+  .cinematic-shot.entry{background-image:url('assets/cinematic-entry-v1.png');}
+  .cinematic-shot.kitchen{background-image:url('assets/cinematic-kitchen-v1.png');}
+  .cinematic-shot.bedroom{background-image:url('assets/cinematic-bedroom-v1.png');}
+  #webgl{position:absolute; inset:0; pointer-events:none;}
+  #webgl canvas{display:none;}
   #labelLayer{position:absolute; inset:0; pointer-events:none;}
   .node-label{position:absolute; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text); transform:translate(-50%,-140%); white-space:nowrap; text-shadow:0 0 8px #08090C,0 0 8px #08090C; opacity:0; transition:opacity .3s;}
   .node-label.hub{color:var(--amber); font-weight:500;}
   .node-label.show{opacity:1;}
 
-  #scrollSpacer{height:650vh;}
+  #scrollSpacer{height:720vh;}
 
   .panel{position:absolute; z-index:2; width:min(560px,86vw); pointer-events:none; opacity:0;}
   .panel.left{left:6vw; top:50%; transform:translateY(-50%);}
@@ -195,6 +204,12 @@
   <button data-p="0.90" title="Contact"></button>
 </div>
 <div id="stage">
+  <div class="cinematic-layer" aria-hidden="true">
+    <div class="cinematic-shot drive active"></div>
+    <div class="cinematic-shot entry"></div>
+    <div class="cinematic-shot kitchen"></div>
+    <div class="cinematic-shot bedroom"></div>
+  </div>
   <div id="webgl"></div>
   <div id="labelLayer"></div>
   <div id="workInteract"></div>
@@ -246,6 +261,12 @@
 <script>
 window.addEventListener('load', () => { setTimeout(() => document.getElementById('boot').classList.add('hide'), 1600); });
 const mount=document.getElementById('webgl');
+const cinematicShots=[...document.querySelectorAll('.cinematic-shot')];
+function updateCinematicJourney(progress){
+  const sceneIndex=progress<0.19?0:progress<0.43?1:progress<0.68?2:3;
+  cinematicShots.forEach((shot,index)=>shot.classList.toggle('active',index===sceneIndex));
+}
+window.addEventListener('scroll',()=>updateCinematicJourney(getProgress()),{passive:true});
 const scene=new THREE.Scene(); scene.background=null; scene.fog=new THREE.FogExp2(0x05080d,0.018);
 const camera=new THREE.PerspectiveCamera(52,window.innerWidth/window.innerHeight,0.1,300);
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true}); renderer.setClearColor(0x000000,0); renderer.setSize(window.innerWidth,window.innerHeight); renderer.setPixelRatio(Math.min(devicePixelRatio,2)); renderer.outputEncoding=THREE.sRGBEncoding; renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.18; mount.appendChild(renderer.domElement);
