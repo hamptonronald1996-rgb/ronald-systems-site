@@ -13,7 +13,15 @@
   const number = dialog.querySelector('#tourNumber'), detail = dialog.querySelector('#tourDetail');
   const primary = dialog.querySelector('#tourPrimary'), request = dialog.querySelector('#tourRequest');
   const choices = dialog.querySelector('#tourStations'), stage = dialog.querySelector('#tourStage');
-  let selected = 0, opener, drag = null, savedScroll = 0, pendingDestination = null;
+  const items=window.workshopItems||[],picker=dialog.querySelector('#tourObject'),overview=dialog.querySelector('#tourOverview');
+  const hotspotLayer=document.createElement('div');hotspotLayer.className='tour-hotspots';stage.append(hotspotLayer);
+  let selected = 0, opener, drag = null, savedScroll = 0, pendingDestination = null, inspected=null,stageRect=null;
+  const hotspots=items.map((item,index)=>{
+    const button=document.createElement('button');button.type='button';button.className='tour-hotspot';button.hidden=true;
+    button.textContent=String(items.filter(other=>other.station===item.station).indexOf(item)+1).padStart(2,'0');
+    button.setAttribute('aria-label',`Inspect ${item.label}`);button.setAttribute('data-label',item.label);
+    button.addEventListener('click',()=>inspect(item.id,true));hotspotLayer.append(button);return {item,button};
+  });
   const buttons = stations.map((station, index) => {
     const button = document.createElement('button');
     button.type = 'button'; button.textContent = `${station.number} ${station.short}`;
@@ -23,14 +31,41 @@
   function positionScene() {
     if (!dialog.open) return;
     const rect = stage.getBoundingClientRect();
+    stageRect=rect;
     window.workshopScene?.frameAt(rect.x + rect.width / 2, rect.y + rect.height / 2, rect.height);
   }
+  function updateHotspots(points){
+    if(!dialog.open||!stageRect)return;
+    hotspots.forEach(({item,button})=>{
+      const point=points.find(point=>point.id===item.id),x=point?point.x-stageRect.x:0,y=point?point.y-stageRect.y:0;
+      button.hidden=!!inspected||!point?.visible||x<22||x>stageRect.width-22||y<22||y>stageRect.height-22;
+      if(!button.hidden){button.style.left=`${x}px`;button.style.top=`${y}px`;}
+    });
+  }
+  function renderCopy(){
+    const content=inspected||stations[selected];
+    title.textContent=inspected?content.title:content.name;copy.textContent=content.copy;detail.textContent=content.detail;
+    primary.textContent=content.action+' ↗';primary.href=content.href;
+  }
+  function inspect(id,returnFocus=false){
+    const item=id?items.find(item=>item.id===id&&item.station===selected):null;
+    if(id&&!item)return;
+    if(window.workshopScene?.inspect(item?.id||null)===false)return;
+    inspected=item;picker.value=item?.id||'';overview.hidden=!item;
+    if(returnFocus)picker.focus({preventScroll:true});
+    hotspots.forEach(({button})=>button.hidden=true);renderCopy();positionScene();
+  }
+  picker.addEventListener('change',()=>inspect(picker.value));
+  overview.addEventListener('click',()=>inspect('',true));
   function select(index) {
     selected = (index + stations.length) % stations.length;
+    inspected=null;overview.hidden=true;
     const station = stations[selected];
-    title.textContent = station.name; copy.textContent = station.copy;
-    number.textContent = `${station.number} / 05`; detail.textContent = station.detail;
-    primary.textContent = station.action + ' ↗'; primary.href = station.href;
+    number.textContent = `${station.number} / 05`;renderCopy();
+    picker.replaceChildren();
+    const all=document.createElement('option');all.value='';all.textContent='Whole station';picker.append(all);
+    items.filter(item=>item.station===selected).forEach(item=>{const option=document.createElement('option');option.value=item.id;option.textContent=item.label;picker.append(option);});
+    picker.value='';hotspots.forEach(({button})=>button.hidden=true);
     buttons.forEach((button, index) => button.setAttribute('aria-pressed', String(index === selected)));
     window.workshopScene?.station(selected); positionScene();
   }
@@ -46,7 +81,7 @@
   dialog.querySelector('#tourClose').addEventListener('click', () => dialog.close());
   dialog.addEventListener('keydown', event => {
     if (event.key !== 'Tab') return;
-    const controls = [...dialog.querySelectorAll('button:not([disabled]), a[href]')];
+    const controls = [...dialog.querySelectorAll('button:not([disabled]), a[href], select:not([disabled])')].filter(control=>!control.hidden);
     const first = controls[0], last = controls[controls.length - 1];
     if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
@@ -60,8 +95,10 @@
       requestAnimationFrame(() => {
         const target = document.querySelector(destination);
         if (!target) return;
-        target.setAttribute('tabindex', '-1'); target.focus({preventScroll:true});
+        target.setAttribute('tabindex', '-1');
         target.scrollIntoView({behavior:'instant',block:'start'}); history.replaceState(null, '', destination);
+        // Let filtered-card layout and native modal focus restoration finish first.
+        requestAnimationFrame(()=>{if(!dialog.open)target.focus({preventScroll:true});});
       });
     } else opener?.focus({preventScroll:true});
   });
@@ -71,7 +108,7 @@
   dialog.querySelector('#tourRight').addEventListener('click', () => window.workshopScene?.orbit(.22));
   dialog.querySelector('#tourReset').addEventListener('click', () => window.workshopScene?.reset());
   stage.addEventListener('pointerdown', event => {
-    if (event.button !== 0) return;
+    if (event.button !== 0 || event.target?.closest('button')) return;
     drag = event.clientX; stage.setPointerCapture(event.pointerId);
   });
   stage.addEventListener('pointermove', event => {
@@ -80,12 +117,16 @@
   });
   ['pointerup','pointercancel','lostpointercapture'].forEach(type => stage.addEventListener(type, () => { drag = null; }));
   function follow(event, requestService) {
-    event.preventDefault(); const destination = requestService ? '#contact' : stations[selected].href;
+    event.preventDefault();const content=inspected||stations[selected]; const destination = requestService ? '#contact' : content.href;
     if (requestService) {
       const service = document.getElementById('serviceType');
-      service.value = stations[selected].service; service.dispatchEvent(new Event('change', {bubbles:true}));
+      const details=document.getElementById('requestDetails');
+      if(content.project&&!details.value.trim()){details.value=`I'd like to discuss ${content.project}.\n\nWhat I need: `;details.dispatchEvent(new Event('input',{bubbles:true}));}
+      service.value = content.service; service.dispatchEvent(new Event('change', {bubbles:true}));
     }
-    if (!requestService && destination === '#services') window.workshopServices?.select(['repair','business',null,'systems'][selected]);
+    if (!requestService && destination === '#services') window.workshopServices?.select(content.filter||['repair','business',null,'systems'][selected]);
+    if (!requestService && destination.startsWith('#project-')) window.workshopProjects?.show(destination.slice(1));
+    if (!requestService && destination === '#work') window.workshopProjects?.show('all');
     pendingDestination = destination;
     dialog.close();
   }
@@ -95,5 +136,6 @@
   dialog.addEventListener('scroll', positionScene, {passive:true});
   addEventListener('resize', positionScene);
   addEventListener('workshopavailability', () => { enable(); if (dialog.open && !window.workshopScene?.available()) dialog.close(); });
+  window.workshopScene?.onFrame(updateHotspots);
   enable();
 })();

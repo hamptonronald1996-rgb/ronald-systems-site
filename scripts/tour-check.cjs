@@ -4,6 +4,7 @@ const path=require('node:path');
 const vm=require('node:vm');
 const assert=require('node:assert/strict');
 const source=fs.readFileSync(path.join(__dirname,'../assets/workshop-tour.js'),'utf8');
+const catalogue=fs.readFileSync(path.join(__dirname,'../assets/workshop-items.js'),'utf8');
 class TestEvent {
  constructor(type,properties={}){this.type=type;Object.assign(this,properties);}
  preventDefault(){this.defaultPrevented=true;}
@@ -13,26 +14,28 @@ function eventTarget(){
  return {addEventListener(type,fn){if(!listeners.has(type))listeners.set(type,[]);listeners.get(type).push(fn);},dispatchEvent(event){for(const fn of listeners.get(event.type)||[])fn(event);return !event.defaultPrevented;}};
 }
 function harness({available=true,scenePresent=true,dialogSupported=true}={}){
- const tasks=[],frames=[],log=[],calls=[],categories=[],changes=[];
- let context,document,observedResize;
+ const tasks=[],frames=[],log=[],calls=[],categories=[],projectFilters=[],changes=[],inputs=[];
+ let context,document,observedResize,frameListener,station=0,created=0,inspectionRejected=false;
  function element(id){
   const classes=new Set();
-  return Object.assign(eventTarget(),{id,hidden:true,style:{},attributes:{},children:[],textContent:'',value:'',
+  return Object.assign(eventTarget(),{id,hidden:false,style:{},attributes:{},children:[],textContent:'',value:'',
    classList:{add:name=>classes.add(name),remove:name=>classes.delete(name),contains:name=>classes.has(name)},
-   append(child){this.children.push(child);},setAttribute(name,value){this.attributes[name]=value;},
+   append(child){this.children.push(child);},replaceChildren(...children){this.children=children;},setAttribute(name,value){this.attributes[name]=value;},
    focus(options){document.activeElement=this;log.push({type:'focus',id,options,locked:document.body.classList.contains('is-exploring'),top:document.body.style.top});},
    scrollIntoView(options){log.push({type:'scrollIntoView',id,options});},
    setPointerCapture(pointerId){this.pointerCapture=pointerId;}
   });
  }
- const ids=['workshopTour','tourTitle','tourCopy','tourNumber','tourDetail','tourPrimary','tourRequest','tourStations','tourStage','tourClose','tourPrevious','tourNext','tourLeft','tourRight','tourReset','serviceType','services','work','contact','project-secure-watch'];
+ const ids=['workshopTour','tourTitle','tourCopy','tourNumber','tourDetail','tourPrimary','tourRequest','tourStations','tourStage','tourClose','tourPrevious','tourNext','tourLeft','tourRight','tourReset','tourObject','tourOverview','serviceType','requestDetails','services','work','contact','project-fur-love','project-fur-love-operations','project-secure-watch','project-codecredit'];
  const nodes=Object.fromEntries(ids.map(id=>[id,element(id)]));
- const launchers=[element('heroLauncher'),element('secondaryLauncher')];
- document=Object.assign(eventTarget(),{body:element('body'),activeElement:null,getElementById:id=>nodes[id],querySelector:selector=>nodes[selector.slice(1)],querySelectorAll:selector=>selector==='[data-open-workshop]'?launchers:[],createElement:tag=>element(`${tag}-${nodes.tourStations.children.length}`)});
+ nodes.tourOverview.hidden=true;
+ const launchers=[element('heroLauncher'),element('secondaryLauncher')];launchers.forEach(button=>button.hidden=true);
+ document=Object.assign(eventTarget(),{body:element('body'),activeElement:null,getElementById:id=>nodes[id],querySelector:selector=>nodes[selector.slice(1)],querySelectorAll:selector=>selector==='[data-open-workshop]'?launchers:[],createElement:tag=>element(`${tag}-${created++}`)});
  const dialog=nodes.workshopTour;dialog.open=false;
  dialog.querySelector=selector=>nodes[selector.slice(1)];
- dialog.querySelectorAll=selector=>selector==='button:not([disabled]), a[href]'?
-  [nodes.tourClose,...nodes.tourStations.children,nodes.tourPrimary,nodes.tourRequest,nodes.tourLeft,nodes.tourReset,nodes.tourRight,nodes.tourPrevious,nodes.tourNext].filter(control=>!control.disabled):[];
+ const extraControls=[];
+ dialog.querySelectorAll=selector=>selector==='button:not([disabled]), a[href], select:not([disabled])'?
+  [nodes.tourClose,...nodes.tourStations.children,nodes.tourOverview,...(nodes.tourStage.children[0]?.children||[]),nodes.tourObject,nodes.tourPrimary,nodes.tourRequest,nodes.tourLeft,nodes.tourReset,nodes.tourRight,nodes.tourPrevious,nodes.tourNext,...extraControls].filter(control=>!control.disabled):[];
  let nativeOpener;
  if(dialogSupported)dialog.showModal=()=>{assert.equal(dialog.open,false);nativeOpener=document.activeElement;dialog.open=true;log.push({type:'showModal'});};
  dialog.close=()=>{
@@ -42,9 +45,10 @@ function harness({available=true,scenePresent=true,dialogSupported=true}={}){
   tasks.push(()=>dialog.dispatchEvent(new TestEvent('close')));
  };
  const stage=nodes.tourStage;stage.rect={x:20,y:160,width:1000,height:360};stage.getBoundingClientRect=()=>({...stage.rect});
- const scene={available:()=>available,enter:()=>calls.push(['enter']),exit:()=>{calls.push(['exit']);log.push({type:'exit'});},station:index=>calls.push(['station',index]),frameAt:(...args)=>calls.push(['frameAt',...args]),orbit:delta=>calls.push(['orbit',delta]),reset:()=>calls.push(['reset'])};
+ const scene={available:()=>available,enter:()=>calls.push(['enter']),exit:()=>{calls.push(['exit']);log.push({type:'exit'});},station(index){station=index;calls.push(['station',index]);},frameAt:(...args)=>calls.push(['frameAt',...args]),orbit:delta=>calls.push(['orbit',delta]),reset:()=>calls.push(['reset']),onFrame(callback){frameListener=callback;},inspect(id){calls.push(['inspect',id]);return !inspectionRejected&&(id===null||context.workshopItems.some(item=>item.id===id&&item.station===station));}};
  context=Object.assign(eventTarget(),{document,scrollY:0,Event:TestEvent,
   workshopServices:{select:id=>categories.push(id)},
+  workshopProjects:{show:id=>projectFilters.push(id)},
   scrollTo(options){context.scrollY=options.top;log.push({type:'scrollTo',top:options.top,locked:document.body.classList.contains('is-exploring')});},
   history:{replaceState(state,title,destination){context.hash=destination;log.push({type:'history',destination});}},
   requestAnimationFrame:callback=>{frames.push(callback);return frames.length;},
@@ -53,14 +57,18 @@ function harness({available=true,scenePresent=true,dialogSupported=true}={}){
  if(scenePresent)context.workshopScene=scene;
  context.window=context;
  nodes.serviceType.addEventListener('change',event=>changes.push({value:nodes.serviceType.value,bubbles:event.bubbles}));
+ nodes.requestDetails.addEventListener('input',event=>inputs.push({value:nodes.requestDetails.value,bubbles:event.bubbles}));
+ vm.runInNewContext(catalogue,context,{filename:'workshop-items.js'});
  vm.runInNewContext(source,context,{filename:'workshop-tour.js'});
- return {context,document,nodes,launchers,dialog,stage,tasks,frames,log,calls,categories,changes,
-  flushTasks(){while(tasks.length)tasks.shift()();},flushFrames(){while(frames.length)frames.shift()();},
+ return {context,document,nodes,launchers,dialog,stage,tasks,frames,log,calls,categories,projectFilters,changes,inputs,extraControls,
+  hotspots:()=>nodes.tourStage.children[0]?.children||[],publish:points=>frameListener(points),rejectInspection:value=>{inspectionRejected=value;},
+  flushTasks(){while(tasks.length)tasks.shift()();},flushFrame(){const callback=frames.shift();if(callback)callback();},flushFrames(){while(frames.length)frames.shift()();},
   availability(value){available=value;context.dispatchEvent(new TestEvent('workshopavailability'));},resize:()=>observedResize()
  };
 }
 function click(element){const event=new TestEvent('click');element.dispatchEvent(event);return event;}
 function launch(test,index=0,scroll=1250){test.context.scrollY=scroll;test.launchers[index].focus();click(test.launchers[index]);}
+function inspect(test,id){test.nodes.tourObject.value=id;test.nodes.tourObject.dispatchEvent(new TestEvent('change'));}
 function selected(test,index){
  const buttons=test.nodes.tourStations.children;
  assert.equal(buttons.length,5);
@@ -74,6 +82,8 @@ const basic=harness();assert(basic.launchers.every(button=>button.hidden===false
 launch(basic,1,1720);
 assert.equal(basic.dialog.open,true);assert.equal(basic.document.body.style.top,'-1720px');
 assert.equal(basic.document.body.classList.contains('is-exploring'),true);assert.equal(basic.document.activeElement,basic.nodes.tourClose);selected(basic,0);
+// A hidden projected button must never become a focus trap boundary.
+basic.extraControls.push({...basic.hotspots()[0],hidden:true});
 const reverseBoundary=new TestEvent('keydown',{key:'Tab',shiftKey:true});basic.dialog.dispatchEvent(reverseBoundary);
 assert.equal(reverseBoundary.defaultPrevented,true);assert.equal(basic.document.activeElement,basic.nodes.tourNext,'Shift+Tab from Close must wrap to the last control');
 const forwardBoundary=new TestEvent('keydown',{key:'Tab',shiftKey:false});basic.dialog.dispatchEvent(forwardBoundary);
@@ -117,17 +127,30 @@ for(const [station,category,destination] of routes){
  const test=harness();launch(test,0,900);click(test.nodes.tourStations.children[station]);
  const event=click(test.nodes.tourPrimary);assert.equal(event.defaultPrevented,true);assert.equal(test.dialog.open,false);
  assert.deepEqual(test.categories,category?[category]:[],'The selected station must open the matching service category');
+ assert.deepEqual(test.projectFilters,destination==='work'?['all']:destination.startsWith('project-')?[destination]:[],'Project navigation must reveal its destination in the project filter');
  assert.equal(test.frames.length,0,'Navigation must not schedule before the queued close event');
  assert(!test.log.some(item=>item.type==='focus'&&item.id===destination),'A destination must not receive focus while background content is hidden');
  test.flushFrames();assert.equal(test.document.body.classList.contains('is-exploring'),true);
  test.flushTasks();assert.equal(test.document.body.classList.contains('is-exploring'),false);assert.equal(test.context.scrollY,900);
- assert.equal(test.frames.length,1);test.flushFrames();
+ assert.equal(test.frames.length,1);test.flushFrame();
+ assert.equal(test.frames.length,1,'Destination focus must wait for a second animation frame after the filtered layout and navigation');
+ assert.notEqual(test.document.activeElement,test.nodes[destination],'Navigation must allow native modal restoration to finish before focusing its destination');
+ assert.equal(test.log.at(-1).type,'history');test.flushFrame();
  assert.equal(test.document.activeElement,test.nodes[destination]);assert.equal(test.nodes[destination].attributes.tabindex,'-1');
  assert.equal(test.context.hash,`#${destination}`);
  const focused=test.log.find(item=>item.type==='focus'&&item.id===destination);assert.equal(focused.locked,false);assert.equal(focused.top,'');
  assert(test.log.findIndex(item=>item.type==='scrollTo')<test.log.findIndex(item=>item.type==='scrollIntoView'),'Restore saved scroll before the requested destination navigation');
- assert.equal(test.log.at(-1).type,'history');
+ assert.equal(test.log.at(-1).type,'focus');assert.equal(test.log.at(-1).id,destination,'Destination focus must be the final handoff action');
 }
+
+const reopened=harness();launch(reopened);click(reopened.nodes.tourStations.children[2]);inspect(reopened,'fur-site');
+click(reopened.nodes.tourPrimary);reopened.flushTasks();reopened.flushFrame();
+assert.equal(reopened.frames.length,1);assert.equal(reopened.context.hash,'#project-fur-love');
+launch(reopened,1,1600);assert.equal(reopened.document.activeElement,reopened.nodes.tourClose);
+const focusCount=reopened.log.filter(item=>item.type==='focus').length;
+reopened.flushFrames();assert.equal(reopened.dialog.open,true);
+assert.equal(reopened.document.activeElement,reopened.nodes.tourClose,'A delayed destination focus must not escape a newly reopened modal');
+assert.equal(reopened.log.filter(item=>item.type==='focus').length,focusCount,'The stale handoff must not attempt to focus background content');
 
 const requestServices=['Computer & laptop repair','Small-business IT','Websites & online systems','Servers & security technology','Servers & security technology'];
 requestServices.forEach((service,station)=>{
@@ -138,6 +161,53 @@ requestServices.forEach((service,station)=>{
  assert.equal(test.frames.length,0);test.flushTasks();test.flushFrames();
  assert.equal(test.document.activeElement,test.nodes.contact);assert.equal(test.context.hash,'#contact');
 });
+
+const equipment=harness();launch(equipment);
+assert.equal(equipment.hotspots().length,12,'Every equipment item must have a keyboard-accessible hotspot');
+assert.deepEqual(equipment.nodes.tourObject.children.map(option=>option.value),['','laptop','phone']);
+equipment.publish([{id:'laptop',x:180,y:260,visible:true},{id:'phone',x:320,y:330,visible:true}]);
+assert.equal(equipment.hotspots().filter(button=>!button.hidden).length,2);
+assert.equal(equipment.hotspots()[0].style.left,'160px');assert.equal(equipment.hotspots()[0].style.top,'100px','Client coordinates must be translated into the stage frame');
+click(equipment.hotspots()[1]);
+assert.equal(equipment.nodes.tourObject.value,'phone');assert.equal(equipment.nodes.tourOverview.hidden,false);
+assert.equal(equipment.nodes.tourTitle.textContent,'Your everyday connection.');
+assert.equal(equipment.document.activeElement,equipment.nodes.tourObject,'Selecting a disappearing hotspot must move focus to the persistent picker');
+assert(equipment.hotspots().every(button=>button.hidden));
+equipment.publish([{id:'phone',x:320,y:330,visible:true}]);assert(equipment.hotspots().every(button=>button.hidden),'Inspected views must keep overview hotspots hidden even if a stale frame arrives');
+click(equipment.nodes.tourOverview);assert.equal(equipment.nodes.tourObject.value,'');assert.equal(equipment.nodes.tourOverview.hidden,true);
+assert.deepEqual(equipment.calls.filter(call=>call[0]==='inspect').at(-1),['inspect',null]);
+equipment.publish([{id:'laptop',x:30,y:260,visible:true},{id:'phone',x:320,y:330,visible:false}]);assert(equipment.hotspots().every(button=>button.hidden),'Clipped and off-camera projected buttons must remain hidden');
+const titleBefore=equipment.nodes.tourTitle.textContent;
+inspect(equipment,'router');assert.equal(equipment.nodes.tourTitle.textContent,titleBefore,'A cross-station picker value must not change the content');
+inspect(equipment,'unknown');assert.equal(equipment.nodes.tourTitle.textContent,titleBefore,'An invalid item must not change the content');
+equipment.rejectInspection(true);inspect(equipment,'phone');assert.equal(equipment.nodes.tourTitle.textContent,titleBefore,'A scene rejection must leave the overview intact');equipment.rejectInspection(false);
+inspect(equipment,'phone');click(equipment.nodes.tourStations.children[2]);selected(equipment,2);
+assert.equal(equipment.nodes.tourOverview.hidden,true);assert.equal(equipment.nodes.tourObject.value,'');
+assert.deepEqual(equipment.nodes.tourObject.children.map(option=>option.value),['','fur-site','fur-ops','secure-project','codecredit'],'The project picker must contain precisely the four selected projects');
+const callsBeforeButtonDrag=equipment.calls.length;
+equipment.stage.dispatchEvent(new TestEvent('pointerdown',{button:0,clientX:120,pointerId:8,target:{closest:selector=>selector==='button'?equipment.hotspots()[0]:null}}));
+equipment.stage.dispatchEvent(new TestEvent('pointermove',{clientX:160}));assert.equal(equipment.calls.length,callsBeforeButtonDrag,'Pressing a hotspot must not initiate camera dragging');
+
+for(const item of equipment.context.workshopItems){
+ const test=harness();launch(test);click(test.nodes.tourStations.children[item.station]);inspect(test,item.id);
+ assert.equal(test.nodes.tourTitle.textContent,item.title);assert.equal(test.nodes.tourPrimary.href,item.href);
+ click(test.nodes.tourPrimary);
+ assert.deepEqual(test.categories,item.filter?[item.filter]:[],`${item.id} must select its specific service category`);
+ assert.deepEqual(test.projectFilters,item.href.startsWith('#project-')?[item.href.slice(1)]:[],`${item.id} must reveal the selected project before scrolling`);
+ test.flushTasks();test.flushFrames();assert.equal(test.context.hash,item.href);assert.equal(test.document.activeElement,test.nodes[item.href.slice(1)]);
+
+ const request=harness();launch(request);click(request.nodes.tourStations.children[item.station]);inspect(request,item.id);click(request.nodes.tourRequest);
+ assert.equal(request.nodes.serviceType.value,item.service,`${item.id} must preselect the exact service, including phone and network enquiries`);
+ assert.deepEqual(request.changes,[{value:item.service,bubbles:true}]);
+ if(item.project){assert.equal(request.nodes.requestDetails.value,`I'd like to discuss ${item.project}.\n\nWhat I need: `);assert.equal(request.inputs.length,1);assert.equal(request.inputs[0].bubbles,true);}
+ else{assert.equal(request.nodes.requestDetails.value,'');assert.equal(request.inputs.length,0);}
+ request.flushTasks();request.flushFrames();assert.equal(request.document.activeElement,request.nodes.contact);
+ assert.deepEqual(request.projectFilters,[],'Starting an enquiry must preserve the project gallery selection');
+}
+for(const draft of ['My existing project details.','  My phone is not charging.  ']){
+ const test=harness();launch(test);test.nodes.requestDetails.value=draft;click(test.nodes.tourStations.children[2]);inspect(test,'fur-ops');click(test.nodes.tourRequest);
+ assert.equal(test.nodes.requestDetails.value,draft,'Project enquiry context must never overwrite an existing draft');assert.equal(test.inputs.length,0);
+}
 
 const lost=harness();launch(lost,1,333);lost.availability(false);
 assert.equal(lost.dialog.open,false);assert(lost.launchers.every(button=>button.hidden));
@@ -152,3 +222,4 @@ for(const options of [{available:false},{scenePresent:false},{dialogSupported:fa
 }
 console.log('PASS: tour launch/close, native queued-close cleanup, scroll/focus restoration, bidirectional Tab wrapping, station cycling and accessible selection');
 console.log('PASS: service-category navigation, request preselection, post-cleanup destination focus, drag/buttons, scrolled-stage framing, and unavailable/context-loss behavior');
+console.log('PASS: all 12 hotspot/picker routes, four-project handoff, exact equipment enquiries, preserved drafts, clipped hotspots, inspection focus, and guarded camera dragging');

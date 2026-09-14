@@ -5,6 +5,7 @@ const vm=require('node:vm');
 const assert=require('node:assert/strict');
 const Three=require('../assets/vendor/three.min.js');
 const source=fs.readFileSync(path.join(__dirname,'../assets/workshop.js'),'utf8');
+const catalogue=fs.readFileSync(path.join(__dirname,'../assets/workshop-items.js'),'utf8');
 
 class TestEvent {
  constructor(type,properties={}){this.type=type;Object.assign(this,properties);}
@@ -57,6 +58,7 @@ function createHarness({reduced=false,width=1440,height=900,rendererFails=false}
  });
  context.window=context;
  context.addEventListener('workshopavailability',()=>availability.push(context.workshopScene.available()));
+ vm.runInNewContext(catalogue,context,{filename:'workshop-items.js'});
  vm.runInNewContext(source,context,{filename:'workshop.js'});
  function frame(){
   const next=frames.entries().next();if(next.done)return false;
@@ -81,6 +83,7 @@ assert.equal(scene.frames.size,0,'The renderer must stop after camera movement s
 scene.context.dispatchEvent(new TestEvent('pointermove',{pointerType:'mouse',clientX:720,clientY:450}));
 assert.equal(scene.settle(),1,'A stationary pointer update should render once');
 scene.textureLoads.shift()();assert.equal(scene.settle(),1,'An arriving project texture must request a fresh frame');
+scene.textureLoads.shift()();assert.equal(scene.settle(),1,'The Secure Watch screen must refresh after its texture arrives');
 
 scene.nodes.motionToggle.dispatchEvent(new TestEvent('click'));
 scene.settle();assert.equal(scene.nodes.motionToggle.attributes['aria-pressed'],'true');
@@ -132,7 +135,61 @@ assert.equal(mobile.frames.size,0);assert.equal(mobile.renders.length,mobileRend
 mobile.context.workshopScene.enter();mobile.context.workshopScene.frameAt(195,300,240);mobile.context.workshopScene.station(4);
 assert.equal(mobile.settle(),1);assert(mobile.last().position.toArray().every(Number.isFinite),'Narrow tour framing must produce a finite camera position');
 
+// Execute every close-up against real Three.js matrices and the shared catalogue.
+const inspection=createHarness({reduced:true}),projections=[];
+inspection.settle();inspection.context.workshopScene.onFrame(points=>projections.push(points));inspection.settle();
+assert.equal(projections.length,0,'Page choreography must not publish tour hotspots');
+inspection.context.workshopScene.enter();inspection.settle();
+const equipment=inspection.context.workshopItems;
+assert.equal(equipment.length,12);
+for(let station=0;station<5;station++){
+ inspection.context.workshopScene.station(station);assert.equal(inspection.settle(),1);
+ const stationItems=equipment.filter(item=>item.station===station),overviewPosition=inspection.last().position.clone();
+ assert.deepEqual(Array.from(projections.at(-1),point=>point.id),Array.from(stationItems,item=>item.id),'A station must publish exactly its own equipment anchors');
+ for(const point of projections.at(-1)){
+  assert(Number.isFinite(point.x)&&Number.isFinite(point.y),'Projected hotspot coordinates must be finite');
+  assert(point.x>0&&point.x<1440&&point.y>0&&point.y<900,`The ${point.id} overview hotspot must remain within the client viewport`);
+  assert.equal(point.visible,true,'Settled overview anchors must be in front of the camera');
+ }
+ for(const item of stationItems){
+  assert.equal(inspection.context.workshopScene.inspect(item.id),true);
+  assert.equal(inspection.settle(),1,`${item.id} must snap in one frame when motion is paused`);
+  closeVector(inspection.last().position,item.camera,`${item.id} must select its equipment camera`);
+  assert.equal(projections.at(-1).length,0,'Inspection must hide overview hotspots');
+  assert.equal(inspection.frames.size,0,'An inspected object must not create a continuous render loop');
+  const selectedPosition=inspection.last().position.clone();
+  assert.equal(inspection.context.workshopScene.inspect('missing-equipment'),false);
+  assert.equal(inspection.context.workshopScene.inspect(equipment.find(other=>other.station!==station).id),false);
+  assert.equal(inspection.frames.size,0,'Rejected IDs must not schedule work or change the camera');
+  assert(inspection.last().position.equals(selectedPosition));
+  inspection.context.workshopScene.orbit(.3);inspection.settle();
+  assert(inspection.last().position.distanceTo(selectedPosition)>.1,'An equipment close-up must still support orbit controls');
+  inspection.context.workshopScene.reset();inspection.settle();closeVector(inspection.last().position,item.camera);
+  assert.equal(inspection.context.workshopScene.inspect(null),true);inspection.settle();
+  assert(inspection.last().position.equals(overviewPosition),'Whole station must restore the selected overview');
+  assert.equal(projections.at(-1).length,stationItems.length);
+ }
+ // Selecting another station must clear an active close-up.
+ inspection.context.workshopScene.inspect(stationItems[0].id);inspection.settle();
+ inspection.context.workshopScene.station(station);inspection.settle();
+ assert(inspection.last().position.equals(overviewPosition),'Station selection must reset inspection');
+ assert.equal(projections.at(-1).length,stationItems.length);
+}
+inspection.context.workshopScene.inspect('camera');inspection.settle();inspection.context.workshopScene.exit();inspection.settle();
+inspection.context.workshopScene.enter();inspection.settle();
+assert.deepEqual(Array.from(projections.at(-1),point=>point.id),['laptop','phone'],'Reopening the tour must restore the first overview after an inspected exit');
+
+const mobilePoints=[];mobile.context.workshopScene.onFrame(points=>mobilePoints.push(points));mobile.settle();
+for(let station=0;station<5;station++){
+ mobile.context.workshopScene.station(station);mobile.settle();
+ for(const point of mobilePoints.at(-1)){
+  assert(Number.isFinite(point.x)&&Number.isFinite(point.y));
+  assert(point.x>0&&point.x<390&&point.y>0&&point.y<844,`The ${point.id} hotspot must project into the narrow client viewport`);
+ }
+}
+
 const fallback=createHarness({rendererFails:true});
 assert.equal(fallback.nodes.fallback.style.display,'block');assert.equal(fallback.context.workshopScene,undefined);assert.equal(fallback.frames.size,0);
 console.log('PASS: real Three.js scene execution, demand settling, journey updates, paused station snap, orbit/reset, tour exit, and project texture invalidation');
 console.log('PASS: reduced motion, mobile density and touch behavior, hidden tab suspension, context loss/restoration, and WebGL-unavailable fallback');
+console.log('PASS: all 12 equipment close-ups, guarded inspection IDs, projected desktop/mobile hotspots, paused orbit/reset, and station/exit cleanup');
