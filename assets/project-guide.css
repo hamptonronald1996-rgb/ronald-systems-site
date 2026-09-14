@@ -1,0 +1,22 @@
+.project-guide{margin-top:30px;padding-top:22px;border-top:1px solid var(--line)}
+.project-guide-title{margin:0 0 13px;color:#dce7ef;font:500 11px/1.5 JetBrains Mono,monospace;letter-spacing:.07em;text-transform:uppercase}
+.project-guide-controls{display:flex;flex-wrap:wrap;gap:8px}
+.project-guide-controls button{min-height:44px;padding:10px 14px;border:1px solid #354451;border-radius:7px;background:#0a141dd9;color:#c9d6e1;font:500 11px/1.45 JetBrains Mono,monospace;cursor:pointer;transition:color .18s,border-color .18s,background .18s}
+.project-guide-controls button:hover{border-color:#79d9ff;color:#fff;background:#102534}
+.project-guide-controls button[aria-pressed="true"]{border-color:var(--blue);background:#113044;color:#e1f6ff;box-shadow:inset 0 -2px 0 var(--blue)}
+.project-guide-controls button:focus-visible{outline:2px solid var(--orange);outline-offset:4px}
+.project-guide-intro{margin:17px 0 0;color:#b8c8d5;font-size:13px;line-height:1.65;max-width:620px}
+.project-guide-status{margin:12px 0 0;color:#83d8f8;font:500 10px/1.5 JetBrains Mono,monospace;letter-spacing:.025em}
+.project-relationship{margin-top:19px;padding:17px 19px;border:1px solid #35594d;border-left:3px solid #82bda5;border-radius:8px;background:linear-gradient(110deg,#18372d88,#0a171d88)}
+.project-relationship strong{color:#c8ecdd;font:500 12px/1.5 JetBrains Mono,monospace}
+.project-relationship p{margin:8px 0 0;color:#bed0c9;font-size:13px;line-height:1.65;max-width:650px}
+.project-guide+.focused-projects{margin-top:20px}
+#work .project[hidden],.project-relationship[hidden]{display:none!important}
+.focused-projects[data-project-view="secure-watch"],.focused-projects[data-project-view="codecredit"]{grid-template-columns:minmax(0,1fr)}
+@media(min-width:701px){
+ .focused-projects[data-project-view="secure-watch"] .project,.focused-projects[data-project-view="codecredit"] .project{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}
+ .focused-projects[data-project-view="secure-watch"] .build-art,.focused-projects[data-project-view="codecredit"] .build-art{min-height:340px;height:100%;border-bottom:0;border-right:1px solid var(--line)}
+ .focused-projects[data-project-view="secure-watch"] .security-art img{height:100%;min-height:340px;position:absolute;inset:0}
+}
+@media(max-width:520px){.project-guide{margin-top:25px;padding-top:20px}.project-guide-controls{gap:7px}.project-guide-controls button{font-size:10px;padding:10px 11px}.project-relationship{padding:15px}}
+@media(prefers-reduced-motion:reduce){.project-guide-controls button{transition:none}}

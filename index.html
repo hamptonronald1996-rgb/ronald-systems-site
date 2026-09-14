@@ -13,17 +13,18 @@
 <meta property="og:title" content="Build With Ronald — Repair, IT, Websites & Software">
 <meta property="og:description" content="Practical technology help for people and small businesses — repair, support, networking, websites and custom software.">
 <meta property="og:url" content="https://buildwithronald.com/">
-<meta property="og:image" content="https://buildwithronald.com/assets/build-with-ronald-social.png?v=6">
+<meta property="og:image" content="https://buildwithronald.com/assets/build-with-ronald-social.png?v=7">
 <meta name="twitter:card" content="summary_large_image">
 <title>Build With Ronald | Repair, IT, Websites & Software</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=6">
-<link rel="stylesheet" href="assets/workshop.css?v=6">
-<link rel="stylesheet" href="assets/service-guide.css?v=6">
-<link rel="stylesheet" href="assets/workshop-tour.css?v=6">
-<link rel="stylesheet" href="assets/workshop-info.css?v=6">
+<link rel="stylesheet" href="assets/site.css?v=7">
+<link rel="stylesheet" href="assets/workshop.css?v=7">
+<link rel="stylesheet" href="assets/service-guide.css?v=7">
+<link rel="stylesheet" href="assets/workshop-tour.css?v=7">
+<link rel="stylesheet" href="assets/workshop-info.css?v=7">
+<link rel="stylesheet" href="assets/project-guide.css?v=7">
 <noscript><style>.menu-btn,#requestForm{display:none}.mobile-panel{display:flex;position:relative;top:auto;left:auto;right:auto;margin:80px 16px 0;flex-wrap:wrap}.mobile-panel a{padding:12px}</style></noscript>
 </head>
 <body>
@@ -99,16 +100,18 @@
 <dialog id="workshopTour" class="workshop-tour" aria-labelledby="tourLabel" aria-describedby="tourInstructions">
  <div class="tour-top"><div class="tour-brand" id="tourLabel">BUILD WITH RONALD <span>/ THE WORKSHOP</span></div><button class="tour-close" id="tourClose" type="button">Close <span aria-hidden="true">×</span></button></div>
  <div class="tour-stations" id="tourStations" role="group" aria-label="Choose a workshop station"></div>
- <div class="tour-stage" id="tourStage" aria-hidden="true"></div>
+ <div class="tour-stage" id="tourStage"><button class="tour-overview" id="tourOverview" type="button" hidden>← Whole station</button></div>
  <div class="tour-bottom">
-  <div class="tour-panel" aria-live="polite" aria-atomic="true"><div class="tour-copyline"><b id="tourNumber">01 / 05</b><span id="tourDetail">COMPUTERS / PHONES / TABLETS</span></div><h2 id="tourTitle">The repair bench</h2><p id="tourCopy">Explore Ronald's technology workshop.</p><div class="actions"><a class="btn primary" id="tourPrimary" href="#services">Find a repair service ↗</a><a class="btn secondary" id="tourRequest" href="#contact">Start a request</a></div></div>
-  <div class="tour-tools"><div><p id="tourInstructions">Drag the scene to look around, or use the view buttons.</p><div class="tour-controls" role="group" aria-label="Adjust workshop view"><button id="tourLeft" type="button" aria-label="Rotate view left">↶</button><button id="tourReset" type="button">Reset view</button><button id="tourRight" type="button" aria-label="Rotate view right">↷</button></div></div><div class="tour-controls" role="group" aria-label="Step through workshop"><button id="tourPrevious" type="button" aria-label="Previous station">←</button><button id="tourNext" type="button" aria-label="Next station">Next station →</button></div></div>
+  <div class="tour-panel"><div class="tour-inspection"><label for="tourObject">Look closer</label><select id="tourObject"><option value="">Whole station</option></select></div><div aria-live="polite" aria-atomic="true"><div class="tour-copyline"><b id="tourNumber">01 / 05</b><span id="tourDetail">COMPUTERS / PHONES / TABLETS</span></div><h2 id="tourTitle">The repair bench</h2><p id="tourCopy">Explore Ronald's technology workshop.</p></div><div class="actions"><a class="btn primary" id="tourPrimary" href="#services">Find a repair service ↗</a><a class="btn secondary" id="tourRequest" href="#contact">Start a request</a></div></div>
+  <div class="tour-tools"><div><p id="tourInstructions">Tap a numbered point or choose an item to look closer.<br>Drag the scene or use the buttons to rotate.</p><div class="tour-controls" role="group" aria-label="Adjust workshop view"><button id="tourLeft" type="button" aria-label="Rotate view left">↶</button><button id="tourReset" type="button">Reset view</button><button id="tourRight" type="button" aria-label="Rotate view right">↷</button></div></div><div class="tour-controls" role="group" aria-label="Step through workshop"><button id="tourPrevious" type="button" aria-label="Previous station">←</button><button id="tourNext" type="button" aria-label="Next station">Next station →</button></div></div>
  </div>
 </dialog>
-<script src="assets/site.js?v=6" defer></script>
-<script src="assets/service-guide.js?v=6" defer></script>
+<script src="assets/site.js?v=7" defer></script>
+<script src="assets/service-guide.js?v=7" defer></script>
+<script src="assets/project-guide.js?v=7" defer></script>
+<script src="assets/workshop-items.js?v=7" defer></script>
 <script src="assets/vendor/three.min.js" defer></script>
-<script src="assets/workshop.js?v=6" defer></script>
-<script src="assets/workshop-tour.js?v=6" defer></script>
+<script src="assets/workshop.js?v=7" defer></script>
+<script src="assets/workshop-tour.js?v=7" defer></script>
 </body>
 </html>
