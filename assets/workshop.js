@@ -3,7 +3,7 @@ const progress=()=>window.workshopUI.journey();
 if(!window.THREE){document.getElementById('fallback').style.display='block';return}
 let renderer;try{renderer=new THREE.WebGLRenderer({antialias:innerWidth>900,alpha:true,powerPreference:'high-performance'})}catch(e){document.getElementById('fallback').style.display='block';return}
 const mount=document.getElementById('scene');mount.insertBefore(renderer.domElement,mount.firstChild);renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,innerWidth<900?1.2:1.65));renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.16;renderer.setClearColor(0x040609,1);
-const scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x05070b,.0158);const camera=new THREE.PerspectiveCamera(innerWidth<700?63:53,innerWidth/innerHeight,.1,280);scene.add(new THREE.AmbientLight(0x6580a3,.24));const blue=0x29c4ff,orange=0xff5a1f;
+const scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x05070b,.0158);const camera=new THREE.PerspectiveCamera(innerWidth<700?63:53,innerWidth/innerHeight,.1,95);scene.add(new THREE.AmbientLight(0x6580a3,.24));const blue=0x29c4ff,orange=0xff5a1f;
 const key=new THREE.PointLight(blue,2.2,58,2);scene.add(key);const warm=new THREE.PointLight(orange,2.5,52,2);scene.add(warm);const metal=new THREE.MeshStandardMaterial({color:0x101722,metalness:.78,roughness:.32}),dark=new THREE.MeshStandardMaterial({color:0x080d13,metalness:.45,roughness:.5}),blueMat=new THREE.MeshStandardMaterial({color:blue,emissive:0x063850,emissiveIntensity:.85,metalness:.4,roughness:.25}),orangeMat=new THREE.MeshStandardMaterial({color:orange,emissive:0x5c1605,emissiveIntensity:.82,metalness:.45,roughness:.27}),lineBlue=new THREE.MeshBasicMaterial({color:blue,transparent:true,opacity:.55}),lineOrange=new THREE.MeshBasicMaterial({color:orange,transparent:true,opacity:.58});
 const world=new THREE.Group();scene.add(world);const floor=new THREE.Mesh(new THREE.PlaneGeometry(28,190,1,1),new THREE.MeshStandardMaterial({color:0x070b11,metalness:.3,roughness:.82}));floor.rotation.x=-Math.PI/2;floor.position.set(0,-3,-73);world.add(floor);const grid=new THREE.GridHelper(190,95,0x164c68,0x0a151f);grid.position.set(0,-2.98,-72);grid.material.transparent=true;grid.material.opacity=.28;world.add(grid);
 for(let i=0;i<26;i++){const z=12-i*6.1;[-12,12].forEach(x=>{const post=new THREE.Mesh(new THREE.BoxGeometry(.11,8,.11),dark);post.position.set(x,1,z);world.add(post)});const beam=new THREE.Mesh(new THREE.BoxGeometry(24,.09,.1),dark);beam.position.set(0,5,z);world.add(beam);if(i%2===0){const strip=new THREE.Mesh(new THREE.BoxGeometry(5.6,.035,.04),i%4===0?lineOrange:lineBlue);strip.position.set(i%4===0?-3.5:3.5,4.85,z+.03);world.add(strip)}}
@@ -28,7 +28,7 @@ function label(text,sub,color=blue){
  const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;
  return new THREE.Mesh(new THREE.PlaneGeometry(5,1.25),new THREE.MeshBasicMaterial({map:t,toneMapped:false}));
 }
-const signage=[['REPAIR LAB','01 / DIAGNOSE. REPAIR. RESTORE.',-5,3,-25.4,orange],['BUSINESS IT','02 / CONNECT. BACK UP. SUPPORT.',5,3,-51,blue],['DIGITAL SYSTEMS','03 / WEBSITES. SOFTWARE. WORKFLOWS.',-4.8,3,-76,blue],['NETWORK / SERVER','04 / BUILT TO KEEP YOU RUNNING.',5,3.2,-101,orange],['SECURITY LAB','05 / CAMERAS. SENSORS. SYSTEMS.',-4.5,3,-109,blue]];
+const signage=[['REPAIR LAB','01 / DIAGNOSE. REPAIR. RESTORE.',-5,3,-25.4,orange],['BUSINESS IT','02 / CONNECT. BACK UP. SUPPORT.',5,3,-51,blue],['DIGITAL SYSTEMS','03 / WEBSITES. SOFTWARE. WORKFLOWS.',-4.8,3.7,-76,blue],['NETWORK / SERVER','04 / BUILT TO KEEP YOU RUNNING.',5,3.2,-101,orange],['SECURITY LAB','05 / CAMERAS. SENSORS. SYSTEMS.',-4.5,3,-109,blue]];
 signage.forEach(([title,sub,x,y,z,color])=>{const sign=label(title,sub,color);sign.position.set(x,y,z);scene.add(sign);});
 const rubber=new THREE.MeshStandardMaterial({color:0x173d49,roughness:.94});
 box(scene,[4.7,.035,1.85],[-5,-.405,-24],rubber);
@@ -64,11 +64,27 @@ new THREE.TextureLoader().load('assets/projects/fur-love-logo.webp',texture=>{co
 const opsScreen=label('OPERATIONS','FUR THE LOVE / THE BUSINESS BEHIND THE CARE',blue);opsScreen.scale.set(.405,.9,1);opsScreen.position.set(-7.1,1,-74.76);scene.add(opsScreen);
 const codeScreen=label('CODECREDIT','AI WORKSPACE / BUILD WITH PURPOSE',orange);codeScreen.scale.set(.405,.9,1);codeScreen.position.set(-2.5,1,-74.76);scene.add(codeScreen);
 const webLabel=label('SELECTED BUILDS','FUR THE LOVE / SECURE WATCH / CODECREDIT',orange);webLabel.scale.setScalar(.54);webLabel.position.set(-4.8,-.5,-74.75);scene.add(webLabel);
-// Replace the abstract destination rings with a grounded dispatch workstation.
+// Soft contact shadows anchor the hardware without expensive real-time shadow maps.
+const shadowCanvas=document.createElement('canvas');shadowCanvas.width=shadowCanvas.height=128;
+const shadowContext=shadowCanvas.getContext('2d'),gradient=shadowContext.createRadialGradient(64,64,8,64,64,64);
+gradient.addColorStop(0,'rgba(0,0,0,.8)');gradient.addColorStop(.45,'rgba(0,0,0,.6)');gradient.addColorStop(1,'rgba(0,0,0,0)');
+shadowContext.fillStyle=gradient;shadowContext.fillRect(0,0,128,128);
+const shadowTexture=new THREE.CanvasTexture(shadowCanvas);
+for(const [x,z,w,d] of [[-5,-24,8,5],[5,-49,8,5],[-4.8,-75,10,5],[5,-100,6,5],[-4.5,-107,8,6]]){
+ const shadow=new THREE.Mesh(new THREE.PlaneGeometry(w,d),new THREE.MeshBasicMaterial({map:shadowTexture,transparent:true,depthWrite:false}));shadow.rotation.x=-Math.PI/2;shadow.position.set(x,-2.965,z);scene.add(shadow);
+}
+// Small, deliberate finishes make the benches read as a working place.
+box(bizBench,[4.8,.045,.035],[0,-.18,1.11],blueMat);
+box(repairBench,[4.8,.045,.035],[0,-.18,1.11],orangeMat);
+box(securityBench,[4.8,.045,.035],[0,-.18,1.11],blueMat);
+box(scene,[1.8,.07,.55],[5,-.38,-48.15],dark);
+const deskKeys=new THREE.InstancedMesh(new THREE.BoxGeometry(.1,.02,.09),metal,36);
+for(let row=0;row<3;row++)for(let col=0;col<12;col++){matrix.makeTranslation(4.28+col*.13,-.33,-48.3+row*.15);deskKeys.setMatrixAt(row*12+col,matrix);}scene.add(deskKeys);
+for(const x of [3.5,6.5]){box(rack,[.075,4.7,.09],[x-5,-.05,.89],metal);}
 
 const motionQuery=matchMedia('(prefers-reduced-motion: reduce)');
 const toggle=document.getElementById('motionToggle'),menuToggle=document.getElementById('motionMenuToggle');const motionButtons=[toggle,menuToggle];motionButtons.forEach(button=>button.hidden=false);
-let paused=motionQuery.matches,mouseX=0,mouseY=0,currentP=progress(),last=0,raf=0,dirty=true;
+let paused=motionQuery.matches,mouseX=0,mouseY=0,currentP=progress(),last=0,raf=0;
 let contextLost=false;
 const diagnostic=label('DIAGNOSTICS','DEVICE / STORAGE / SYSTEM CHECK',blue);diagnostic.scale.set(.44,.7,1);diagnostic.position.set(0,.74,-.655);diagnostic.rotation.x=-.18;laptop.add(diagnostic);
 const backlight=new THREE.PointLight(blue,2.5,12,1);backlight.position.set(-3,1,-25);scene.add(backlight);
@@ -79,33 +95,72 @@ motionQuery.addEventListener('change',e=>{paused=e.matches;updateToggle();invali
 // Alternating compositions leave clear space for each chapter's copy.
 const views=[
  {p:[-8.8,2.8,-15.8],t:[-8.1,.35,-24]},
- {p:[-.1,2.4,-15.6],t:[-.2,.35,-24]},
+ {p:[9.5,2.4,-40.6],t:[9,.35,-49]},
  {p:[-9.4,2.3,-65.6],t:[-8.4,.7,-75]},
  {p:[9.4,2,-91.6],t:[8.7,.2,-100]},
  {p:[-9.1,2.4,-98],t:[-7.8,.3,-107]}
 ];
+const stations=[
+ {p:[-1.8,2.7,-15],t:[-5,.4,-24]},
+ {p:[8.2,2.4,-40],t:[5,.5,-49]},
+ {p:[-3.8,2,-64],t:[-4.8,.7,-75]},
+ {p:[8.1,1.9,-90.5],t:[5,.05,-100]},
+ {p:[-.8,2.2,-98],t:[-4.1,.4,-107]}
+];
 const pos=new THREE.Vector3(),look=new THREE.Vector3(),a=new THREE.Vector3(),b=new THREE.Vector3();
-function invalidate(){dirty=true;if(!raf&&!document.hidden&&!contextLost)raf=requestAnimationFrame(frame);}
+const tourPos=new THREE.Vector3(),tourLook=new THREE.Vector3();
+let exploring=false,tourIndex=0,orbit=0,viewCenter=null;
+function tourTarget(){
+ const station=stations[tourIndex];look.fromArray(station.t);pos.fromArray(station.p).sub(look);
+ pos.applyAxisAngle(new THREE.Vector3(0,1,0),orbit);
+ // Keep the entire bench visible inside the clear view area on narrow or short screens.
+ const scale=viewCenter?Math.max(1,innerHeight/Math.max(200,viewCenter.height)*(innerWidth<700?.53:.62)):1;
+ pos.multiplyScalar(scale*(innerWidth<700?1.12:1));pos.add(look);
+}
+window.workshopScene={
+ available:()=>!contextLost,
+ enter(){exploring=true;tourIndex=0;orbit=0;tourTarget();tourPos.copy(pos);tourLook.copy(look);invalidate();},
+ station(index){tourIndex=THREE.MathUtils.clamp(index,0,stations.length-1);orbit=0;invalidate();},
+ orbit(delta){orbit=THREE.MathUtils.clamp(orbit+delta,-.65,.65);invalidate();},
+ reset(){orbit=0;invalidate();},
+ frameAt(x,y,height){viewCenter={x,y,height};invalidate();},
+ exit(){exploring=false;viewCenter=null;currentP=progress();camera.clearViewOffset();invalidate();}
+};
+window.dispatchEvent(new Event('workshopavailability'));
+function invalidate(){if(!raf&&!document.hidden&&!contextLost)raf=requestAnimationFrame(frame);}
 function frame(now){
  raf=0;if(document.hidden||contextLost)return;
  const dt=Math.min(.05,(now-last)/1000||.016);last=now;
- const target=progress();currentP=paused?currentP:THREE.MathUtils.lerp(currentP,target,1-Math.exp(-dt*7));
- if(!paused&&Math.abs(currentP-target)<.0001)currentP=target;
+ const target=progress();let moving=false;
+ if(exploring){
+  tourTarget();
+  const blend=paused?1:1-Math.exp(-dt*7);
+  tourPos.lerp(pos,blend);tourLook.lerp(look,blend);
+  moving=tourPos.distanceToSquared(pos)>.000001||tourLook.distanceToSquared(look)>.000001;
+  if(!moving){tourPos.copy(pos);tourLook.copy(look);}
+  pos.copy(tourPos);look.copy(tourLook);
+  if(viewCenter)camera.setViewOffset(innerWidth,innerHeight,innerWidth/2-viewCenter.x,innerHeight/2-viewCenter.y,innerWidth,innerHeight);
+ }else{
+ currentP=paused?target:THREE.MathUtils.lerp(currentP,target,1-Math.exp(-dt*7));
+ if(Math.abs(currentP-target)<.0001)currentP=target;
  const i=Math.min(3,Math.floor(currentP)),mix=Math.min(1,currentP-i);
  pos.copy(a.fromArray(views[i].p)).lerp(b.fromArray(views[i+1].p),mix);
  look.copy(a.fromArray(views[i].t)).lerp(b.fromArray(views[i+1].t),mix);
  if(innerWidth<900){pos.x=look.x+(i===0&&mix<.5?1.3:0);pos.y+=1.1;pos.z+=3.5;look.y+=2.6;look.x=i===0&&mix<.5?-5:look.x;}
- camera.position.set(pos.x+(paused?0:mouseX*.3),pos.y+(paused?0:mouseY*.12),pos.z);camera.lookAt(look);
- key.position.set(pos.x+3,pos.y+4,pos.z-5);warm.position.set(pos.x-3,pos.y+1,pos.z-5);
- renderer.render(scene,camera);dirty=false;
- if(!paused&&currentP!==target)invalidate();
+ moving=currentP!==target;
+ }
+ camera.position.set(pos.x+(paused||exploring?0:mouseX*.3),pos.y+(paused||exploring?0:mouseY*.12),pos.z);camera.lookAt(look);
+ if(exploring){key.position.set(look.x+4,look.y+6,look.z+5);warm.position.set(look.x-4,look.y+3,look.z+3);}
+ else{key.position.set(pos.x+3,pos.y+4,pos.z-5);warm.position.set(pos.x-3,pos.y+1,pos.z-5);}
+ renderer.render(scene,camera);
+ if(!paused&&moving)invalidate();
 }
-addEventListener('scroll',()=>{if(!paused)invalidate();},{passive:true});
-addEventListener('pointermove',e=>{if(paused||e.pointerType!=='mouse'||innerWidth<900)return;mouseX=e.clientX/innerWidth-.5;mouseY=e.clientY/innerHeight-.5;invalidate();},{passive:true});
+addEventListener('workshopjourneychange',()=>{if(!exploring)invalidate();});
+addEventListener('pointermove',e=>{if(paused||exploring||e.pointerType!=='mouse'||innerWidth<900)return;mouseX=e.clientX/innerWidth-.5;mouseY=e.clientY/innerHeight-.5;invalidate();},{passive:true});
 function resize(){camera.aspect=innerWidth/innerHeight;camera.fov=innerWidth<700?63:53;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,innerWidth<900?1:1.5));invalidate();}
 addEventListener('resize',resize);
 document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;}else{last=performance.now();invalidate();}});
-renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();contextLost=true;cancelAnimationFrame(raf);raf=0;renderer.domElement.style.display='none';document.getElementById('fallback').style.display='block';motionButtons.forEach(button=>button.hidden=true);});
-renderer.domElement.addEventListener('webglcontextrestored',()=>{contextLost=false;renderer.domElement.style.display='block';document.getElementById('fallback').style.display='none';motionButtons.forEach(button=>button.hidden=false);invalidate();});
+renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();contextLost=true;cancelAnimationFrame(raf);raf=0;renderer.domElement.style.display='none';document.getElementById('fallback').style.display='block';motionButtons.forEach(button=>button.hidden=true);window.dispatchEvent(new Event('workshopavailability'));});
+renderer.domElement.addEventListener('webglcontextrestored',()=>{contextLost=false;renderer.domElement.style.display='block';document.getElementById('fallback').style.display='none';motionButtons.forEach(button=>button.hidden=false);window.dispatchEvent(new Event('workshopavailability'));invalidate();});
 resize();
 })();

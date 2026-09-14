@@ -10,7 +10,7 @@ for(const [,url] of html.matchAll(/\b(?:href|src)="([^"]+)"/g)){
  if(url.startsWith('#')) assert(ids.includes(url.slice(1)),`Missing section: ${url}`);
  else if(!/^(https?:|mailto:|data:)/.test(url)) assert(fs.existsSync(path.join(root,url.split('?')[0])),`Missing asset: ${url}`);
 }
-for(const file of ['site.js','workshop.js','vendor/three.min.js'])new vm.Script(fs.readFileSync(path.join(root,'assets',file),'utf8'),{filename:file});
+for(const file of ['site.js','workshop.js','workshop-tour.js','service-guide.js','vendor/three.min.js'])new vm.Script(fs.readFileSync(path.join(root,'assets',file),'utf8'),{filename:file});
 const scene=fs.readFileSync(path.join(root,'assets/workshop.js'),'utf8');
 for(const [,file] of scene.matchAll(/\.load\('(assets\/[^']+)'/g))assert(fs.existsSync(path.join(root,file)),`Missing scene texture: ${file}`);
 for(const [,id] of html.matchAll(/<label for="([^"]+)"/g))assert(ids.includes(id),`Missing labelled control: ${id}`);

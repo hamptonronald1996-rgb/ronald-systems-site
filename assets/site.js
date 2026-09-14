@@ -30,7 +30,11 @@
     const fraction = next ? Math.min(1,Math.max(0,(y-anchors[active])/(next-anchors[active]))) : 0;
     // Hold on the equipment, then ease into the next station in the final part of each chapter.
     const travel = Math.max(0,(fraction-.64)/.36);
-    sectionPosition = active + travel*travel*(3-2*travel);
+    const nextPosition = active + travel*travel*(3-2*travel);
+    if (nextPosition !== sectionPosition) {
+      sectionPosition = nextPosition;
+      window.dispatchEvent(new Event('workshopjourneychange'));
+    }
     chapters.forEach((s,i)=>s.classList.toggle('active',i===active));
     links.forEach(a=>{const current=a.hash==='#'+chapters[active].id;a.classList.toggle('active',current);if(current)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});
     document.getElementById('hudText').textContent=chapters[active].dataset.label;
@@ -45,8 +49,10 @@
   const form=document.getElementById('requestForm'), service=document.getElementById('serviceType');
   const details=document.getElementById('requestDetails'), mode=document.getElementById('serviceMode');
   const status=document.getElementById('requestStatus'), fallback=document.getElementById('requestFallback');
+  let requestRevision=0;
+  function clearPreparedRequest(){requestRevision++;status.textContent='';fallback.hidden=true;fallback.value='';}
   document.querySelectorAll('[data-service]').forEach(a=>a.addEventListener('click',()=>{
-    service.value=a.dataset.service;status.textContent='';
+    service.value=a.dataset.service;clearPreparedRequest();
     // Preserve a visitor's existing message when they explore another project.
     if(a.dataset.project && !details.value.trim()){
       details.value=`I'd like to discuss ${a.dataset.project}.\n\nWhat I need: `;
@@ -55,12 +61,16 @@
   }));
   function requestText(){return `Hi Ronald,\n\nService: ${service.value || 'Not sure yet'}\nPreferred support: ${mode.value}\n\n${details.value.trim()}\n\nMy name / best way to reach me:\n`;}
   function valid(){if(!details.value.trim())details.setCustomValidity('Please describe what you need help with.');else details.setCustomValidity('');return form.reportValidity();}
-  details.addEventListener('input',()=>{details.setCustomValidity('');status.textContent='';fallback.hidden=true;});
-  form.addEventListener('submit',e=>{e.preventDefault();if(!valid())return;const subject=`Build With Ronald — ${service.value || 'Service request'}`;const href=`mailto:hampton.ronald1996@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(requestText())}`;status.textContent='Your draft is ready for your email app. If it doesn’t open, use Copy request and email Ronald directly.';location.href=href;});
+  details.addEventListener('input',()=>{details.setCustomValidity('');clearPreparedRequest();});
+  service.addEventListener('change',clearPreparedRequest);
+  mode.addEventListener('change',clearPreparedRequest);
+  form.addEventListener('submit',e=>{e.preventDefault();if(!valid())return;clearPreparedRequest();const subject=`Build With Ronald — ${service.value || 'Service request'}`;const href=`mailto:hampton.ronald1996@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(requestText())}`;status.textContent='Your draft is ready for your email app. If it doesn’t open, use Copy request and email Ronald directly.';location.href=href;});
   document.getElementById('copyRequest').addEventListener('click',async()=>{
     if(!valid())return;
+    clearPreparedRequest();
+    const revision=requestRevision;
     const text=`To: hampton.ronald1996@gmail.com\n\n${requestText()}`;
-    try{await navigator.clipboard.writeText(text);status.textContent='Request copied. Paste it into an email to hampton.ronald1996@gmail.com.';}
-    catch{fallback.value=text;fallback.hidden=false;fallback.focus();fallback.select();status.textContent='Select and copy the prepared request below, then paste it into your email.';}
+    try{await navigator.clipboard.writeText(text);if(revision!==requestRevision)return;status.textContent='Request copied. Paste it into an email to hampton.ronald1996@gmail.com.';}
+    catch{if(revision!==requestRevision)return;fallback.value=text;fallback.hidden=false;fallback.focus();fallback.select();status.textContent='Select and copy the prepared request below, then paste it into your email.';}
   });
 })();
