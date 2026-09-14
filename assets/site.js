@@ -45,7 +45,14 @@
   const form=document.getElementById('requestForm'), service=document.getElementById('serviceType');
   const details=document.getElementById('requestDetails'), mode=document.getElementById('serviceMode');
   const status=document.getElementById('requestStatus'), fallback=document.getElementById('requestFallback');
-  document.querySelectorAll('[data-service]').forEach(a=>a.addEventListener('click',()=>{service.value=a.dataset.service;status.textContent='';}));
+  document.querySelectorAll('[data-service]').forEach(a=>a.addEventListener('click',()=>{
+    service.value=a.dataset.service;status.textContent='';
+    // Preserve a visitor's existing message when they explore another project.
+    if(a.dataset.project && !details.value.trim()){
+      details.value=`I'd like to discuss ${a.dataset.project}.\n\nWhat I need: `;
+      details.setCustomValidity('');
+    }
+  }));
   function requestText(){return `Hi Ronald,\n\nService: ${service.value || 'Not sure yet'}\nPreferred support: ${mode.value}\n\n${details.value.trim()}\n\nMy name / best way to reach me:\n`;}
   function valid(){if(!details.value.trim())details.setCustomValidity('Please describe what you need help with.');else details.setCustomValidity('');return form.reportValidity();}
   details.addEventListener('input',()=>{details.setCustomValidity('');status.textContent='';fallback.hidden=true;});

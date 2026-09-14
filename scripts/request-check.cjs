@@ -26,5 +26,8 @@ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../assets/site.js'),'utf
  assert(copied.includes('Networking & Wi-Fi'));assert.equal(ids.requestFallback.hidden,true);
  context.navigator.clipboard.writeText=async()=>{throw new Error('Clipboard denied');};
  await ids.copyRequest.handlers.click();assert.equal(ids.requestFallback.hidden,false);assert(ids.requestFallback.selected);assert.equal(ids.requestFallback.value,copied);
- console.log('PASS: service selection, blank validation, encoded email draft, copy content, and clipboard-denied fallback');
+ serviceLink.dataset.project='CodeCredit';serviceLink.dataset.service='Custom software & AI';
+ ids.requestDetails.value='';serviceLink.handlers.click();assert(ids.requestDetails.value.includes('CodeCredit'));assert.equal(ids.serviceType.value,'Custom software & AI');
+ ids.requestDetails.value='Keep my existing request';serviceLink.handlers.click();assert.equal(ids.requestDetails.value,'Keep my existing request');
+ console.log('PASS: service selection, blank validation, encoded email draft, copy content, clipboard-denied fallback, and project enquiry preservation');
 })().catch(error=>{console.error(error);process.exitCode=1;});
