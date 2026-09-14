@@ -1,0 +1,13 @@
+.service-guide{margin-top:30px;padding-top:22px;border-top:1px solid var(--line)}
+.service-guide-title{margin:0 0 13px;color:#dce7ef;font:500 11px/1.5 JetBrains Mono,monospace;letter-spacing:.07em;text-transform:uppercase}
+.service-guide-controls{display:flex;flex-wrap:wrap;gap:8px}
+.service-guide-controls button{min-height:44px;padding:10px 13px;border:1px solid #354451;border-radius:7px;background:#0a141dd9;color:#c9d6e1;font:500 11px/1.45 JetBrains Mono,monospace;text-align:left;cursor:pointer;transition:color .18s,border-color .18s,background .18s}
+.service-guide-controls button:hover{border-color:#79d9ff;color:#fff;background:#102534}
+.service-guide-controls button[aria-pressed="true"]{border-color:var(--blue);background:#113044;color:#e1f6ff;box-shadow:inset 0 -2px 0 var(--blue)}
+.service-guide-controls button:focus-visible{outline:2px solid var(--orange);outline-offset:4px}
+.service-guide-intro{margin:17px 0 0;color:#b8c8d5;font-size:13px;line-height:1.65;max-width:590px}
+.service-guide-status{margin:12px 0 0;color:#83d8f8;font:500 10px/1.5 JetBrains Mono,monospace;letter-spacing:.025em}
+.service-guide+.service-grid{margin-top:18px}
+#services .service[hidden]{display:none!important}
+@media(max-width:520px){.service-guide{margin-top:25px;padding-top:20px}.service-guide-controls{gap:7px}.service-guide-controls button{font-size:10px;padding:10px 11px}.service-guide-intro{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.service-guide-controls button{transition:none}}

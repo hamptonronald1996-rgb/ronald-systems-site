@@ -1,0 +1,15 @@
+.workshop-info{margin-top:28px;display:grid;gap:20px}
+.workshop-intro{padding:2px 0 2px 17px;border-left:2px solid var(--orange)}
+.workshop-intro .workshop-info-eyebrow{margin:0 0 7px;color:#86d9f8;font:500 9px/1.5 JetBrains Mono,monospace;letter-spacing:.09em;text-transform:uppercase}
+.workshop-intro h3{font-size:23px;line-height:1.2;letter-spacing:-.02em}
+.workshop-intro p{margin:10px 0 0;color:#bdcad6;font-size:14px;line-height:1.7;max-width:600px}
+.workshop-faq{border-top:1px solid #2a3b4a}
+.workshop-faq details{border-bottom:1px solid #2a3b4a}
+.workshop-faq summary{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:54px;padding:14px 2px;color:#dce6ef;font-size:13px;font-weight:500;line-height:1.5;list-style:none;cursor:pointer}
+.workshop-faq summary::-webkit-details-marker{display:none}
+.workshop-faq summary::after{content:'+';flex-shrink:0;color:var(--blue);font:400 20px/1 JetBrains Mono,monospace}
+.workshop-faq details[open] summary::after{content:'−'}
+.workshop-faq summary:hover{color:#8de0ff}
+.workshop-faq summary:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:3px}
+.workshop-faq details p{margin:0;padding:0 24px 18px 2px;color:#b1c1d0;font-size:13px;line-height:1.7}
+@media(max-width:520px){.workshop-info{gap:17px;margin-top:24px}.workshop-intro{padding-left:14px}.workshop-intro h3{font-size:22px}.workshop-intro p{font-size:13px}.workshop-faq summary{font-size:13px;gap:12px}}
