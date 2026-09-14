@@ -60,19 +60,21 @@ box(scene,[8,4.6,.14],[-4.8,.6,-75.4],dark);
 box(scene,[8,.18,1.2],[-4.8,-1.5,-75],metal);
 for(const x of [-8.2,-1.4])box(scene,[.16,1.4,.16],[x,-2.25,-75],metal);
 // Real public-project imagery on the systems wall; no third-party requests during the journey.
-new THREE.TextureLoader().load('assets/projects/dog-boarding.webp',texture=>{texture.encoding=THREE.sRGBEncoding;const screen=new THREE.Mesh(new THREE.PlaneGeometry(2.04,1.34),new THREE.MeshBasicMaterial({map:texture,toneMapped:false}));screen.position.set(-4.8,1,-74.8);scene.add(screen);invalidate();},undefined,()=>{});
-const webLabel=label('FUR THE LOVE','PET CARE / BOOKING / CUSTOMER FLOW',orange);webLabel.scale.setScalar(.54);webLabel.position.set(-4.8,-.5,-74.75);scene.add(webLabel);
+new THREE.TextureLoader().load('assets/projects/fur-love-logo.webp',texture=>{const board=document.createElement('canvas');board.width=1024;board.height=672;const ctx=board.getContext('2d');ctx.fillStyle='#f8f4ec';ctx.fillRect(0,0,1024,672);const scale=Math.min(860/texture.image.width,510/texture.image.height),w=texture.image.width*scale,h=texture.image.height*scale;ctx.drawImage(texture.image,(1024-w)/2,(672-h)/2,w,h);const displayTexture=new THREE.CanvasTexture(board);displayTexture.encoding=THREE.sRGBEncoding;texture.dispose();const screen=new THREE.Mesh(new THREE.PlaneGeometry(2.04,1.34),new THREE.MeshBasicMaterial({map:displayTexture,toneMapped:false}));screen.position.set(-4.8,1,-74.8);scene.add(screen);invalidate();},undefined,()=>{});
+const opsScreen=label('OPERATIONS','FUR THE LOVE / THE BUSINESS BEHIND THE CARE',blue);opsScreen.scale.set(.405,.9,1);opsScreen.position.set(-7.1,1,-74.76);scene.add(opsScreen);
+const codeScreen=label('CODECREDIT','AI WORKSPACE / BUILD WITH PURPOSE',orange);codeScreen.scale.set(.405,.9,1);codeScreen.position.set(-2.5,1,-74.76);scene.add(codeScreen);
+const webLabel=label('SELECTED BUILDS','FUR THE LOVE / SECURE WATCH / CODECREDIT',orange);webLabel.scale.setScalar(.54);webLabel.position.set(-4.8,-.5,-74.75);scene.add(webLabel);
 // Replace the abstract destination rings with a grounded dispatch workstation.
 
 const motionQuery=matchMedia('(prefers-reduced-motion: reduce)');
-const toggle=document.getElementById('motionToggle');toggle.hidden=false;
+const toggle=document.getElementById('motionToggle'),menuToggle=document.getElementById('motionMenuToggle');const motionButtons=[toggle,menuToggle];motionButtons.forEach(button=>button.hidden=false);
 let paused=motionQuery.matches,mouseX=0,mouseY=0,currentP=progress(),last=0,raf=0,dirty=true;
 let contextLost=false;
 const diagnostic=label('DIAGNOSTICS','DEVICE / STORAGE / SYSTEM CHECK',blue);diagnostic.scale.set(.44,.7,1);diagnostic.position.set(0,.74,-.655);diagnostic.rotation.x=-.18;laptop.add(diagnostic);
 const backlight=new THREE.PointLight(blue,2.5,12,1);backlight.position.set(-3,1,-25);scene.add(backlight);
-function updateToggle(){toggle.textContent=paused?'Enable 3D motion':'Pause 3D motion';toggle.setAttribute('aria-pressed',String(paused));}
+function updateToggle(){motionButtons.forEach(button=>{button.textContent=paused?'Enable 3D motion':'Pause 3D motion';button.setAttribute('aria-pressed',String(paused));});}
 updateToggle();
-toggle.addEventListener('click',()=>{paused=!paused;mouseX=mouseY=0;updateToggle();invalidate();});
+motionButtons.forEach(button=>button.addEventListener('click',()=>{paused=!paused;mouseX=mouseY=0;updateToggle();invalidate();}));
 motionQuery.addEventListener('change',e=>{paused=e.matches;updateToggle();invalidate();});
 // Alternating compositions leave clear space for each chapter's copy.
 const views=[
@@ -103,7 +105,7 @@ addEventListener('pointermove',e=>{if(paused||e.pointerType!=='mouse'||innerWidt
 function resize(){camera.aspect=innerWidth/innerHeight;camera.fov=innerWidth<700?63:53;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,innerWidth<900?1:1.5));invalidate();}
 addEventListener('resize',resize);
 document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;}else{last=performance.now();invalidate();}});
-renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();contextLost=true;cancelAnimationFrame(raf);raf=0;renderer.domElement.style.display='none';document.getElementById('fallback').style.display='block';toggle.hidden=true;});
-renderer.domElement.addEventListener('webglcontextrestored',()=>{contextLost=false;renderer.domElement.style.display='block';document.getElementById('fallback').style.display='none';toggle.hidden=false;invalidate();});
+renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();contextLost=true;cancelAnimationFrame(raf);raf=0;renderer.domElement.style.display='none';document.getElementById('fallback').style.display='block';motionButtons.forEach(button=>button.hidden=true);});
+renderer.domElement.addEventListener('webglcontextrestored',()=>{contextLost=false;renderer.domElement.style.display='block';document.getElementById('fallback').style.display='none';motionButtons.forEach(button=>button.hidden=false);invalidate();});
 resize();
 })();
