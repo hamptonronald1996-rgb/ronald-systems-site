@@ -7,7 +7,9 @@
     { id: 'repair', label: 'Device repair', intro: 'A slow computer, damaged screen or a device that will not cooperate? Start with the device you need help with.' },
     { id: 'business', label: 'Business IT', intro: 'Keep the tools around your business connected: workstations, email, printers, networks and Wi-Fi.' },
     { id: 'software', label: 'Websites & software', intro: 'Give customers a clear way to reach you, or connect the bookings, tasks and information behind your business.' },
-    { id: 'systems', label: 'Servers & security', intro: 'Bring cameras, local servers and connected devices into a plan that fits your space and the way you use it.' }
+    { id: 'systems', label: 'Servers & security', intro: 'Bring cameras, local servers and connected devices into a plan that fits your space and the way you use it.' },
+    { id: 'mechanic', label: 'Mechanic work', intro: 'Common vehicle repairs including brakes, axles, catalytic converters, alternators, thermostats and lower ball joints.' },
+    { id: 'handyman', label: 'Handyman work', intro: 'Practical help around your home or property, including simple electrical work, painting, landscaping and minor plumbing.' }
   ];
   const categoryByTitle = new Map([
     ['Computer & laptop repair', 'repair'],
@@ -16,7 +18,9 @@
     ['Networking & Wi-Fi', 'business'],
     ['Websites & online systems', 'software'],
     ['Custom software & AI', 'software'],
-    ['Servers & security technology', 'systems']
+    ['Servers & security technology', 'systems'],
+    ['Mechanic work', 'mechanic'],
+    ['Handyman work', 'handyman']
   ]);
   const cards = [...grid.querySelectorAll('.service')].map(card => ({
     element: card,

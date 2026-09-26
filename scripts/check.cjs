@@ -16,11 +16,11 @@ for(const [,file] of scene.matchAll(/['"](assets\/projects\/[^'"]+)['"]/g))asser
 const catalogueContext={window:{}};
 vm.runInNewContext(fs.readFileSync(path.join(root,'assets/workshop-items.js'),'utf8'),catalogueContext,{filename:'workshop-items.js'});
 const equipment=catalogueContext.window.workshopItems;
-assert.equal(equipment.length,12,'The workshop must contain the 12 routed equipment items');
+assert.equal(equipment.length,18,'The workshop must contain the 18 routed equipment items');
 assert.equal(new Set(equipment.map(item=>item.id)).size,equipment.length,'Equipment IDs must be unique');
 const serviceOptions=[...html.match(/<select id="serviceType"[\s\S]*?<\/select>/)[0].matchAll(/<option(?: [^>]*)?>([^<]+)<\/option>/g)].map(match=>match[1]);
 for(const item of equipment){
- assert(Number.isInteger(item.station)&&item.station>=0&&item.station<5,`Invalid station for ${item.id}`);
+ assert(Number.isInteger(item.station)&&item.station>=0&&item.station<7,`Invalid station for ${item.id}`);
  for(const field of ['anchor','target','camera','size'])assert(item[field].length===3&&item[field].every(Number.isFinite),`Invalid ${field} for ${item.id}`);
  assert(item.size.every(value=>value>0),`Equipment bounds must be positive for ${item.id}`);
  assert(serviceOptions.includes(item.service),`Missing enquiry service for ${item.id}`);
@@ -46,4 +46,4 @@ for(let n=0;n<u16(ifd);n++){const entry=ifd+2+n*12;if(u16(entry)===0x0112)orient
 assert.equal(orientation,6,'Original dogs photo must retain its upright display orientation');
 console.log('PASS: script syntax, local assets, scene textures, anchors, unique IDs, labels, and direct email fallback');
 console.log('PASS: exactly four approved showcase projects and retained photo orientation');
-console.log('PASS: 12 unique equipment items, five valid stations, finite scene bounds, enquiry routes, four project destinations, and script dependency order');
+console.log('PASS: 18 unique equipment items, seven valid stations, finite scene bounds, enquiry routes, four project destinations, and script dependency order');

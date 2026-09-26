@@ -71,9 +71,9 @@ function launch(test,index=0,scroll=1250){test.context.scrollY=scroll;test.launc
 function inspect(test,id){test.nodes.tourObject.value=id;test.nodes.tourObject.dispatchEvent(new TestEvent('change'));}
 function selected(test,index){
  const buttons=test.nodes.tourStations.children;
- assert.equal(buttons.length,5);
+ assert.equal(buttons.length,7);
  buttons.forEach((button,i)=>assert.equal(button.attributes['aria-pressed'],String(i===index),'Exactly one station must expose its selected state'));
- assert.equal(test.nodes.tourNumber.textContent,`0${index+1} / 05`);
+ assert.equal(test.nodes.tourNumber.textContent,`0${index+1} / 07`);
  assert.equal(test.calls.filter(call=>call[0]==='station').at(-1)[1],index);
  assert(test.nodes.tourTitle.textContent.length>0);assert(test.nodes.tourCopy.textContent.length>0);
 }
@@ -102,8 +102,8 @@ for(const [control,shiftKey] of [[basic.nodes.tourClose,false],[basic.nodes.tour
 }
 basic.nodes.tourClose.focus();const otherKey=new TestEvent('keydown',{key:'Escape'});basic.dialog.dispatchEvent(otherKey);
 assert.notEqual(otherKey.defaultPrevented,true,'The Tab boundary handler must preserve native Escape dismissal');
-click(basic.nodes.tourPrevious);selected(basic,4);click(basic.nodes.tourNext);selected(basic,0);
-for(let i=0;i<5;i++){click(basic.nodes.tourStations.children[i]);selected(basic,i);assert.equal(basic.nodes.tourStations.children[i].type,'button');}
+click(basic.nodes.tourPrevious);selected(basic,6);click(basic.nodes.tourNext);selected(basic,0);
+for(let i=0;i<7;i++){click(basic.nodes.tourStations.children[i]);selected(basic,i);assert.equal(basic.nodes.tourStations.children[i].type,'button');}
 click(basic.nodes.tourLeft);click(basic.nodes.tourRight);click(basic.nodes.tourReset);
 assert.deepEqual(basic.calls.filter(call=>['orbit','reset'].includes(call[0])).slice(-3),[['orbit',-.22],['orbit',.22],['reset']]);
 basic.stage.dispatchEvent(new TestEvent('pointerdown',{button:0,clientX:100,pointerId:7}));
@@ -121,7 +121,7 @@ assert.equal(basic.context.scrollY,1720);assert.equal(basic.document.activeEleme
 assert(basic.calls.some(call=>call[0]==='exit'));assert.equal(basic.frames.length,0);
 
 const routes=[
- [0,'repair','services'],[1,'business','services'],[2,null,'work'],[3,'systems','services'],[4,null,'project-secure-watch']
+ [0,'repair','services'],[1,'business','services'],[2,null,'work'],[3,'systems','services'],[4,null,'project-secure-watch'],[5,'mechanic','services'],[6,'handyman','services']
 ];
 for(const [station,category,destination] of routes){
  const test=harness();launch(test,0,900);click(test.nodes.tourStations.children[station]);
@@ -152,7 +152,7 @@ reopened.flushFrames();assert.equal(reopened.dialog.open,true);
 assert.equal(reopened.document.activeElement,reopened.nodes.tourClose,'A delayed destination focus must not escape a newly reopened modal');
 assert.equal(reopened.log.filter(item=>item.type==='focus').length,focusCount,'The stale handoff must not attempt to focus background content');
 
-const requestServices=['Computer & laptop repair','Small-business IT','Websites & online systems','Servers & security technology','Servers & security technology'];
+const requestServices=['Computer & laptop repair','Small-business IT','Websites & online systems','Servers & security technology','Servers & security technology','Mechanic work','Handyman work'];
 requestServices.forEach((service,station)=>{
  const test=harness();launch(test);click(test.nodes.tourStations.children[station]);
  assert.equal(click(test.nodes.tourRequest).defaultPrevented,true);
@@ -163,7 +163,7 @@ requestServices.forEach((service,station)=>{
 });
 
 const equipment=harness();launch(equipment);
-assert.equal(equipment.hotspots().length,12,'Every equipment item must have a keyboard-accessible hotspot');
+assert.equal(equipment.hotspots().length,18,'Every equipment item must have a keyboard-accessible hotspot');
 assert.deepEqual(equipment.nodes.tourObject.children.map(option=>option.value),['','laptop','phone']);
 equipment.publish([{id:'laptop',x:180,y:260,visible:true},{id:'phone',x:320,y:330,visible:true}]);
 assert.equal(equipment.hotspots().filter(button=>!button.hidden).length,2);
@@ -222,4 +222,4 @@ for(const options of [{available:false},{scenePresent:false},{dialogSupported:fa
 }
 console.log('PASS: tour launch/close, native queued-close cleanup, scroll/focus restoration, bidirectional Tab wrapping, station cycling and accessible selection');
 console.log('PASS: service-category navigation, request preselection, post-cleanup destination focus, drag/buttons, scrolled-stage framing, and unavailable/context-loss behavior');
-console.log('PASS: all 12 hotspot/picker routes, four-project handoff, exact equipment enquiries, preserved drafts, clipped hotspots, inspection focus, and guarded camera dragging');
+console.log('PASS: all 18 hotspot/picker routes, four-project handoff, exact equipment enquiries, preserved drafts, clipped hotspots, inspection focus, and guarded camera dragging');

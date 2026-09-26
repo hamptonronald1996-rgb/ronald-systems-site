@@ -5,7 +5,7 @@ Static website published from this repository. The existing cinematic Three.js w
 - `index.html`: service, project and contact content.
 - `assets/site.js`: navigation, section progress and email request preparation.
 - `assets/workshop.js`: workshop geometry, section camera compositions and demand-driven rendering.
-- `assets/workshop-tour.js` and `.css`: the interactive five-station workshop explorer.
+- `assets/workshop-tour.js` and `.css`: the interactive seven-station workshop explorer.
 - `assets/workshop-items.js`: the shared catalogue connecting equipment, close-up cameras, labels and service/project routes.
 - `assets/service-guide.js` and `.css`: service categories, accessible selection and result counts.
 - `assets/project-guide.js` and `.css`: the four-project selector, related Fur the Love builds and project-fragment routing.
@@ -17,13 +17,13 @@ Serve the repository with any static HTTP server to preview it; opening the HTML
 
 ## Interactive workshop
 
-Open the workshop explorer to visit Repair, Business IT, Projects, Servers and Security. Select a station, use previous/next, drag the scene or use the rotation buttons, and reset the view when needed. Each station leads to the relevant services, project or preselected service request. Closing the explorer restores the page position and opener focus; following a link moves focus to its destination.
+Open the workshop explorer to visit Repair, Business IT, Projects, Servers, Security, Mechanic and Handyman stations. Select a station, use previous/next, drag the scene or use the rotation buttons, and reset the view when needed. Each station leads to the relevant services, project or preselected service request. Closing the explorer restores the page position and opener focus; following a link moves focus to its destination.
 
 Equipment hotspots and the matching text controls open close-up views of the laptop, phone, workstation, router, server connections and security technology. The shared equipment catalogue keeps each item's camera, description and enquiry route together. The Projects station has exactly four monitors: Fur the Love Website, Fur the Love Operations, Secure Watch and CodeCredit. Selecting a project provides a close-up and a route to its card in the showcase.
 
 The project selector offers All four, Fur the Love, Secure Watch and CodeCredit. Fur the Love shows the public website and private operations software together, with a short explanation of their relationship. The other project filters expand a single build for closer reading. Explorer handoffs and project URL fragments reveal the appropriate group; navigation to other sections preserves the visitor's selection. Every project remains available without JavaScript.
 
-The service guide filters the original seven services into Device repair, Business IT, Websites & software, and Servers & security. All services restores every card. Selection uses pressed-state buttons and a live result count. Explorer links select the matching category, and the complete service list remains available without JavaScript. The process chapter adds a personal introduction and three native FAQ expanders covering local/remote arrangements, uncertain diagnoses and scope/pricing.
+The service guide filters nine services into Device repair, Business IT, Websites & software, Servers & security, Mechanic work and Handyman work. All services restores every card. Selection uses pressed-state buttons and a live result count. Explorer links select the matching category, and the complete service list remains available without JavaScript. The process chapter adds a personal introduction and three native FAQ expanders covering local/remote arrangements, uncertain diagnoses and scope/pricing.
 
 The scene renders on demand for camera movement, pointer interaction, texture loading and resizing, then stops after movement settles. Rendering suspends in hidden tabs. Reduced-motion mode makes camera changes immediate, and mobile pixel density is capped. If WebGL becomes unavailable, the explorer closes and the regular page remains usable.
 
@@ -52,6 +52,6 @@ Run these checks from the repository root:
 - `node scripts/workshop-check.cjs`: real Three.js scene execution with mocked rendering, demand-mode settling, motion preferences, mobile density, tab visibility and WebGL loss/restoration.
 - `node scripts/tour-check.cjs`: station controls, request/category routing, drag behavior, native dialog cleanup and focus/scroll restoration.
 
-Equipment and project-browser checks passed at desktop 1440×900, tablet 768×1024, portrait phones 390×844 and 360×740, and landscape 844×390. Verified projected targets, item selection, close-ups, actual scene dragging, the item picker, station reset, keyboard wrapping, Escape, project filtering and destination focus, paired Fur the Love builds, exact equipment-service preselection, project enquiry prefill/copy, and retained upright photo dimensions. Local fixtures verify reduced-motion startup, missing WebGL and script-free access to all seven services and four projects. The six automated checks cover all 12 equipment routes, rendering lifecycle and guarded asynchronous focus restoration.
+Equipment and project-browser checks cover desktop, tablet, portrait phone and landscape phone viewports. Verified projected targets, item selection, close-ups, scene dragging, the item picker, station reset, keyboard wrapping, project filtering and destination focus, exact equipment-service preselection, project enquiry prefill/copy, and retained upright photo dimensions. Local fixtures verify reduced-motion startup, missing WebGL and script-free access to all nine services and four projects. The six automated checks cover all 18 equipment routes, rendering lifecycle and guarded asynchronous focus restoration.
 
 These sizes are browser viewport tests, not physical iOS/Android hardware tests. The `mailto:` contact flow remains unchanged: visitors send the prepared draft themselves, and tests do not send live service requests. This static site has no backend delivery integration.

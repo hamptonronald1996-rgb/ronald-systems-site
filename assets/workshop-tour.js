@@ -7,7 +7,9 @@
     {name:'Your business, connected', short:'Business IT', number:'02', copy:'The desk is only the beginning. Connect workstations, Wi-Fi, printers, email and backups into a system that works together.', detail:'WORKSTATIONS / NETWORKS / SUPPORT', action:'Explore business IT', href:'#services', service:'Small-business IT'},
     {name:'Ideas become working systems', short:'Projects', number:'03', copy:'Fur the Love Website and Operations, Secure Watch, and CodeCredit. Four builds shaped around real business needs.', detail:'WEBSITES / SOFTWARE / AUTOMATION', action:'See the four projects', href:'#work', service:'Websites & online systems'},
     {name:'Behind the everyday', short:'Servers', number:'04', copy:'Local servers, organized connections and practical remote access. Build the infrastructure around the way you work.', detail:'SERVERS / NETWORKING / REMOTE ACCESS', action:'Explore systems services', href:'#services', service:'Servers & security technology'},
-    {name:'A more connected view', short:'Security', number:'05', copy:'Cameras, sensors and monitoring software come together at the security bench. Start with your space and what you need to see.', detail:'CAMERAS / SENSORS / SECURE WATCH', action:'View Secure Watch', href:'#project-secure-watch', service:'Servers & security technology'}
+    {name:'A more connected view', short:'Security', number:'05', copy:'Cameras, sensors and monitoring software come together at the security bench. Start with your space and what you need to see.', detail:'CAMERAS / SENSORS / SECURE WATCH', action:'View Secure Watch', href:'#project-secure-watch', service:'Servers & security technology'},
+    {name:'The mechanic bay', short:'Mechanic', number:'06', copy:'Brakes, axles, charging, cooling and exhaust work share one service bay. Start with the vehicle, symptoms and repair you need.', detail:'BRAKES / AXLES / ALTERNATORS / EXHAUST', action:'Explore mechanic work', href:'#services', service:'Mechanic work', filter:'mechanic'},
+    {name:'The home project bench', short:'Handyman', number:'07', copy:'Painting, simple electrical work, minor plumbing, landscaping and practical repairs for the home or property.', detail:'ELECTRICAL / PAINTING / PLUMBING / YARD', action:'Explore handyman work', href:'#services', service:'Handyman work', filter:'handyman'}
   ];
   const title = dialog.querySelector('#tourTitle'), copy = dialog.querySelector('#tourCopy');
   const number = dialog.querySelector('#tourNumber'), detail = dialog.querySelector('#tourDetail');
@@ -61,7 +63,7 @@
     selected = (index + stations.length) % stations.length;
     inspected=null;overview.hidden=true;
     const station = stations[selected];
-    number.textContent = `${station.number} / 05`;renderCopy();
+    number.textContent = `${station.number} / ${String(stations.length).padStart(2,'0')}`;renderCopy();
     picker.replaceChildren();
     const all=document.createElement('option');all.value='';all.textContent='Whole station';picker.append(all);
     items.filter(item=>item.station===selected).forEach(item=>{const option=document.createElement('option');option.value=item.id;option.textContent=item.label;picker.append(option);});
@@ -124,7 +126,7 @@
       if(content.project&&!details.value.trim()){details.value=`I'd like to discuss ${content.project}.\n\nWhat I need: `;details.dispatchEvent(new Event('input',{bubbles:true}));}
       service.value = content.service; service.dispatchEvent(new Event('change', {bubbles:true}));
     }
-    if (!requestService && destination === '#services') window.workshopServices?.select(content.filter||['repair','business',null,'systems'][selected]);
+    if (!requestService && destination === '#services') window.workshopServices?.select(content.filter||['repair','business',null,'systems','systems','mechanic','handyman'][selected]);
     if (!requestService && destination.startsWith('#project-')) window.workshopProjects?.show(destination.slice(1));
     if (!requestService && destination === '#work') window.workshopProjects?.show('all');
     pendingDestination = destination;
