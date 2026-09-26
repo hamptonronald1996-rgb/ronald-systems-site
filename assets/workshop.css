@@ -14,6 +14,7 @@ h1{font-size:clamp(54px,6.4vw,92px);line-height:.96;letter-spacing:-.055em}
 .station-caption a{display:inline-block;padding:12px 0;color:#e1e9ef}
 .service-link{display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:16px;padding:14px 0 0;font:500 11px JetBrains Mono,monospace;color:#bfeaff;position:relative;z-index:1;min-height:44px}
 .service:after{display:none}.service{border-radius:9px}.service h3{font-size:18px}.service small{color:#a5b1c0}
+.service-trade{background:linear-gradient(145deg,rgba(255,90,31,.1),rgba(12,18,27,.94) 46%,rgba(41,196,255,.06));border-color:#384652}.service-trade .num{color:#ff9c78}
 .project{padding-bottom:45px;border-radius:10px}.project p{color:#bcc6d2}.project .status{color:#7cdcff}
 .project-preview{position:relative;height:230px;margin:-20px -20px 22px;overflow:hidden;background:#f9f5f0;display:flex;align-items:center;justify-content:space-around;padding:22px}
 .pet-preview img:first-child{width:40%;height:auto;max-height:145px;object-fit:contain}

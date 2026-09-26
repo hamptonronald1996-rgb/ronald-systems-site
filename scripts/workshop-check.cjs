@@ -73,7 +73,7 @@ function closeVector(actual,expected,message){assert(actual.distanceTo(new Three
 const scene=createHarness();
 assert.equal(scene.frames.size,1,'Startup must schedule only one frame');
 assert.equal(scene.settle(),1,'An idle initial scene must not run continuously');
-assert.equal(scene.last().far,95,'Distant invisible geometry should remain clipped');
+assert.equal(scene.last().far,130,'Distant invisible geometry should remain clipped beyond the extended workshop');
 assert.equal(scene.renderer.pixelRatio,1.5,'Desktop pixel density should stay capped');
 assert.deepEqual(scene.availability,[true]);
 scene.setJourney(3);
@@ -141,8 +141,8 @@ inspection.settle();inspection.context.workshopScene.onFrame(points=>projections
 assert.equal(projections.length,0,'Page choreography must not publish tour hotspots');
 inspection.context.workshopScene.enter();inspection.settle();
 const equipment=inspection.context.workshopItems;
-assert.equal(equipment.length,12);
-for(let station=0;station<5;station++){
+assert.equal(equipment.length,18);
+for(let station=0;station<7;station++){
  inspection.context.workshopScene.station(station);assert.equal(inspection.settle(),1);
  const stationItems=equipment.filter(item=>item.station===station),overviewPosition=inspection.last().position.clone();
  assert.deepEqual(Array.from(projections.at(-1),point=>point.id),Array.from(stationItems,item=>item.id),'A station must publish exactly its own equipment anchors');
@@ -180,7 +180,7 @@ inspection.context.workshopScene.enter();inspection.settle();
 assert.deepEqual(Array.from(projections.at(-1),point=>point.id),['laptop','phone'],'Reopening the tour must restore the first overview after an inspected exit');
 
 const mobilePoints=[];mobile.context.workshopScene.onFrame(points=>mobilePoints.push(points));mobile.settle();
-for(let station=0;station<5;station++){
+for(let station=0;station<7;station++){
  mobile.context.workshopScene.station(station);mobile.settle();
  for(const point of mobilePoints.at(-1)){
   assert(Number.isFinite(point.x)&&Number.isFinite(point.y));
@@ -192,4 +192,4 @@ const fallback=createHarness({rendererFails:true});
 assert.equal(fallback.nodes.fallback.style.display,'block');assert.equal(fallback.context.workshopScene,undefined);assert.equal(fallback.frames.size,0);
 console.log('PASS: real Three.js scene execution, demand settling, journey updates, paused station snap, orbit/reset, tour exit, and project texture invalidation');
 console.log('PASS: reduced motion, mobile density and touch behavior, hidden tab suspension, context loss/restoration, and WebGL-unavailable fallback');
-console.log('PASS: all 12 equipment close-ups, guarded inspection IDs, projected desktop/mobile hotspots, paused orbit/reset, and station/exit cleanup');
+console.log('PASS: all 18 equipment close-ups, guarded inspection IDs, projected desktop/mobile hotspots, paused orbit/reset, and station/exit cleanup');
