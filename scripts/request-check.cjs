@@ -38,7 +38,7 @@ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../assets/site.js'),'utf
  assert(ids.requestStatus.textContent.includes('Request #12 received'));
  assert.equal(context.location.href,'','Direct submissions must not open an email draft');
  let copied='';context.navigator.clipboard={writeText:async text=>{copied=text;}};
- await ids.copyRequest.handlers.click();assert(copied.includes('To: hampton.ronald1996@gmail.com'));
+ await ids.copyRequest.handlers.click();assert(copied.includes('To: buildwithronald@gmail.com'));
  assert(copied.includes('Networking & Wi-Fi'));assert.equal(ids.requestFallback.hidden,true);
  context.navigator.clipboard.writeText=async()=>{throw new Error('Clipboard denied');};
  await ids.copyRequest.handlers.click();assert.equal(ids.requestFallback.hidden,false);assert(ids.requestFallback.selected);assert.equal(ids.requestFallback.value,copied);

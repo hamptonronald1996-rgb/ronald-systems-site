@@ -30,7 +30,7 @@ assert.deepEqual(Array.from(equipment.filter(item=>item.station===2),item=>item.
 assert(html.indexOf('assets/workshop-items.js')<html.indexOf('assets/workshop.js'),'Load equipment data before the scene');
 assert(html.indexOf('assets/workshop.js')<html.indexOf('assets/workshop-tour.js'),'Load the scene before its controller');
 for(const [,id] of html.matchAll(/<label for="([^"]+)"/g))assert(ids.includes(id),`Missing labelled control: ${id}`);
-assert(html.includes('mailto:hampton.ronald1996@gmail.com'),'Keep the direct contact fallback');
+assert(html.includes('mailto:buildwithronald@gmail.com'),'Keep the direct contact fallback');
 assert(!html.includes('id="boot"'),'Content must not depend on a blocking loader');
 const work=html.match(/<section class="chapter" id="work"[\s\S]*?<\/section>/)[0];
 const projects=[...work.matchAll(/<h3>(.*?)<\/h3>/g)].map(m=>m[1]);

@@ -82,8 +82,8 @@
     if(!valid())return;
     clearPreparedRequest();
     const revision=requestRevision;
-    const text=`To: hampton.ronald1996@gmail.com\n\n${requestText()}`;
-    try{await navigator.clipboard.writeText(text);if(revision!==requestRevision)return;status.textContent='Request copied. Paste it into an email to hampton.ronald1996@gmail.com.';}
+    const text=`To: buildwithronald@gmail.com\n\n${requestText()}`;
+    try{await navigator.clipboard.writeText(text);if(revision!==requestRevision)return;status.textContent='Request copied. Paste it into an email to buildwithronald@gmail.com.';}
     catch{if(revision!==requestRevision)return;fallback.value=text;fallback.hidden=false;fallback.focus();fallback.select();status.textContent='Select and copy the prepared request below, then paste it into your email.';}
   });
 })();
