@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=8">
+<link rel="stylesheet" href="assets/site.css?v=10">
 <link rel="stylesheet" href="assets/workshop.css?v=8">
 <link rel="stylesheet" href="assets/service-guide.css?v=8">
 <link rel="stylesheet" href="assets/workshop-tour.css?v=8">
@@ -31,8 +31,8 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <div id="progress"></div>
 <div id="scene" aria-hidden="true"><div class="fallback" id="fallback"></div><div class="wash" id="wash"></div><div class="vignette"></div><div class="noise"></div></div>
-<header><a class="brand" href="#home" aria-label="Build With Ronald home"><img src="assets/build-with-ronald-logo.svg" alt="Build With Ronald"></a><nav class="nav"><a href="#home">Home</a><a href="#services">Services</a><a href="#work">Work</a><a href="#process">Process</a><a class="request" href="#contact">Request service</a></nav><button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-controls="mobilePanel" aria-expanded="false"><span></span></button></header>
-<div class="mobile-panel" id="mobilePanel"><a href="#home">Home</a><a href="#services">Services</a><a href="#work">Work</a><a href="#process">Process</a><a href="#contact">Request service</a><button id="motionMenuToggle" type="button" aria-pressed="false" hidden>Pause 3D motion</button></div>
+<header><a class="brand" href="#home" aria-label="Build With Ronald home"><img src="assets/build-with-ronald-logo.svg" alt="Build With Ronald"></a><nav class="nav"><a href="#home">Home</a><a href="#services">Services</a><a href="#work">Work</a><a href="#process">Process</a><a class="request" href="#contact">Request service</a><a href="https://admin.buildwithronald.com">Admin</a></nav><button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-controls="mobilePanel" aria-expanded="false"><span></span></button></header>
+<div class="mobile-panel" id="mobilePanel"><a href="#home">Home</a><a href="#services">Services</a><a href="#work">Work</a><a href="#process">Process</a><a href="#contact">Request service</a><a href="https://admin.buildwithronald.com">Admin sign in</a><button id="motionMenuToggle" type="button" aria-pressed="false" hidden>Pause 3D motion</button></div>
 <div class="chapter-index" aria-label="Page sections"><a href="#home" title="Home"></a><a href="#services" title="Services"></a><a href="#work" title="Work"></a><a href="#process" title="Process"></a><a href="#contact" title="Contact"></a></div>
 <button id="motionToggle" class="motion-toggle" type="button" aria-pressed="false" hidden>Pause 3D motion</button>
 <div id="hud"><div class="hud-line"></div><span id="hudText">01 / Enter the workshop</span></div>
@@ -83,14 +83,19 @@
 <section class="chapter" id="contact" data-label="05 / Dispatch"><div class="copy"><div class="kicker">Request service</div><h2>What do you need <span class="blue">working?</span></h2><p class="lead">Start with the problem—your device, vehicle, home, property or business system—and include any details you already know.</p><div class="contact-card glass"><h3>Let’s get it working.</h3><p>Choose a service and describe the job. Ronald will review the details and discuss the next step, scope and price with you.</p>
 <noscript><p>Email Ronald using the address below. Include the device or project, what is happening, and your ideal timing.</p></noscript>
 <form id="requestForm">
+<label for="requestName">Your name</label><input id="requestName" name="name" autocomplete="name" maxlength="200" required>
+<label for="requestEmail">Email</label><input id="requestEmail" name="email" type="email" autocomplete="email" maxlength="200">
+<label for="requestPhone">Phone</label><input id="requestPhone" name="phone" type="tel" autocomplete="tel" maxlength="40">
+<p class="form-note">Provide an email address or phone number so Ronald can reply.</p>
+<div class="request-trap" aria-hidden="true"><label for="requestWebsite">Leave this blank</label><input id="requestWebsite" name="website" tabindex="-1" autocomplete="off"></div>
 <label for="serviceType">What can I help with?</label>
 <select id="serviceType" name="service"><option value="">Choose a service</option><option>Computer & laptop repair</option><option>Phone & tablet repair</option><option>Small-business IT</option><option>Websites & online systems</option><option>Custom software & AI</option><option>Servers & security technology</option><option>Networking & Wi-Fi</option><option>Mechanic work</option><option>Handyman work</option><option>Not sure yet</option></select>
 <label for="requestDetails">Tell me what you need</label>
 <textarea id="requestDetails" name="details" rows="4" maxlength="1200" required placeholder="Device, vehicle, room or project; what needs work; and your ideal timing…"></textarea>
 <label for="serviceMode">How would you like to work together?</label>
 <select id="serviceMode" name="mode"><option>Let’s figure it out</option><option>Local drop-off — by arrangement</option><option>On-site — Chicago south suburbs</option><option>Remote support / project</option></select>
-<div class="actions"><button class="btn primary" type="submit">Prepare email request ↗</button><button class="btn secondary" type="button" id="copyRequest">Copy request</button></div>
-<p class="form-note">Opens your email app with a draft. Nothing is sent until you send it there. Drop-off and on-site service are arranged after we connect.</p>
+<div class="actions"><button class="btn primary" type="submit">Send service request →</button><button class="btn secondary" type="button" id="copyRequest">Copy request</button></div>
+<p class="form-note">Sends your contact details and request directly to Ronald for a reply. Please do not include passwords or payment details. Drop-off and on-site service are arranged after we connect.</p>
 <p id="requestStatus" role="status" aria-live="polite"></p>
 <textarea id="requestFallback" rows="6" readonly hidden aria-label="Prepared request to copy"></textarea>
 </form>
@@ -106,7 +111,7 @@
   <div class="tour-tools"><div><p id="tourInstructions">Tap a numbered point or choose an item to look closer.<br>Drag the scene or use the buttons to rotate.</p><div class="tour-controls" role="group" aria-label="Adjust workshop view"><button id="tourLeft" type="button" aria-label="Rotate view left">↶</button><button id="tourReset" type="button">Reset view</button><button id="tourRight" type="button" aria-label="Rotate view right">↷</button></div></div><div class="tour-controls" role="group" aria-label="Step through workshop"><button id="tourPrevious" type="button" aria-label="Previous station">←</button><button id="tourNext" type="button" aria-label="Next station">Next station →</button></div></div>
  </div>
 </dialog>
-<script src="assets/site.js?v=8" defer></script>
+<script src="assets/site.js?v=10" defer></script>
 <script src="assets/service-guide.js?v=8" defer></script>
 <script src="assets/project-guide.js?v=8" defer></script>
 <script src="assets/workshop-items.js?v=8" defer></script>

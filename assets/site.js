@@ -49,8 +49,10 @@
   const form=document.getElementById('requestForm'), service=document.getElementById('serviceType');
   const details=document.getElementById('requestDetails'), mode=document.getElementById('serviceMode');
   const status=document.getElementById('requestStatus'), fallback=document.getElementById('requestFallback');
-  let requestRevision=0;
-  function clearPreparedRequest(){requestRevision++;status.textContent='';fallback.hidden=true;fallback.value='';}
+  let requestRevision=0, requestId=crypto.randomUUID(), submitting=false;
+  const name=document.getElementById('requestName'), email=document.getElementById('requestEmail'), phone=document.getElementById('requestPhone');
+  [name,email,phone].forEach(el=>el.addEventListener('input',()=>{email.setCustomValidity('');clearPreparedRequest();}));
+  function clearPreparedRequest(){requestRevision++;requestId=crypto.randomUUID();status.textContent='';fallback.hidden=true;fallback.value='';}
   document.querySelectorAll('[data-service]').forEach(a=>a.addEventListener('click',()=>{
     service.value=a.dataset.service;clearPreparedRequest();
     // Preserve a visitor's existing message when they explore another project.
@@ -59,12 +61,23 @@
       details.setCustomValidity('');
     }
   }));
-  function requestText(){return `Hi Ronald,\n\nService: ${service.value || 'Not sure yet'}\nPreferred support: ${mode.value}\n\n${details.value.trim()}\n\nMy name / best way to reach me:\n`;}
-  function valid(){if(!details.value.trim())details.setCustomValidity('Please describe what you need help with.');else details.setCustomValidity('');return form.reportValidity();}
+  function requestText(){return `Hi Ronald,\n\nService: ${service.value || 'Not sure yet'}\nPreferred support: ${mode.value}\n\n${details.value.trim()}\n\nName: ${name.value.trim()}\nEmail: ${email.value.trim()}\nPhone: ${phone.value.trim()}\n`;}
+  function valid(){email.setCustomValidity(email.value.trim()||phone.value.trim()?'':'Enter an email address or phone number.');if(!details.value.trim())details.setCustomValidity('Please describe what you need help with.');else details.setCustomValidity('');return form.reportValidity();}
   details.addEventListener('input',()=>{details.setCustomValidity('');clearPreparedRequest();});
   service.addEventListener('change',clearPreparedRequest);
   mode.addEventListener('change',clearPreparedRequest);
-  form.addEventListener('submit',e=>{e.preventDefault();if(!valid())return;clearPreparedRequest();const subject=`Build With Ronald — ${service.value || 'Service request'}`;const href=`mailto:hampton.ronald1996@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(requestText())}`;status.textContent='Your draft is ready for your email app. If it doesn’t open, use Copy request and email Ronald directly.';location.href=href;});
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();if(submitting||!valid())return;
+    submitting=true;const revision=requestRevision;
+    const fields=[...form.querySelectorAll('input,select,textarea,button')];fields.forEach(el=>el.disabled=true);
+    status.textContent='Sending your request…';
+    try {
+      const response=await fetch('https://admin.buildwithronald.com/api/public/inquiries',{method:'POST',credentials:'omit',headers:{'Content-Type':'application/json'},body:JSON.stringify({request_id:requestId,name:name.value.trim(),email:email.value.trim(),phone:phone.value.trim(),service:service.value||'Not sure yet',mode:mode.value,details:details.value.trim(),website:document.getElementById('requestWebsite').value}),signal:AbortSignal.timeout(20000)});
+      const result=await response.json();if(!response.ok)throw new Error(result.error||'Could not send your request.');
+      if(revision===requestRevision){form.reset();requestId=crypto.randomUUID();fallback.hidden=true;fallback.value='';status.textContent=`Request #${result.id} received. Ronald will reply using the contact details you provided.`;}
+    } catch(error) {status.textContent=`${error.name==='TimeoutError'?'Confirmation timed out. You can retry safely.':error.message} Your details are still here. Try again, or use Copy request and email Ronald directly.`;}
+    finally {submitting=false;fields.forEach(el=>el.disabled=false);}
+  });
   document.getElementById('copyRequest').addEventListener('click',async()=>{
     if(!valid())return;
     clearPreparedRequest();

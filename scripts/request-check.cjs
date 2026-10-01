@@ -4,12 +4,14 @@ const path=require('node:path');
 const vm=require('node:vm');
 const assert=require('node:assert/strict');
 function element(){const classes=new Set();return {value:'',hidden:true,style:{},dataset:{},handlers:{},attributes:{},classList:{add:x=>classes.add(x),remove:x=>classes.delete(x),contains:x=>classes.has(x),toggle(x,on){if(on===undefined)on=!classes.has(x);on?classes.add(x):classes.delete(x);return on;}},addEventListener(name,fn){this.handlers[name]=fn;},setAttribute(k,v){this.attributes[k]=v;},removeAttribute(k){delete this.attributes[k];},querySelectorAll:()=>[],contains:()=>false,focus(){this.focused=true;},select(){this.selected=true;},setCustomValidity(message){this.message=message;}};}
-const ids=Object.fromEntries(['mobilePanel','menuBtn','hudText','progress','requestForm','serviceType','requestDetails','serviceMode','requestStatus','requestFallback','copyRequest'].map(id=>[id,element()]));
+const ids=Object.fromEntries(['mobilePanel','menuBtn','hudText','progress','requestForm','serviceType','requestDetails','serviceMode','requestStatus','requestFallback','copyRequest','requestName','requestEmail','requestPhone','requestWebsite'].map(id=>[id,element()]));
 const chapters=['home','services','work','process','contact'].map((id,i)=>Object.assign(element(),{id,offsetTop:i*1000,dataset:{label:id}}));
 const serviceLink=Object.assign(element(),{dataset:{service:'Networking & Wi-Fi'}});
+ids.requestForm.reset=()=>{};
 ids.requestForm.reportValidity=()=>!!ids.requestDetails.value.trim()&&!ids.requestDetails.message;
 const events=[],eventHandlers={};let observeResize;
-const context={document:{documentElement:{scrollHeight:5000},querySelectorAll:s=>s==='.chapter'?chapters:s==='[data-service]'?[serviceLink]:[],querySelector:()=>element(),getElementById:id=>ids[id],addEventListener(){}},innerWidth:1280,innerHeight:720,scrollY:0,addEventListener(type,fn){(eventHandlers[type]??=[]).push(fn);},dispatchEvent(event){events.push(event.type);for(const fn of eventHandlers[event.type]??[])fn(event);},Event:class{constructor(type){this.type=type;}},requestAnimationFrame:fn=>fn(),ResizeObserver:class{constructor(fn){observeResize=fn;}observe(){}},location:{href:''},navigator:{},console};
+let posted=[];let failRequest=false;
+const context={crypto:require('node:crypto').webcrypto,AbortSignal,fetch:async(url,options)=>{posted.push({url,options});if(failRequest)throw new Error('Network unavailable');return {ok:true,json:async()=>({id:12})};},document:{documentElement:{scrollHeight:5000},querySelectorAll:s=>s==='.chapter'?chapters:s==='[data-service]'?[serviceLink]:[],querySelector:()=>element(),getElementById:id=>ids[id],addEventListener(){}},innerWidth:1280,innerHeight:720,scrollY:0,addEventListener(type,fn){(eventHandlers[type]??=[]).push(fn);},dispatchEvent(event){events.push(event.type);for(const fn of eventHandlers[event.type]??[])fn(event);},Event:class{constructor(type){this.type=type;}},requestAnimationFrame:fn=>fn(),ResizeObserver:class{constructor(fn){observeResize=fn;}observe(){}},location:{href:''},navigator:{},console};
 context.window=context;
 vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../assets/site.js'),'utf8'),context);
 (async()=>{
@@ -23,12 +25,18 @@ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../assets/site.js'),'utf
  serviceLink.handlers.click();assert.equal(ids.serviceType.value,'Networking & Wi-Fi');
  ids.requestDetails.value='   ';ids.requestForm.handlers.submit({preventDefault(){}});assert.equal(context.location.href,'','Blank requests must not open an email app');
  ids.requestDetails.value='Router & laptop\nUSB-C: reconnect? #1';ids.serviceMode.value='Remote support / project';
- ids.requestForm.handlers.submit({preventDefault(){}});
- const draft=new URL(context.location.href);
- assert.equal(draft.protocol,'mailto:');assert.equal(draft.pathname,'hampton.ronald1996@gmail.com');
- assert.equal(draft.searchParams.get('subject'),'Build With Ronald — Networking & Wi-Fi');
- assert(draft.searchParams.get('body').includes('Router & laptop\nUSB-C: reconnect? #1'));
- assert(draft.searchParams.get('body').includes('Remote support / project'));
+ ids.requestName.value='Test Client';ids.requestEmail.value='client@example.com';
+ failRequest=true;
+ await ids.requestForm.handlers.submit({preventDefault(){}});
+ const retryId=JSON.parse(posted[0].options.body).request_id;
+ assert(ids.requestStatus.textContent.includes('Your details are still here'));
+ failRequest=false;
+ await ids.requestForm.handlers.submit({preventDefault(){}});
+ assert.equal(JSON.parse(posted[1].options.body).request_id,retryId,'Retries must not duplicate requests');
+ assert.equal(posted[1].options.credentials,'omit');
+ assert.equal(JSON.parse(posted[1].options.body).name,'Test Client');
+ assert(ids.requestStatus.textContent.includes('Request #12 received'));
+ assert.equal(context.location.href,'','Direct submissions must not open an email draft');
  let copied='';context.navigator.clipboard={writeText:async text=>{copied=text;}};
  await ids.copyRequest.handlers.click();assert(copied.includes('To: hampton.ronald1996@gmail.com'));
  assert(copied.includes('Networking & Wi-Fi'));assert.equal(ids.requestFallback.hidden,true);
@@ -52,5 +60,5 @@ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../assets/site.js'),'utf
  const pendingCopy=ids.copyRequest.handlers.click();ids.serviceMode.value='Remote support / project';ids.serviceMode.handlers.change();rejectCopy(new Error('Clipboard denied'));await pendingCopy;
  assert.equal(ids.requestFallback.hidden,true,'A delayed clipboard error must not restore a stale request');assert.equal(ids.requestStatus.textContent,'');
  console.log('PASS: journey events track scroll and layout changes without redundant invalidations');
- console.log('PASS: contact validation, encoded draft, clipboard fallback, project enquiry preservation, changed-field invalidation, and delayed clipboard failure');
+ console.log('PASS: contact submission, retry deduplication, clipboard fallback, project enquiry preservation, changed-field invalidation, and delayed clipboard failure');
 })().catch(error=>{console.error(error);process.exitCode=1;});
