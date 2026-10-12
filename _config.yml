@@ -1,0 +1,3 @@
+# Include the security reporting contact in GitHub Pages' Jekyll output.
+include:
+  - .well-known

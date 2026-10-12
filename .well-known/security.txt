@@ -1,0 +1,4 @@
+Contact: mailto:buildwithronald@gmail.com
+Expires: 2027-10-01T00:00:00Z
+Canonical: https://buildwithronald.com/.well-known/security.txt
+Preferred-Languages: en
