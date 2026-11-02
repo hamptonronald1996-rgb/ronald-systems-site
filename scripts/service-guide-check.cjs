@@ -21,7 +21,7 @@ const cards = [...html.matchAll(/<article class="service glass[^"]*">([\s\S]*?)<
     querySelector: selector => selector === 'h3' ? { textContent: title } : null
   });
 });
-assert.equal(cards.length, 9, 'The current nine services must be available without JavaScript');
+assert.equal(cards.length, 10, 'The current ten services must be available without JavaScript');
 let guide;
 const grid = { id: '', querySelectorAll: () => cards, before(value) { guide = value; } };
 const document = {
@@ -35,7 +35,7 @@ const [title, controls, intro, status] = guide.children;
 assert.equal(title.textContent, 'Find your starting point');
 assert.equal(controls.attributes.role, 'group');
 assert.equal(status.attributes['aria-live'], 'polite');
-assert.equal(status.textContent, '9 services · All services');
+assert.equal(status.textContent, '10 services · All services');
 assert(cards.every(card => !card.hidden));
 const expectations = [
   ['All services', cards.map(card => card.title)],
@@ -44,7 +44,8 @@ const expectations = [
   ['Websites & software', ['Websites & online systems', 'Custom software & AI']],
   ['Servers & security', ['Servers & security technology']],
   ['Mechanic work', ['Mechanic work']],
-  ['Handyman work', ['Handyman work']]
+  ['Handyman work', ['Handyman work']],
+  ['Plumbing', ['Plumbing work']]
 ];
 expectations.forEach(([label, expected], index) => {
   const button = controls.children[index];
@@ -61,7 +62,7 @@ expectations.forEach(([label, expected], index) => {
 controls.children[0].handlers.click();
 assert(cards.every(card => !card.hidden), 'All services must restore every card');
 assert(cards.every(card => card.request === card.title), 'Request links retain the exact service values');
-for (const [id, index] of [['business', 2], ['repair', 1], ['systems', 4], ['mechanic', 5], ['handyman', 6]]) {
+for (const [id, index] of [['business', 2], ['repair', 1], ['systems', 4], ['mechanic', 5], ['handyman', 6], ['plumbing', 7]]) {
   window.workshopServices.select(id);
   assert.deepEqual(cards.filter(card => !card.hidden).map(card => card.title), expectations[index][1]);
   assert.equal(controls.children[index].attributes['aria-pressed'], 'true');
@@ -69,9 +70,9 @@ for (const [id, index] of [['business', 2], ['repair', 1], ['systems', 4], ['mec
 const previousStatus = status.textContent;
 window.workshopServices.select('unknown');
 assert.equal(status.textContent, previousStatus, 'Unknown external categories must preserve the current selection');
-assert.deepEqual(cards.filter(card => !card.hidden).map(card => card.title), expectations.at(-1)[1]);
+assert.deepEqual(cards.filter(card => !card.hidden).map(card => card.title), expectations[7][1]);
 const originalGuide = guide;
 vm.runInNewContext(script, { document, window });
 assert.equal(guide, originalGuide, 'Do not insert duplicate controls');
 vm.runInNewContext(script, { document: { querySelector: () => null } });
-console.log('PASS: nine-service fallback, all six filters, accessible state/count, request values, reset, external selection, unknown category preservation, duplicate guard, and missing-section fallback');
+console.log('PASS: ten-service fallback, all seven filters, accessible state/count, request values, reset, external selection, unknown category preservation, duplicate guard, and missing-section fallback');

@@ -56,6 +56,9 @@ select,textarea{display:block;width:100%;background:#090f18;color:#eaf1f8;border
 .focused-projects .project:hover{transform:none;border-color:#3d5b70}
 .focused-projects .project:before{display:none}
 .focused-projects .project-preview{margin:0;height:230px;padding:0;border-bottom:1px solid var(--line)}
+.focused-projects .screenshot-preview{position:relative;display:block;min-height:230px;padding:0;overflow:hidden;background:#f8f8f5;line-height:0}
+.focused-projects .screenshot-preview img{display:block;width:100%;height:100%;object-fit:cover;object-position:center top}
+.focused-projects .screenshot-preview>span{position:absolute;left:14px;bottom:13px;padding:7px 10px;border:1px solid #ffffff25;border-radius:5px;background:#07131ae8;color:#d8eef6;font:8px/1.4 JetBrains Mono,monospace;letter-spacing:.04em}
 .focused-projects .pet-preview{display:grid;grid-template-columns:1fr 1fr;background:#f8f4ec;gap:0;overflow:hidden}
 .focused-projects .pet-brand{padding:18px 10px 18px 18px;min-width:0;color:#4c554b}
 .focused-projects .pet-brand img{display:block;width:100%;height:auto;max-height:75px;object-fit:contain;margin:0 0 12px}
@@ -70,13 +73,14 @@ select,textarea{display:block;width:100%;background:#090f18;color:#eaf1f8;border
 .project-tags span{padding:6px 8px;border:1px solid #263747;border-radius:4px;color:#a8bdce;font:9px/1.4 JetBrains Mono,monospace}
 .project-action{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;min-height:50px;border-top:1px solid #2b3c4b;color:#b1e8ff;font:500 11px/1.5 JetBrains Mono,monospace;margin-top:auto;padding-top:14px}
 .project-action:hover{color:#fff}.project-action span{color:var(--orange);font-size:17px}
+.project-action+.project-action{min-height:42px;margin-top:0;padding-top:8px;border-top:0;color:#9bb2c4}
 .build-art{position:relative;min-height:230px;overflow:hidden;padding:26px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between}
 .build-art>span{font:9px/1.5 JetBrains Mono,monospace;letter-spacing:.08em;color:#b8d9d0;position:relative;z-index:1}
 .build-art>strong{font:500 clamp(26px,2.8vw,38px)/1.05 Space Grotesk,sans-serif;letter-spacing:-.035em;position:relative;z-index:1}
 .ops-art{background:radial-gradient(ellipse at 110% 10%,#57877266,transparent 60%),#17342d;color:#e3efe0}
 .workflow-strip{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font:10px/1.4 JetBrains Mono,monospace;position:relative;z-index:1}.workflow-strip i{font-style:normal;opacity:.55}.workflow-strip span{padding:7px 8px;border:1px solid #ffffff25;border-radius:5px}
 .code-art{background:radial-gradient(ellipse at 95% 5%,#6d46a55c,transparent 65%),#1a172b;color:#efddff}.code-art>span{color:#c6a5ef}.code-cursor{color:#b2a2ff}
-.security-art{padding:0;background:#07131b}.security-art img{display:block;width:100%;height:230px;object-fit:cover;object-position:center}
+.security-art{min-height:0;aspect-ratio:1.6;padding:0;background:#f8f8f5}.security-art img{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
 .security-art>span{position:absolute;left:15px;bottom:14px;padding:7px 10px;border:1px solid #ffffff25;border-radius:5px;background:#07131ae8;font-size:8px;color:#cfedf8}
 .project-details{width:100%;border-top:1px solid #263747;margin-bottom:18px}
 .project-details summary{cursor:pointer;min-height:46px;padding:15px 0 12px;font-size:12px;color:#d6e0e9;list-style: none;display:flex;justify-content:space-between}
@@ -86,5 +90,5 @@ select,textarea{display:block;width:100%;background:#090f18;color:#eaf1f8;border
 @media(max-width:1100px){#work .copy{width:min(760px,86vw)}}
 @media(max-width:900px){#work .copy{width:100%;max-width:760px}.focused-projects{gap:14px}.motion-toggle,#hud{display:none!important}}
 @media(max-width:600px){
- .focused-projects{grid-template-columns:1fr;gap:22px}.focused-projects .project-body{padding:23px}.focused-projects .project-preview{height:260px}.focused-projects .pet-preview{grid-template-columns:1fr 1fr}.pet-brand>strong{font-size:23px}.focused-projects .pet-brand{padding:20px 14px}.build-art{min-height:240px}.build-art>strong{font-size:36px}.security-art img{height:240px}.focused-projects h3{font-size:25px}
+ .focused-projects{grid-template-columns:1fr;gap:22px}.focused-projects .project-body{padding:23px}.focused-projects .project-preview{height:260px}.focused-projects .pet-preview{grid-template-columns:1fr 1fr}.pet-brand>strong{font-size:23px}.focused-projects .pet-brand{padding:20px 14px}.build-art{min-height:240px}.build-art>strong{font-size:36px}.security-art{min-height:0}.focused-projects h3{font-size:25px}
 }

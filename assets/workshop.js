@@ -5,8 +5,8 @@ let renderer;try{renderer=new THREE.WebGLRenderer({antialias:innerWidth>900,alph
 const mount=document.getElementById('scene');mount.insertBefore(renderer.domElement,mount.firstChild);renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,innerWidth<900?1.2:1.65));renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.16;renderer.setClearColor(0x040609,1);
 const scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x05070b,.0158);const camera=new THREE.PerspectiveCamera(innerWidth<700?63:53,innerWidth/innerHeight,.1,130);scene.add(new THREE.AmbientLight(0x6580a3,.24));const blue=0x29c4ff,orange=0xff5a1f;
 const key=new THREE.PointLight(blue,2.2,58,2);scene.add(key);const warm=new THREE.PointLight(orange,2.5,52,2);scene.add(warm);const metal=new THREE.MeshStandardMaterial({color:0x101722,metalness:.78,roughness:.32}),dark=new THREE.MeshStandardMaterial({color:0x080d13,metalness:.45,roughness:.5}),blueMat=new THREE.MeshStandardMaterial({color:blue,emissive:0x063850,emissiveIntensity:.85,metalness:.4,roughness:.25}),orangeMat=new THREE.MeshStandardMaterial({color:orange,emissive:0x5c1605,emissiveIntensity:.82,metalness:.45,roughness:.27}),lineBlue=new THREE.MeshBasicMaterial({color:blue,transparent:true,opacity:.55}),lineOrange=new THREE.MeshBasicMaterial({color:orange,transparent:true,opacity:.58});
-const world=new THREE.Group();scene.add(world);const floor=new THREE.Mesh(new THREE.PlaneGeometry(28,190,1,1),new THREE.MeshStandardMaterial({color:0x070b11,metalness:.3,roughness:.82}));floor.rotation.x=-Math.PI/2;floor.position.set(0,-3,-73);world.add(floor);const grid=new THREE.GridHelper(190,95,0x164c68,0x0a151f);grid.position.set(0,-2.98,-72);grid.material.transparent=true;grid.material.opacity=.28;world.add(grid);
-for(let i=0;i<30;i++){const z=12-i*6.1;[-12,12].forEach(x=>{const post=new THREE.Mesh(new THREE.BoxGeometry(.11,8,.11),dark);post.position.set(x,1,z);world.add(post)});const beam=new THREE.Mesh(new THREE.BoxGeometry(24,.09,.1),dark);beam.position.set(0,5,z);world.add(beam);if(i%2===0){const strip=new THREE.Mesh(new THREE.BoxGeometry(5.6,.035,.04),i%4===0?lineOrange:lineBlue);strip.position.set(i%4===0?-3.5:3.5,4.85,z+.03);world.add(strip)}}
+const world=new THREE.Group();scene.add(world);const floor=new THREE.Mesh(new THREE.PlaneGeometry(28,230,1,1),new THREE.MeshStandardMaterial({color:0x070b11,metalness:.3,roughness:.82}));floor.rotation.x=-Math.PI/2;floor.position.set(0,-3,-85);world.add(floor);const grid=new THREE.GridHelper(230,115,0x164c68,0x0a151f);grid.position.set(0,-2.98,-84);grid.material.transparent=true;grid.material.opacity=.28;world.add(grid);
+for(let i=0;i<35;i++){const z=12-i*6.1;[-12,12].forEach(x=>{const post=new THREE.Mesh(new THREE.BoxGeometry(.11,8,.11),dark);post.position.set(x,1,z);world.add(post)});const beam=new THREE.Mesh(new THREE.BoxGeometry(24,.09,.1),dark);beam.position.set(0,5,z);world.add(beam);if(i%2===0){const strip=new THREE.Mesh(new THREE.BoxGeometry(5.6,.035,.04),i%4===0?lineOrange:lineBlue);strip.position.set(i%4===0?-3.5:3.5,4.85,z+.03);world.add(strip)}}
 const starCount=innerWidth<700?240:520,sp=new Float32Array(starCount*3);for(let i=0;i<starCount;i++){sp[i*3]=(Math.random()-.5)*35;sp[i*3+1]=(Math.random()-.5)*18+4;sp[i*3+2]=20-Math.random()*180}const sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.BufferAttribute(sp,3));world.add(new THREE.Points(sg,new THREE.PointsMaterial({size:.035,color:0xa8dfff,transparent:true,opacity:.5})));
 function monitor(x,y,z,w=3,h=1.9,color=blue){const g=new THREE.Group();const frame=new THREE.Mesh(new THREE.BoxGeometry(w+.16,h+.16,.18),metal);g.add(frame);const screen=new THREE.Mesh(new THREE.BoxGeometry(w,h,.06),new THREE.MeshBasicMaterial({color:color===blue?0x071b27:0x261007}));screen.position.z=.12;g.add(screen);for(let i=0;i<5;i++){const bar=new THREE.Mesh(new THREE.BoxGeometry(w*.6-i*.08,.035,.02),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.34}));bar.position.set(-w*.13,h*.25-i*.18,.16);g.add(bar)}g.position.set(x,y,z);scene.add(g);return g}
 function bench(x,z){const g=new THREE.Group();const top=new THREE.Mesh(new THREE.BoxGeometry(5.4,.22,2.2),metal);top.position.y=-.3;g.add(top);[-2.25,2.25].forEach(px=>{const leg=new THREE.Mesh(new THREE.BoxGeometry(.16,2.29,.16),dark);leg.position.set(px,-1.545,0);g.add(leg);const foot=new THREE.Mesh(new THREE.BoxGeometry(.34,.12,1.8),dark);foot.position.set(px,-2.69,0);g.add(foot)});g.position.set(x,-.25,z);scene.add(g);return g}
@@ -28,7 +28,7 @@ function label(text,sub,color=blue){
  const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;
  return new THREE.Mesh(new THREE.PlaneGeometry(5,1.25),new THREE.MeshBasicMaterial({map:t,toneMapped:false}));
 }
-const signage=[['REPAIR LAB','01 / DIAGNOSE. REPAIR. RESTORE.',-5,3,-25.4,orange],['BUSINESS IT','02 / CONNECT. BACK UP. SUPPORT.',5,3,-51,blue],['DIGITAL SYSTEMS','03 / WEBSITES. SOFTWARE. WORKFLOWS.',-4.8,3.7,-76,blue],['NETWORK / SERVER','04 / BUILT TO KEEP YOU RUNNING.',5,3.2,-101,orange],['SECURITY LAB','05 / CAMERAS. SENSORS. SYSTEMS.',-4.5,3,-109,blue],['MECHANIC BAY','06 / BRAKES. AXLES. POWER. EXHAUST.',-3.5,3,-133.5,orange],['HOME PROJECTS','07 / REPAIR. PAINT. PLUMB. IMPROVE.',5,3,-158.5,blue]];
+const signage=[['REPAIR LAB','01 / DIAGNOSE. REPAIR. RESTORE.',-5,3,-25.4,orange],['BUSINESS IT','02 / CONNECT. BACK UP. SUPPORT.',5,3,-51,blue],['DIGITAL SYSTEMS','03 / WEBSITES. SOFTWARE. WORKFLOWS.',-4.8,3.7,-76,blue],['NETWORK / SERVER','04 / BUILT TO KEEP YOU RUNNING.',5,3.2,-101,orange],['SECURITY LAB','05 / CAMERAS. SENSORS. SYSTEMS.',-4.5,3,-109,blue],['MECHANIC BAY','06 / BRAKES. AXLES. POWER. EXHAUST.',-3.5,3,-133.5,orange],['HOME PROJECTS','07 / REPAIR. PAINT. YARD. HOME.',5,3,-158.5,blue]];
 signage.forEach(([title,sub,x,y,z,color])=>{const sign=label(title,sub,color);sign.position.set(x,y,z);scene.add(sign);});
 const rubber=new THREE.MeshStandardMaterial({color:0x173d49,roughness:.94});
 box(scene,[4.7,.035,1.85],[-5,-.405,-24],rubber);
@@ -87,22 +87,44 @@ const meter=box(scene,[.72,1,.22],[3.4,-.05,-157.45],dark);box(scene,[.38,.34,.0
 const paintCan=new THREE.Mesh(new THREE.CylinderGeometry(.58,.58,1.05,24),new THREE.MeshStandardMaterial({color:0xd5dbe0,metalness:.35,roughness:.45}));paintCan.position.set(5.45,-.02,-157.35);scene.add(paintCan);
 const paintBand=new THREE.Mesh(new THREE.TorusGeometry(.59,.055,8,28),orangeMat);paintBand.rotation.x=Math.PI/2;paintBand.position.set(5.45,.15,-157.35);scene.add(paintBand);
 box(scene,[.12,1.65,.12],[6.3,.68,-157.35],metal);const roller=new THREE.Mesh(new THREE.CylinderGeometry(.22,.22,1.05,14),blueMat);roller.rotation.z=Math.PI/2;roller.position.set(6.78,1.45,-157.35);scene.add(roller);
-const pipeWrench=new THREE.Group();pipeWrench.position.set(7.1,.1,-157.55);pipeWrench.rotation.z=-.28;scene.add(pipeWrench);box(pipeWrench,[.18,1.75,.18],[0,0,0],orangeMat);box(pipeWrench,[.65,.18,.24],[.2,.9,0],metal);box(pipeWrench,[.22,.52,.24],[-.14,.72,0],metal);
 const shovel=new THREE.Group();shovel.position.set(8,-.15,-157.75);shovel.rotation.z=.18;scene.add(shovel);box(shovel,[.1,2.4,.1],[0,.5,0],metal);const blade=new THREE.Mesh(new THREE.ConeGeometry(.42,.85,4),metal);blade.rotation.z=Math.PI;blade.position.y=-.85;shovel.add(blade);
+// Plumbing gets its own service bay, with recognizable pipe runs, valves and a fixture bench.
+const plumbingBench=bench(5,-183);
+box(scene,[5.6,2.7,.14],[5,.8,-184.1],dark);
+const copper=new THREE.MeshStandardMaterial({color:0xb86b45,metalness:.68,roughness:.28});
+const porcelain=new THREE.MeshStandardMaterial({color:0xd9e0e4,metalness:.08,roughness:.24});
+const basin=new THREE.MeshStandardMaterial({color:0x0c1720,metalness:.42,roughness:.3});
+function pipeVertical(x,y,z,height,r=.07,material=copper){const pipe=new THREE.Mesh(new THREE.CylinderGeometry(r,r,height,16),material);pipe.position.set(x,y,z);scene.add(pipe);return pipe;}
+function pipeAcross(x,y,z,length,r=.07,material=copper){const pipe=new THREE.Mesh(new THREE.CylinderGeometry(r,r,length,16),material);pipe.rotation.z=Math.PI/2;pipe.position.set(x,y,z);scene.add(pipe);return pipe;}
+pipeAcross(4.95,1.45,-183.75,4.8,.08);
+for(const x of [3.1,4.3,5.5,6.9]){pipeVertical(x,.76,-183.75,1.25,.07);const elbow=new THREE.Mesh(new THREE.SphereGeometry(.105,12,10),copper);elbow.position.set(x,1.4,-183.75);scene.add(elbow);}
+pipeAcross(4.3,.2,-183.72,2.4,.065);
+for(const x of [4.3,5.5]){const valve=new THREE.Mesh(new THREE.TorusGeometry(.25,.045,8,24),orangeMat);valve.position.set(x,.66,-183.2);scene.add(valve);const spindle=pipeVertical(x,.68,-183.63,.38,.045,metal);spindle.rotation.x=Math.PI/2;}
+// The porcelain basin and faucet sit at the working edge of the bench.
+box(scene,[1.8,.16,1.2],[6.8,-.42,-183.05],porcelain);
+box(scene,[1.32,.045,.76],[6.8,-.315,-183.05],basin);
+pipeVertical(6.85,.12,-183.4,.86,.055,porcelain);
+pipeAcross(7.1,.53,-183.4,.55,.055,porcelain);
+pipeVertical(7.37,.4,-183.4,.28,.045,porcelain);
+pipeVertical(6.8,-.73,-183.05,.5,.055,metal);
+const plumbingWrench=new THREE.Group();plumbingWrench.position.set(4.1,-.28,-183.05);plumbingWrench.rotation.z=-.32;scene.add(plumbingWrench);
+box(plumbingWrench,[.16,1.55,.2],[0,0,0],orangeMat);box(plumbingWrench,[.62,.16,.22],[.2,.82,0],metal);box(plumbingWrench,[.2,.45,.22],[-.12,.69,0],metal);
+const plumbingSign=label('PLUMBING / FIXTURES','08 / LEAKS. DRAINS. EVERYDAY REPAIRS.',blue);plumbingSign.position.set(5,3,-184.5);scene.add(plumbingSign);
+const plumbingGlow=new THREE.PointLight(0x49d8ff,2.4,11,1);plumbingGlow.position.set(5,1.8,-183);scene.add(plumbingGlow);
 box(scene,[8,4.6,.14],[-4.8,.6,-75.4],dark);
 box(scene,[8,.18,1.2],[-4.8,-1.9,-75],metal);
 for(const x of [-8.2,-1.4])box(scene,[.16,1.01,.16],[x,-2.495,-75],metal);
 // Each selected project has its own screen; artwork stays attached to its monitor.
-function projectTexture(file,monitorGroup,fitLogo=false){
+function projectTexture(file,monitorGroup,contain=false){
  new THREE.TextureLoader().load(file,texture=>{
   let map=texture;
-  if(fitLogo){const board=document.createElement('canvas');board.width=1024;board.height=580;const ctx=board.getContext('2d');ctx.fillStyle='#f8f4ec';ctx.fillRect(0,0,1024,580);const scale=Math.min(880/texture.image.width,450/texture.image.height),w=texture.image.width*scale,h=texture.image.height*scale;ctx.drawImage(texture.image,(1024-w)/2,(580-h)/2,w,h);map=new THREE.CanvasTexture(board);texture.dispose();}
+  if(contain){const board=document.createElement('canvas');board.width=1024;board.height=580;const ctx=board.getContext('2d');ctx.fillStyle='#f8f8f5';ctx.fillRect(0,0,1024,580);const scale=Math.min(920/texture.image.width,540/texture.image.height),w=texture.image.width*scale,h=texture.image.height*scale;ctx.drawImage(texture.image,(1024-w)/2,(580-h)/2,w,h);map=new THREE.CanvasTexture(board);texture.dispose();}
   map.encoding=THREE.sRGBEncoding;const screen=new THREE.Mesh(new THREE.PlaneGeometry(2.64,1.49),new THREE.MeshBasicMaterial({map,toneMapped:false}));screen.position.z=.2;monitorGroup.add(screen);invalidate();
  },undefined,()=>{});
 }
-projectTexture('assets/projects/fur-love-logo.webp',projectMonitors[0],true);
-projectTexture('assets/projects/securewatch-preview.webp',projectMonitors[2]);
-const opsScreen=label('FUR THE LOVE','OPERATIONS / PRIVATE SOFTWARE',blue);opsScreen.scale.set(.528,1.19,1);opsScreen.position.z=.2;projectMonitors[1].add(opsScreen);
+projectTexture('assets/projects/fur-love-website-viewport.png',projectMonitors[0],true);
+projectTexture('assets/projects/fur-love-operations-screen.png',projectMonitors[1],true);
+projectTexture('assets/projects/securewatch-product-screen.png',projectMonitors[2],true);
 const codeScreen=label('CODECREDIT','AI DEVELOPMENT / MVP',orange);codeScreen.scale.set(.528,1.19,1);codeScreen.position.z=.2;projectMonitors[3].add(codeScreen);
 // Rack handles repeat as one draw call.
 const rackHandles=new THREE.InstancedMesh(new THREE.BoxGeometry(.075,.22,.11),metal,16);
@@ -113,7 +135,7 @@ const shadowContext=shadowCanvas.getContext('2d'),gradient=shadowContext.createR
 gradient.addColorStop(0,'rgba(0,0,0,.8)');gradient.addColorStop(.45,'rgba(0,0,0,.6)');gradient.addColorStop(1,'rgba(0,0,0,0)');
 shadowContext.fillStyle=gradient;shadowContext.fillRect(0,0,128,128);
 const shadowTexture=new THREE.CanvasTexture(shadowCanvas);
-for(const [x,z,w,d] of [[-5,-24,8,5],[5,-49,8,5],[-4.8,-75,10,5],[5,-100,6,5],[-4.5,-107,8,6],[-3.5,-132.5,9,5],[5,-157.5,9,5]]){
+for(const [x,z,w,d] of [[-5,-24,8,5],[5,-49,8,5],[-4.8,-75,10,5],[5,-100,6,5],[-4.5,-107,8,6],[-3.5,-132.5,9,5],[5,-157.5,9,5],[5,-183,9,5]]){
  const shadow=new THREE.Mesh(new THREE.PlaneGeometry(w,d),new THREE.MeshBasicMaterial({map:shadowTexture,transparent:true,depthWrite:false}));shadow.rotation.x=-Math.PI/2;shadow.position.set(x,-2.965,z);scene.add(shadow);
 }
 // Small, deliberate finishes make the benches read as a working place.
@@ -122,6 +144,7 @@ box(repairBench,[4.8,.045,.035],[0,-.18,1.11],orangeMat);
 box(securityBench,[4.8,.045,.035],[0,-.18,1.11],blueMat);
 box(mechanicBench,[4.8,.045,.035],[0,-.18,1.11],orangeMat);
 box(handymanBench,[4.8,.045,.035],[0,-.18,1.11],blueMat);
+box(plumbingBench,[4.8,.045,.035],[0,-.18,1.11],blueMat);
 box(scene,[1.8,.07,.55],[5,-.38,-48.15],dark);
 const deskKeys=new THREE.InstancedMesh(new THREE.BoxGeometry(.1,.02,.09),metal,36);
 for(let row=0;row<3;row++)for(let col=0;col<12;col++){matrix.makeTranslation(4.28+col*.13,-.33,-48.3+row*.15);deskKeys.setMatrixAt(row*12+col,matrix);}scene.add(deskKeys);
@@ -152,7 +175,8 @@ const stations=[
  {p:[8.1,1.9,-90.5],t:[5,.05,-100]},
  {p:[-.8,2.2,-98],t:[-4.1,.4,-107]},
  {p:[2.1,2,-122.5],t:[-2.9,.1,-132.4]},
- {p:[9.8,2.2,-147.5],t:[5.2,.25,-157.5]}
+ {p:[9.8,2.2,-147.5],t:[5.2,.25,-157.5]},
+ {p:[8.7,2.1,-173.5],t:[5.8,.35,-183]}
 ];
 const pos=new THREE.Vector3(),look=new THREE.Vector3(),a=new THREE.Vector3(),b=new THREE.Vector3();
 const tourPos=new THREE.Vector3(),tourLook=new THREE.Vector3();
