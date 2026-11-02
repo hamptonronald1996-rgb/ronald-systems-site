@@ -122,9 +122,9 @@ function projectTexture(file,monitorGroup,contain=false){
   map.encoding=THREE.sRGBEncoding;const screen=new THREE.Mesh(new THREE.PlaneGeometry(2.64,1.49),new THREE.MeshBasicMaterial({map,toneMapped:false}));screen.position.z=.2;monitorGroup.add(screen);invalidate();
  },undefined,()=>{});
 }
-projectTexture('assets/projects/fur-love-logo.webp',projectMonitors[0],true);
+projectTexture('assets/projects/fur-love-website-viewport.png',projectMonitors[0],true);
+projectTexture('assets/projects/fur-love-operations-screen.png',projectMonitors[1],true);
 projectTexture('assets/projects/securewatch-product-screen.png',projectMonitors[2],true);
-const opsScreen=label('FUR THE LOVE','OPERATIONS / PRIVATE SOFTWARE',blue);opsScreen.scale.set(.528,1.19,1);opsScreen.position.z=.2;projectMonitors[1].add(opsScreen);
 const codeScreen=label('CODECREDIT','AI DEVELOPMENT / MVP',orange);codeScreen.scale.set(.528,1.19,1);codeScreen.position.z=.2;projectMonitors[3].add(codeScreen);
 // Rack handles repeat as one draw call.
 const rackHandles=new THREE.InstancedMesh(new THREE.BoxGeometry(.075,.22,.11),metal,16);
