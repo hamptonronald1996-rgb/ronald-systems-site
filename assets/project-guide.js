@@ -3,16 +3,14 @@
   if (!grid || document.getElementById('projectGuide')) return;
 
   const groups = [
-    { id: 'all', label: 'All four', intro: 'Explore the customer experience, the work behind it, and the software taking shape in the lab.' },
+    { id: 'all', label: 'All projects', intro: 'Explore three current projects: a public pet-care website, its private operations software, and a connected-security product.' },
     { id: 'fur-love', label: 'Fur the Love', intro: 'Two connected builds for one pet-care business: the public website and the private operations workspace.' },
-    { id: 'secure-watch', label: 'Secure Watch', intro: 'Explore the connected-security product vision, from cameras and alerts to the customer experience.' },
-    { id: 'codecredit', label: 'CodeCredit', intro: 'Inside the MVP: an AI development workspace for projects, teams and usage tracking.' }
+    { id: 'secure-watch', label: 'Secure Watch', intro: 'Explore the connected-security product, from camera setup to the customer experience.' }
   ];
   const groupByProject = new Map([
     ['project-fur-love', 'fur-love'],
     ['project-fur-love-operations', 'fur-love'],
-    ['project-secure-watch', 'secure-watch'],
-    ['project-codecredit', 'codecredit']
+    ['project-secure-watch', 'secure-watch']
   ]);
   const cards = [...grid.querySelectorAll('.project')];
   if (!cards.length) return;
@@ -69,7 +67,7 @@
     });
     grid.setAttribute('data-project-view', group.id);
     intro.textContent = group.intro;
-    status.textContent = `${visible} of ${cards.length} builds · ${group.label}`;
+    status.textContent = `${visible} of ${cards.length} projects · ${group.label}`;
     relationship.hidden = group.id !== 'fur-love';
   }
 

@@ -141,7 +141,7 @@ inspection.settle();inspection.context.workshopScene.onFrame(points=>projections
 assert.equal(projections.length,0,'Page choreography must not publish tour hotspots');
 inspection.context.workshopScene.enter();inspection.settle();
 const equipment=inspection.context.workshopItems;
-assert.equal(equipment.length,20);
+assert.equal(equipment.length,19);
 for(let station=0;station<8;station++){
  inspection.context.workshopScene.station(station);assert.equal(inspection.settle(),1);
  const stationItems=equipment.filter(item=>item.station===station),overviewPosition=inspection.last().position.clone();
@@ -192,4 +192,4 @@ const fallback=createHarness({rendererFails:true});
 assert.equal(fallback.nodes.fallback.style.display,'block');assert.equal(fallback.context.workshopScene,undefined);assert.equal(fallback.frames.size,0);
 console.log('PASS: real Three.js scene execution, demand settling, journey updates, paused station snap, orbit/reset, tour exit, and project texture invalidation');
 console.log('PASS: reduced motion, mobile density and touch behavior, hidden tab suspension, context loss/restoration, and WebGL-unavailable fallback');
-console.log('PASS: all 20 equipment close-ups, guarded inspection IDs, projected desktop/mobile hotspots, paused orbit/reset, and station/exit cleanup');
+console.log('PASS: all 19 equipment close-ups, guarded inspection IDs, projected desktop/mobile hotspots, paused orbit/reset, and station/exit cleanup');

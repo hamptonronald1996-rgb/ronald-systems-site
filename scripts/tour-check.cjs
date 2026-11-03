@@ -26,7 +26,7 @@ function harness({available=true,scenePresent=true,dialogSupported=true}={}){
    setPointerCapture(pointerId){this.pointerCapture=pointerId;}
   });
  }
- const ids=['workshopTour','tourTitle','tourCopy','tourNumber','tourDetail','tourPrimary','tourRequest','tourStations','tourStage','tourClose','tourPrevious','tourNext','tourLeft','tourRight','tourReset','tourObject','tourOverview','serviceType','requestDetails','services','work','contact','project-fur-love','project-fur-love-operations','project-secure-watch','project-codecredit'];
+ const ids=['workshopTour','tourTitle','tourCopy','tourNumber','tourDetail','tourPrimary','tourRequest','tourStations','tourStage','tourClose','tourPrevious','tourNext','tourLeft','tourRight','tourReset','tourObject','tourOverview','serviceType','requestDetails','services','work','contact','project-fur-love','project-fur-love-operations','project-secure-watch'];
  const nodes=Object.fromEntries(ids.map(id=>[id,element(id)]));
  nodes.tourOverview.hidden=true;
  const launchers=[element('heroLauncher'),element('secondaryLauncher')];launchers.forEach(button=>button.hidden=true);
@@ -163,7 +163,7 @@ requestServices.forEach((service,station)=>{
 });
 
 const equipment=harness();launch(equipment);
-assert.equal(equipment.hotspots().length,20,'Every equipment item must have a keyboard-accessible hotspot');
+assert.equal(equipment.hotspots().length,19,'Every equipment item must have a keyboard-accessible hotspot');
 assert.deepEqual(equipment.nodes.tourObject.children.map(option=>option.value),['','laptop','phone']);
 equipment.publish([{id:'laptop',x:180,y:260,visible:true},{id:'phone',x:320,y:330,visible:true}]);
 assert.equal(equipment.hotspots().filter(button=>!button.hidden).length,2);
@@ -183,7 +183,7 @@ inspect(equipment,'unknown');assert.equal(equipment.nodes.tourTitle.textContent,
 equipment.rejectInspection(true);inspect(equipment,'phone');assert.equal(equipment.nodes.tourTitle.textContent,titleBefore,'A scene rejection must leave the overview intact');equipment.rejectInspection(false);
 inspect(equipment,'phone');click(equipment.nodes.tourStations.children[2]);selected(equipment,2);
 assert.equal(equipment.nodes.tourOverview.hidden,true);assert.equal(equipment.nodes.tourObject.value,'');
-assert.deepEqual(equipment.nodes.tourObject.children.map(option=>option.value),['','fur-site','fur-ops','secure-project','codecredit'],'The project picker must contain precisely the four selected projects');
+assert.deepEqual(equipment.nodes.tourObject.children.map(option=>option.value),['','fur-site','fur-ops','secure-project'],'The project picker must contain precisely the three selected projects');
 const callsBeforeButtonDrag=equipment.calls.length;
 equipment.stage.dispatchEvent(new TestEvent('pointerdown',{button:0,clientX:120,pointerId:8,target:{closest:selector=>selector==='button'?equipment.hotspots()[0]:null}}));
 equipment.stage.dispatchEvent(new TestEvent('pointermove',{clientX:160}));assert.equal(equipment.calls.length,callsBeforeButtonDrag,'Pressing a hotspot must not initiate camera dragging');
@@ -222,4 +222,4 @@ for(const options of [{available:false},{scenePresent:false},{dialogSupported:fa
 }
 console.log('PASS: tour launch/close, native queued-close cleanup, scroll/focus restoration, bidirectional Tab wrapping, station cycling and accessible selection');
 console.log('PASS: service-category navigation, request preselection, post-cleanup destination focus, drag/buttons, scrolled-stage framing, and unavailable/context-loss behavior');
-console.log('PASS: all 20 hotspot/picker routes, four-project handoff, exact equipment enquiries, preserved drafts, clipped hotspots, inspection focus, and guarded camera dragging');
+console.log('PASS: all 19 hotspot/picker routes, three-project handoff, exact equipment enquiries, preserved drafts, clipped hotspots, inspection focus, and guarded camera dragging');

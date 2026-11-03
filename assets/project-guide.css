@@ -12,10 +12,10 @@
 .project-relationship p{margin:8px 0 0;color:#bed0c9;font-size:13px;line-height:1.65;max-width:650px}
 .project-guide+.focused-projects{margin-top:20px}
 #work .project[hidden],.project-relationship[hidden]{display:none!important}
-.focused-projects[data-project-view="secure-watch"],.focused-projects[data-project-view="codecredit"]{grid-template-columns:minmax(0,1fr)}
+.focused-projects[data-project-view="secure-watch"]{grid-template-columns:minmax(0,1fr)}
 @media(min-width:701px){
- .focused-projects[data-project-view="secure-watch"] .project,.focused-projects[data-project-view="codecredit"] .project{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}
- .focused-projects[data-project-view="secure-watch"] .build-art,.focused-projects[data-project-view="codecredit"] .build-art{min-height:340px;height:100%;border-bottom:0;border-right:1px solid var(--line)}
+ .focused-projects[data-project-view="secure-watch"] .project{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}
+ .focused-projects[data-project-view="secure-watch"] .build-art{min-height:340px;height:100%;border-bottom:0;border-right:1px solid var(--line)}
  .focused-projects[data-project-view="secure-watch"] .security-art img{height:100%;min-height:340px;position:absolute;inset:0}
 }
 @media(max-width:520px){.project-guide{margin-top:25px;padding-top:20px}.project-guide-controls{gap:7px}.project-guide-controls button{font-size:10px;padding:10px 11px}.project-relationship{padding:15px}}

@@ -18,3 +18,23 @@ main{position:relative;z-index:10}.chapter{min-height:100svh;display:flex;align-
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.noise{animation:none}.copy{transition:none;transform:none;filter:none}.project,.service,.btn{transition:none}}
 
 #requestForm input{display:block;width:100%;padding:13px 14px;margin:8px 0 18px;background:#101820;color:#edf2f8;border:1px solid #46505c;border-radius:7px;font:inherit}#requestForm .request-trap{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}#requestForm button:disabled{opacity:.6;cursor:wait}
+
+/* Service-first entry point, tuned for quick scanning on both wide and narrow screens. */
+.hero-picker{margin-top:25px;max-width:900px}
+.hero-picker-title{margin:0 0 10px;color:#b8c6d3;font:500 10px/1.5 JetBrains Mono,monospace;letter-spacing:.11em;text-transform:uppercase}
+.hero-picker-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.hero-picker-grid a{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;padding:10px 12px;border:1px solid #344454;border-radius:8px;background:linear-gradient(120deg,#101a25e8,#0a111bdc);color:#d5e2ed;font:500 10px/1.35 JetBrains Mono,monospace;letter-spacing:.015em;transition:border-color .18s,background .18s,transform .18s}
+.hero-picker-grid a span{color:var(--blue);font-size:15px}
+.hero-picker-grid a:hover{transform:translateY(-2px);border-color:#49bfe9;background:#102736}
+.hero-picker-grid a:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+#requestForm label{display:block;margin:16px 0 6px;color:#d9e3eb;font:500 11px/1.5 JetBrains Mono,monospace;letter-spacing:.025em}
+#requestForm input,#requestForm select,#requestForm textarea{display:block;width:100%;min-height:46px;padding:12px 13px;margin:0;background:#0b131d;color:#edf2f8;border:1px solid #465564;border-radius:7px;font:inherit;line-height:1.5}
+#requestForm textarea{min-height:118px;resize:vertical}
+#requestForm input:focus,#requestForm select:focus,#requestForm textarea:focus{outline:2px solid #29c4ff;outline-offset:2px;border-color:#29c4ff}
+#requestForm .form-note{margin:9px 0 15px;color:#93a4b3;font-size:12px}
+.optional{color:#8d9baa;font:400 10px/1.5 Inter,sans-serif;letter-spacing:0;text-transform:none}
+.request-prompt{margin:10px 0 0!important;padding:11px 13px;border-left:2px solid var(--blue);background:#0c1b26;color:#bcd8e6!important;font-size:12px}
+.contact-meta a{font:500 10px/1.5 JetBrains Mono,monospace;color:#d0e8f3}
+@media(max-width:900px){.hero-picker-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.hero-picker{margin-top:20px}.hero-picker-grid{gap:7px}.hero-picker-grid a{min-height:46px;padding:10px;font-size:9px}.request-prompt{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.hero-picker-grid a{transition:none}}

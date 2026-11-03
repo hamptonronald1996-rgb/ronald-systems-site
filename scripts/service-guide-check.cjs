@@ -22,10 +22,13 @@ const cards = [...html.matchAll(/<article class="service glass[^"]*">([\s\S]*?)<
   });
 });
 assert.equal(cards.length, 10, 'The current ten services must be available without JavaScript');
+const shortcuts = [...html.matchAll(/data-service-category="([^"]+)"/g)].map(([, serviceCategory]) => Object.assign(element(), { dataset: { serviceCategory } }));
+assert.deepEqual(shortcuts.map(link => link.dataset.serviceCategory), ['repair', 'business', 'software', 'systems', 'mechanic', 'handyman', 'plumbing']);
 let guide;
 const grid = { id: '', querySelectorAll: () => cards, before(value) { guide = value; } };
 const document = {
   querySelector: () => grid,
+  querySelectorAll: selector => selector === '[data-service-category]' ? shortcuts : [],
   getElementById: () => guide,
   createElement: () => element()
 };
@@ -67,6 +70,10 @@ for (const [id, index] of [['business', 2], ['repair', 1], ['systems', 4], ['mec
   assert.deepEqual(cards.filter(card => !card.hidden).map(card => card.title), expectations[index][1]);
   assert.equal(controls.children[index].attributes['aria-pressed'], 'true');
 }
+shortcuts.forEach((link, index) => {
+  link.handlers.click();
+  assert.deepEqual(cards.filter(card => !card.hidden).map(card => card.title), expectations[index + 1][1], 'A homepage service shortcut must open the matching filter');
+});
 const previousStatus = status.textContent;
 window.workshopServices.select('unknown');
 assert.equal(status.textContent, previousStatus, 'Unknown external categories must preserve the current selection');
