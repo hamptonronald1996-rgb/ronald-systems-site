@@ -76,6 +76,13 @@
     status.textContent = `${visible} ${visible === 1 ? 'service' : 'services'} · ${category.label}`;
   }
 
+  (document.querySelectorAll?.('[data-service-category]') || []).forEach(link => {
+    link.addEventListener('click', () => {
+      const category = categories.find(item => item.id === link.dataset.serviceCategory);
+      if (category) selectCategory(category);
+    });
+  });
+
   guide.append(title, controls, intro, status);
   grid.before(guide);
   selectCategory(categories[0]);

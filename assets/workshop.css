@@ -47,7 +47,7 @@ select,textarea{display:block;width:100%;background:#090f18;color:#eaf1f8;border
 
 @media(max-width:520px){select,textarea{font-size:16px}}
 
-/* A focused four-project showcase. Media and copy have separate, predictable space. */
+/* A focused three-project showcase. Media and copy have separate, predictable space. */
 #hud{display:none}
 #work .copy{width:min(820px,67vw)}
 .focused-projects{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
@@ -78,8 +78,6 @@ select,textarea{display:block;width:100%;background:#090f18;color:#eaf1f8;border
 .build-art>span{font:9px/1.5 JetBrains Mono,monospace;letter-spacing:.08em;color:#b8d9d0;position:relative;z-index:1}
 .build-art>strong{font:500 clamp(26px,2.8vw,38px)/1.05 Space Grotesk,sans-serif;letter-spacing:-.035em;position:relative;z-index:1}
 .ops-art{background:radial-gradient(ellipse at 110% 10%,#57877266,transparent 60%),#17342d;color:#e3efe0}
-.workflow-strip{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font:10px/1.4 JetBrains Mono,monospace;position:relative;z-index:1}.workflow-strip i{font-style:normal;opacity:.55}.workflow-strip span{padding:7px 8px;border:1px solid #ffffff25;border-radius:5px}
-.code-art{background:radial-gradient(ellipse at 95% 5%,#6d46a55c,transparent 65%),#1a172b;color:#efddff}.code-art>span{color:#c6a5ef}.code-cursor{color:#b2a2ff}
 .security-art{min-height:0;aspect-ratio:1.6;padding:0;background:#f8f8f5}.security-art img{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
 .security-art>span{position:absolute;left:15px;bottom:14px;padding:7px 10px;border:1px solid #ffffff25;border-radius:5px;background:#07131ae8;font-size:8px;color:#cfedf8}
 .project-details{width:100%;border-top:1px solid #263747;margin-bottom:18px}
